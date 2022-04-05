@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         paddingHorizontal: 20,
-        marginBottom: 12,
         height: CONST.DISCOVER_TAB_HEADER_HEIGHT,
+        backgroundColor: 'black',
     },
     tab: {
         paddingVertical: 14,
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
         fontFamily: 'textBold',
         fontWeight: '700',
         opacity: 0.4,
+        color: 'white',
     },
     activeTabText: {
         opacity: 1,

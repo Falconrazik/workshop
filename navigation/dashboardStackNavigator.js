@@ -6,13 +6,13 @@ export default function DashboardStackNavigator (props) {
 
     return (
         <Stack.Navigator
-            initialRouteName={"Dashboard"}
+            initialRouteName={"dashboard"}
             screenOptions={{
                 headerShown: false
             }}
         >
             <Stack.Screen
-                name="Dashboard"
+                name="dashboard"
                 component={Dashboard}
                 options={{}}
             />

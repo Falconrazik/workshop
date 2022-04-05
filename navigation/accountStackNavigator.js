@@ -6,13 +6,13 @@ export default function AccountStackNavigator (props) {
 
     return (
         <Stack.Navigator
-            initialRouteName={"Account"}
+            initialRouteName={"account"}
             screenOptions={{
                 headerShown: false
             }}
         >
             <Stack.Screen
-                name="Account"
+                name="account"
                 component={Account}
                 options={{}}
             />

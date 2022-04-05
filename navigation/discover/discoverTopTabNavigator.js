@@ -8,16 +8,18 @@ import DiscoverTabsHeader from '../../components/discover/discoverTabsHeader';
 
 export default function DiscoverTopTabNavigator(props) {
     const Tab = createMaterialTopTabNavigator();
-
     return (
         <SafeAreaView style={{ flex: 1 }}>
                 <Tab.Navigator
-                    tabBar={props =>
-                        <DiscoverTabsHeader
-                            currentTab={props.navigation.getState().routeNames[props.navigation.getState().index]}
-                            onTabPress={props.navigation.navigate}
-                        />
-                    }
+                    tabBar={props => {
+                        const currentTab = props.navigation.getState().routeNames[props.navigation.getState().index];
+                        return (
+                            <DiscoverTabsHeader
+                                currentTab={currentTab}
+                                onTabPress={props.navigation.navigate}
+                            />
+                        );
+                    }}
                     initialRouteName={CONST.DISCOVER_TABS.SHORTS}
                     screenOptions={{
                         headerShown: false,
@@ -32,16 +34,6 @@ export default function DiscoverTopTabNavigator(props) {
                         name={CONST.DISCOVER_TABS.SHORTS}
                         component={DiscoverShortsStackNavigator}
                     />
-                    {/*{currentTab === CONST.DISCOVER_TABS.CREATORS &&*/}
-                    {/*    <DiscoverCreators*/}
-                    {/*        containerStyles={currentTab === CONST.DISCOVER_TABS.CREATORS ? {} : {display: 'none'}}*/}
-                    {/*    />*/}
-                    {/*}*/}
-                    {/*{currentTab === CONST.DISCOVER_TABS.SHORTS &&*/}
-                    {/*    <DiscoverShorts*/}
-                    {/*        containerStyles={currentTab === CONST.DISCOVER_TABS.SHORTS ? {} : {display: 'none'}}*/}
-                    {/*    />*/}
-                    {/*}*/}
                 </Tab.Navigator>
         </SafeAreaView>
     )

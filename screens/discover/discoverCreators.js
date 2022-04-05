@@ -1,13 +1,13 @@
-import { StyleSheet, Text, SafeAreaView, View, ScrollView, useWindowDimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View, ScrollView, useWindowDimensions, TouchableOpacity, Dimensions } from 'react-native';
+import Constants from 'expo-constants';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import CONST from '../../CONST';
 import {useFonts} from 'expo-font';
 import fonts from '../../assets/fonts/fonts';
 
 export default function DiscoverCreators ({containerStyles}) {
-    const { height } = useWindowDimensions();
     const tabBarHeight = useBottomTabBarHeight();
-    const scrollViewHeight = height - CONST.DISCOVER_TAB_HEADER_HEIGHT - CONST.DISCOVER_TAB_HEADER_MARGIN_BOTTOM - tabBarHeight;
+    const scrollViewHeight = Dimensions.get('window').height - Constants.statusBarHeight - CONST.DISCOVER_TAB_HEADER_HEIGHT - tabBarHeight;
 
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {
@@ -46,7 +46,9 @@ export default function DiscoverCreators ({containerStyles}) {
 
 const styles = StyleSheet.create({
     container: {
+        paddingTop: 12,
         paddingBottom: 12,
+        backgroundColor: 'black',
     },
     gridContainer: {
         display: 'flex',
