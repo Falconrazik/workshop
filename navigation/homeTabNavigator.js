@@ -8,7 +8,7 @@ export default function HomeTabNavigator (props) {
 
     return (
         <Tab.Navigator
-            initialRouteName="Landing"
+            initialRouteName="Discover"
             screenOptions={{
                 headerShown: false
             }}
