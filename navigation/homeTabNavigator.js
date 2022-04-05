@@ -1,9 +1,9 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import DashboardStackNavigator from './dashboardStackNavigator';
 import AccountStackNavigator from './accountStackNavigator';
-import Discover from '../screens/discover/discover';
+import DiscoverTopTabNavigator from './discover/discoverTopTabNavigator';
 
-export default function HomeTabNavigator (props) {
+export default function HomeTabNavigator () {
     const Tab = createBottomTabNavigator();
 
     return (
@@ -15,7 +15,7 @@ export default function HomeTabNavigator (props) {
         >
             <Tab.Screen
                 name="Discover"
-                component={Discover}
+                component={DiscoverTopTabNavigator}
                 options={{}}
             />
             <Tab.Screen

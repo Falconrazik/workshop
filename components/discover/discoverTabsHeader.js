@@ -1,7 +1,14 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import CONST from '../../../CONST';
+import CONST from '../../CONST';
+import fonts from '../../assets/fonts/fonts';
+import {useFonts} from 'expo-font';
 
 export default function DiscoverTabsHeader({onTabPress, currentTab}) {
+    const [fontsLoaded] = useFonts(fonts);
+    if (!fontsLoaded) {
+        return null;
+    }
+
     return (
         <View style={styles.discoverTabsHeader}>
             <DiscoverTab title={CONST.DISCOVER_TABS.CREATORS} onPress={onTabPress} isActive={currentTab === CONST.DISCOVER_TABS.CREATORS} />
@@ -27,7 +34,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         paddingHorizontal: 20,
-        marginBottom: 20,
+        marginBottom: 12,
+        height: CONST.DISCOVER_TAB_HEADER_HEIGHT,
     },
     tab: {
         paddingVertical: 14,
@@ -35,11 +43,11 @@ const styles = StyleSheet.create({
     },
     tabText: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontFamily: 'textBold',
+        fontWeight: '700',
         opacity: 0.4,
     },
     activeTabText: {
         opacity: 1,
     }
-
 });

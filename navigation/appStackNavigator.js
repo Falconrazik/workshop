@@ -1,11 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Landing from '../screens/landing';
-import SignUp from '../screens/signup/signup';
 import SignupStackNavigator from '../screens/signup/signup';
 import HomeTabNavigator from './homeTabNavigator';
 
-export default function AppStackNavigator (props) {
+export default function AppStackNavigator () {
     const Stack = createNativeStackNavigator();
 
     return (
