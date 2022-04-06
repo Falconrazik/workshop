@@ -1,19 +1,20 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Account from '../screens/account/account';
+import Account from '../../screens/account/account';
+import DiscoverCreators from '../../screens/discover/discoverCreators';
 
-export default function AccountStackNavigator (props) {
+export default function DiscoverCreatorsStackNavigator (props) {
     const Stack = createNativeStackNavigator();
 
     return (
         <Stack.Navigator
-            initialRouteName={"account"}
+            initialRouteName={"DiscoverCreators"}
             screenOptions={{
                 headerShown: false
             }}
         >
             <Stack.Screen
-                name="account"
-                component={Account}
+                name="DiscoverCreators"
+                component={DiscoverCreators}
                 options={{}}
             />
 
