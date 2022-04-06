@@ -4,19 +4,21 @@ import CONST from '../../CONST';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import DiscoverCreatorsStackNavigator from './discoverCreatorsStackNavigator';
 import DiscoverShortsStackNavigator from './discoverShortsStackNavigator';
-import DiscoverTabsHeader from '../../components/discover/discoverTabsHeader';
+import TabsHeader from '../../components/discover/tabsHeader';
 
-export default function DiscoverTopTabNavigator(props) {
+export default function DiscoverTopTabNavigator({navigation}) {
     const Tab = createMaterialTopTabNavigator();
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
                 <Tab.Navigator
-                    tabBar={props => {
+                    tabBar={(props) => {
                         const currentTab = props.navigation.getState().routeNames[props.navigation.getState().index];
                         return (
-                            <DiscoverTabsHeader
+                            <TabsHeader
                                 currentTab={currentTab}
                                 onTabPress={props.navigation.navigate}
+                                onActionButtonPress={() => navigation.navigate("SearchModal", {type: currentTab})}
                             />
                         );
                     }}

@@ -1,4 +1,13 @@
-import { StyleSheet, Text, SafeAreaView, View, ScrollView, useWindowDimensions, TouchableOpacity, Dimensions } from 'react-native';
+import React from 'react';
+import {
+    StyleSheet,
+    Text,
+    SafeAreaView,
+    View,
+    ScrollView,
+    TouchableOpacity,
+    Dimensions,
+} from 'react-native';
 import Constants from 'expo-constants';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import CONST from '../../CONST';
@@ -15,7 +24,7 @@ export default function DiscoverCreators ({containerStyles}) {
     }
 
     return (
-        <SafeAreaView style={[containerStyles]}>
+        <SafeAreaView style={containerStyles}>
             <ScrollView style={[styles.container, {height: scrollViewHeight}]}>
                 <TouchableOpacity style={[styles.gridPad, styles.gridPadLarge]}>
                     <Text style={[styles.text, styles.textLarge]}>Trending</Text>
@@ -41,7 +50,7 @@ export default function DiscoverCreators ({containerStyles}) {
                 </View>
             </ScrollView>
         </SafeAreaView>
-    )
+    );
 };
 
 const styles = StyleSheet.create({
