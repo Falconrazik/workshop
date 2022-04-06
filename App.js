@@ -11,7 +11,7 @@ export default function App() {
                 <StatusBar translucent style="light" />
             </View>
             <NavigationContainer>
-                <RootStackNavigator/>
+                <AppStackNavigator/>
             </NavigationContainer>
         </>
     );
