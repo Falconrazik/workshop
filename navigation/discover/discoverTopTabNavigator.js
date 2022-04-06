@@ -4,7 +4,7 @@ import CONST from '../../CONST';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import DiscoverCreatorsStackNavigator from './discoverCreatorsStackNavigator';
 import DiscoverShortsStackNavigator from './discoverShortsStackNavigator';
-import DiscoverTabsHeader from '../../components/discover/discoverTabsHeader';
+import TabsHeader from '../../components/discover/tabsHeader';
 
 export default function DiscoverTopTabNavigator(props) {
     const Tab = createMaterialTopTabNavigator();
@@ -14,7 +14,7 @@ export default function DiscoverTopTabNavigator(props) {
                     tabBar={props => {
                         const currentTab = props.navigation.getState().routeNames[props.navigation.getState().index];
                         return (
-                            <DiscoverTabsHeader
+                            <TabsHeader
                                 currentTab={currentTab}
                                 onTabPress={props.navigation.navigate}
                             />
