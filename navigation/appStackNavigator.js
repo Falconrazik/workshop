@@ -8,7 +8,7 @@ export default function AppStackNavigator () {
 
     return (
         <Stack.Navigator
-            initialRouteName="Home"// "Landing" TODO: undo
+            initialRouteName="Landing"
             screenOptions={{
                 headerShown: false
             }}
