@@ -41,12 +41,46 @@ export default function HomeTabNavigator () {
             <Tab.Screen
                 name="Dashboard"
                 component={DashboardStackNavigator}
-                options={{}}
+                options={{
+                    tabBarIcon: ({focused}) =>
+                        focused
+                            ? <Image
+                                source={require("../assets/icons/dashboard_focused.png")}
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                }}
+                            />
+                            : <Image
+                                source={require("../assets/icons/dashboard_unfocused.png")}
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                }}
+                            />
+                }}
             />
             <Tab.Screen
                 name="Account"
                 component={AccountStackNavigator}
-                options={{}}
+                options={{
+                    tabBarIcon: ({focused}) =>
+                        focused
+                            ? <Image
+                                source={require("../assets/icons/account_focused.png")}
+                                style={{
+                                    width: 25.4,
+                                    height: 25.91,
+                                }}
+                            />
+                            : <Image
+                                source={require("../assets/icons/account_unfocused.png")}
+                                style={{
+                                    width: 25.4,
+                                    height: 25.91,
+                                }}
+                            />
+                }}
             />
         </Tab.Navigator>
     )
