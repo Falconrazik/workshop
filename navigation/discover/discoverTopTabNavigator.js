@@ -4,7 +4,7 @@ import CONST from '../../CONST';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import DiscoverCreatorsStackNavigator from './discoverCreatorsStackNavigator';
 import DiscoverShortsStackNavigator from './discoverShortsStackNavigator';
-import TabsHeader from '../../components/discover/tabsHeader';
+import TabsHeader from '../../components/tabsHeader';
 
 export default function DiscoverTopTabNavigator({navigation}) {
     const Tab = createMaterialTopTabNavigator();

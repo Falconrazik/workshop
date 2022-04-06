@@ -1,6 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
-import CONST from '../../CONST';
-import fonts from '../../assets/fonts/fonts';
+import CONST from '../CONST';
+import fonts from '../assets/fonts/fonts';
 import {useFonts} from 'expo-font';
 import _ from 'lodash';
 
@@ -14,7 +14,7 @@ export default function TabsHeader({containerStyles, onTabPress, currentTab, onA
         <View style={_.merge({}, styles.tabsHeader, containerStyles)}>
             <View style={styles.pseudoFlexElement}>
                 <Image
-                    source={require("../../assets/icons/search.png")}
+                    source={require("../assets/icons/search.png")}
                     style={{
                         width: 15.72,
                         height: 17,
@@ -28,7 +28,7 @@ export default function TabsHeader({containerStyles, onTabPress, currentTab, onA
                 onPress={onActionButtonPress}
             >
                 <Image
-                    source={require("../../assets/icons/search.png")}
+                    source={require("../assets/icons/search.png")}
                     style={{
                        width: 15.72,
                        height: 17,
