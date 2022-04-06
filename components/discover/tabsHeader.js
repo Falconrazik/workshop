@@ -2,15 +2,16 @@ import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 import CONST from '../../CONST';
 import fonts from '../../assets/fonts/fonts';
 import {useFonts} from 'expo-font';
+import _ from 'lodash';
 
-export default function TabsHeader({onTabPress, currentTab}) {
+export default function TabsHeader({containerStyles, onTabPress, currentTab, onActionButtonPress}) {
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {
         return null;
     }
 
     return (
-        <View style={styles.tabsHeader}>
+        <View style={_.merge({}, styles.tabsHeader, containerStyles)}>
             <View style={styles.pseudoFlexElement}>
                 <Image
                     source={require("../../assets/icons/search.png")}
@@ -22,7 +23,10 @@ export default function TabsHeader({onTabPress, currentTab}) {
             </View>
             <Tab title={CONST.DISCOVER_TABS.CREATORS} onPress={onTabPress} isActive={currentTab === CONST.DISCOVER_TABS.CREATORS} />
             <Tab title={CONST.DISCOVER_TABS.SHORTS} onPress={onTabPress} isActive={currentTab === CONST.DISCOVER_TABS.SHORTS} />
-            <TouchableOpacity style={styles.actionButtonContainer}>
+            <TouchableOpacity
+                style={styles.actionButtonContainer}
+                onPress={onActionButtonPress}
+            >
                 <Image
                     source={require("../../assets/icons/search.png")}
                     style={{
@@ -58,7 +62,6 @@ const styles = StyleSheet.create({
     tab: {
         paddingVertical: 14,
         paddingHorizontal: 23,
-        // backgroundColor: 'blue',
     },
     tabText: {
         fontSize: 18,

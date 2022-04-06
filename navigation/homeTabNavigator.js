@@ -2,6 +2,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import DashboardStackNavigator from './dashboardStackNavigator';
 import AccountStackNavigator from './accountStackNavigator';
 import DiscoverTopTabNavigator from './discover/discoverTopTabNavigator';
+import React from 'react';
 import {Image} from 'react-native';
 
 export default function HomeTabNavigator () {

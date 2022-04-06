@@ -6,17 +6,19 @@ import DiscoverCreatorsStackNavigator from './discoverCreatorsStackNavigator';
 import DiscoverShortsStackNavigator from './discoverShortsStackNavigator';
 import TabsHeader from '../../components/discover/tabsHeader';
 
-export default function DiscoverTopTabNavigator(props) {
+export default function DiscoverTopTabNavigator({navigation}) {
     const Tab = createMaterialTopTabNavigator();
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
                 <Tab.Navigator
-                    tabBar={props => {
+                    tabBar={(props) => {
                         const currentTab = props.navigation.getState().routeNames[props.navigation.getState().index];
                         return (
                             <TabsHeader
                                 currentTab={currentTab}
                                 onTabPress={props.navigation.navigate}
+                                onActionButtonPress={() => navigation.navigate("SearchModal", {type: currentTab})}
                             />
                         );
                     }}
