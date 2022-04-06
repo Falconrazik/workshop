@@ -5,10 +5,8 @@ import {
     SafeAreaView,
     View,
     ScrollView,
-    useWindowDimensions,
     TouchableOpacity,
     Dimensions,
-    Image
 } from 'react-native';
 import Constants from 'expo-constants';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';

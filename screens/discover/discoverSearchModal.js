@@ -1,24 +1,16 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
     StyleSheet,
-    Text,
     SafeAreaView,
+    TextInput,
+    Image,
     View,
-    ScrollView,
-    useWindowDimensions,
-    TouchableOpacity,
-    Dimensions,
-    Image
 } from 'react-native';
-import Constants from 'expo-constants';
-import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import CONST from '../../CONST';
 import {useFonts} from 'expo-font';
 import fonts from '../../assets/fonts/fonts';
 
-export default function DiscoverCreators ({containerStyles, setOpenModal, navigation}) {
-    const tabBarHeight = useBottomTabBarHeight();
-    const scrollViewHeight = Dimensions.get('window').height - Constants.statusBarHeight - CONST.DISCOVER_TAB_HEADER_HEIGHT - tabBarHeight;
+export default function DiscoverSearchModal ({onSearch, type}) {
+    const [searchString, setSearchString] = React.useState('');
 
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {
@@ -26,12 +18,52 @@ export default function DiscoverCreators ({containerStyles, setOpenModal, naviga
     }
 
     return (
-        <SafeAreaView style={[containerStyles]}>
-
+        <SafeAreaView style={styles.container}>
+            <View style={styles.searchContainer} >
+                <Image style={styles.searchIcon} source={require("../../assets/icons/search_black.png")}/>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="search"
+                    onChangeText={setSearchString}
+                    underlineColorAndroid="transparent"
+                    returnKeyType="go"
+                    autoFocus
+                    onSubmitEditing={() => {
+                        onSearch(searchString);
+                    }}
+                    autoCapitalize="none"
+                />
+            </View>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-
+    container: {
+        backgroundColor: 'black',
+        paddingHorizontal: 12,
+        flex: 1,
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        height: 54,
+        paddingVertical: 15,
+        paddingLeft: 18.34,
+        borderRadius: 20,
+    },
+    searchIcon: {
+        width: 24.66,
+        height: 26.66,
+        marginRight: 20,
+    },
+    textInput: {
+        height: 54,
+        paddingVertical: 13,
+        fontSize: 20,
+        fontFamily: 'textBold',
+        backgroundColor: 'white',
+    }
 });

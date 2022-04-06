@@ -3,6 +3,7 @@ import Landing from '../screens/landing';
 import SignupStackNavigator from '../screens/signup/signup';
 import HomeTabNavigator from './homeTabNavigator';
 import {View} from 'react-native';
+import DiscoverSearchModal from '../screens/discover/discoverSearchModal';
 
 export default function AppStackNavigator () {
     const Stack = createNativeStackNavigator();
@@ -34,7 +35,7 @@ export default function AppStackNavigator () {
             >
                 <Stack.Screen
                     name="SearchModal"
-                    children={() => <View style={{backgroundColor: 'red', flex: 1}} />}
+                    component={DiscoverSearchModal}
                     options={{}}
                 />
             </Stack.Group>
