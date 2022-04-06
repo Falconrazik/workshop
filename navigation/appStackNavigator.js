@@ -2,7 +2,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Landing from '../screens/landing';
 import SignupStackNavigator from '../screens/signup/signup';
 import HomeTabNavigator from './homeTabNavigator';
-import {View} from 'react-native';
 import SearchModal from '../components/searchModal';
 
 export default function AppStackNavigator () {
