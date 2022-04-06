@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {View} from 'react-native';
-import AppStackNavigator from './navigation/appStackNavigator';
+import RootStackNavigator from './navigation/appStackNavigator';
 import {StatusBar} from 'expo-status-bar';
 import Constants from 'expo-constants';
 
@@ -11,7 +11,7 @@ export default function App() {
                 <StatusBar translucent style="light" />
             </View>
             <NavigationContainer>
-                <AppStackNavigator/>
+                <RootStackNavigator/>
             </NavigationContainer>
         </>
     );

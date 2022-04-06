@@ -2,6 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Landing from '../screens/landing';
 import SignupStackNavigator from '../screens/signup/signup';
 import HomeTabNavigator from './homeTabNavigator';
+import {View} from 'react-native';
 
 export default function AppStackNavigator () {
     const Stack = createNativeStackNavigator();
@@ -28,6 +29,15 @@ export default function AppStackNavigator () {
                 component={HomeTabNavigator}
                 options={{}}
             />
+            <Stack.Group
+                screenOptions={{ presentation: 'modal' }}
+            >
+                <Stack.Screen
+                    name="SearchModal"
+                    children={() => <View style={{backgroundColor: 'red', flex: 1}} />}
+                    options={{}}
+                />
+            </Stack.Group>
         </Stack.Navigator>
     )
 };

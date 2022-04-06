@@ -1,8 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Account from '../../screens/account/account';
 import DiscoverCreators from '../../screens/discover/discoverCreators';
 
-export default function DiscoverCreatorsStackNavigator (props) {
+export default function DiscoverCreatorsStackNavigator ({setOpenModal}) {
     const Stack = createNativeStackNavigator();
 
     return (
@@ -15,9 +14,9 @@ export default function DiscoverCreatorsStackNavigator (props) {
             <Stack.Screen
                 name="DiscoverCreators"
                 component={DiscoverCreators}
+                setOpenModal={setOpenModal}
                 options={{}}
             />
-
         </Stack.Navigator>
     )
 };
