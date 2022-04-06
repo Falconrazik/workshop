@@ -7,9 +7,9 @@ import {
     View,
 } from 'react-native';
 import {useFonts} from 'expo-font';
-import fonts from '../../assets/fonts/fonts';
+import fonts from '../assets/fonts/fonts';
 
-export default function DiscoverSearchModal ({onSearch, type}) {
+export default function SearchModal ({onSearch, route, navigation}) {
     const [searchString, setSearchString] = React.useState('');
 
     const [fontsLoaded] = useFonts(fonts);
@@ -17,10 +17,13 @@ export default function DiscoverSearchModal ({onSearch, type}) {
         return null;
     }
 
+    console.log(">>>> type: ", route.params.type);
+    // TODO: depending on type render different search recs idk
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.searchContainer} >
-                <Image style={styles.searchIcon} source={require("../../assets/icons/search_black.png")}/>
+                <Image style={styles.searchIcon} source={require("../assets/icons/search_black.png")}/>
                 <TextInput
                     style={styles.textInput}
                     placeholder="search"

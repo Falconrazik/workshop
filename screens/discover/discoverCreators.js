@@ -14,7 +14,7 @@ import CONST from '../../CONST';
 import {useFonts} from 'expo-font';
 import fonts from '../../assets/fonts/fonts';
 
-export default function DiscoverCreators ({containerStyles, setOpenModal, navigation}) {
+export default function DiscoverCreators ({containerStyles}) {
     const tabBarHeight = useBottomTabBarHeight();
     const scrollViewHeight = Dimensions.get('window').height - Constants.statusBarHeight - CONST.DISCOVER_TAB_HEADER_HEIGHT - tabBarHeight;
 
