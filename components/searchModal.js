@@ -21,7 +21,7 @@ export default function SearchModal ({onSearch, route, navigation}) {
     // TODO: depending on type render different search recs idk
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.searchContainer} >
                 <Image style={styles.searchIcon} source={require("../assets/icons/search_black.png")}/>
                 <TextInput
@@ -37,7 +37,7 @@ export default function SearchModal ({onSearch, route, navigation}) {
                     autoCapitalize="none"
                 />
             </View>
-        </SafeAreaView>
+        </View>
     );
 };
 
