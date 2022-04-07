@@ -1,15 +1,14 @@
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image } from 'react-native';
-import React, { useState } from "react";
+import React from "react";
 import fonts from '../assets/fonts/fonts';
 import {useFonts} from 'expo-font';
 import * as Google from 'expo-google-app-auth';
 import { auth, Firebase } from '../firebase'
-import { IOS_CLIENT_ID } from '../CONST';
+import CONST, { IOS_CLIENT_ID } from '../CONST';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-
+import CustomStatusBar from '../components/customStatusBar';
 
 export default function Landing ( {navigation} ) {
-
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {
         return null;
@@ -22,13 +21,13 @@ export default function Landing ( {navigation} ) {
     let email;
     let password;
 
-    signInWithGoogle = async() => {
+    const signInWithGoogle = async() => {
         try {
           const config = {
             iosClientId: IOS_CLIENT_ID, //enter ios client id
             scopes: ['profile', 'email']
           };
-          
+
           const { type, accessToken, user } = await Google.logInAsync(config);
 
           if (type  === 'success') {
@@ -36,7 +35,7 @@ export default function Landing ( {navigation} ) {
             password = user.id
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // Signed in 
+                    // Signed in
                     const user = userCredential.user;
                     navigation.navigate('Home');
                     console.log(user);
@@ -53,34 +52,37 @@ export default function Landing ( {navigation} ) {
     }
 
     return (
-        <View style={styles.container}>
-            <ImageBackground source={require(imagePath)} resizeMode="cover" style={styles.image}>
-                <Text style={styles.appTitle}>Workshop.</Text>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={signInWithGoogle}
-                    >
-                        <Image
-                            style={styles.tinyLogo}
-                            source={require(appleImgPath)}
-                        />
-                        <Text style={styles.text}>Sign in with Apple</Text>
-                    </TouchableOpacity>
+        <>
+            <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
+            <View style={styles.container}>
+                <ImageBackground source={require(imagePath)} resizeMode="cover" style={styles.image}>
+                    <Text style={styles.appTitle}>Workshop.</Text>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={signInWithGoogle}
+                        >
+                            <Image
+                                style={styles.tinyLogo}
+                                source={require(appleImgPath)}
+                            />
+                            <Text style={styles.text}>Sign in with Apple</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity
-                        style={[styles.button, styles.googleBackground]}
-                        onPress={signInWithGoogle}
-                    >
-                        <Image
-                            style={styles.tinyLogo}
-                            source={require(googleImgPath)}
-                        />
-                        <Text style={[styles.text, styles.textLarge]}>Sign in with Google</Text>
-                    </TouchableOpacity>
-                </View>
-            </ImageBackground>
-        </View>
+                        <TouchableOpacity
+                            style={[styles.button, styles.googleBackground]}
+                            onPress={signInWithGoogle}
+                        >
+                            <Image
+                                style={styles.tinyLogo}
+                                source={require(googleImgPath)}
+                            />
+                            <Text style={[styles.text, styles.textLarge]}>Sign in with Google</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ImageBackground>
+            </View>
+        </>
     )
 };
 
@@ -109,7 +111,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor: "#DDDDDD",
         padding: 10,
         marginTop: 30,
         borderRadius: 40,

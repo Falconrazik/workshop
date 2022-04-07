@@ -5,6 +5,10 @@ const CONST = {
         SHORTS: 'shorts',
     },
     DISCOVER_TAB_HEADER_HEIGHT: 50,
+    STATUS_BAR_COLOR: {
+        BLACK: 'black',
+        TRANSPARENT: 'transparent',
+    }
 };
 
 export default CONST;
