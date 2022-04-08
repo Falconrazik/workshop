@@ -42,7 +42,7 @@ export default function TabsHeader({containerStyles, onTabPress, onActionButtonP
             />
             <TouchableOpacity
                 style={styles.actionButtonContainer}
-                onPress={onActionButtonPress}
+                onPress={() => onActionButtonPress(currentTab)}
             >
                 <Image
                     source={require("../assets/icons/search.png")}

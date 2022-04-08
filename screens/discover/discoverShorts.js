@@ -1,16 +1,20 @@
-import {View, StyleSheet, SafeAreaView, ScrollView, Dimensions} from 'react-native';
+import {View, StyleSheet, SafeAreaView, ScrollView, Dimensions, TouchableWithoutFeedback} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import CONST from '../../CONST';
-import { Video, AVPlaybackStatus } from 'expo-av';
+import React from 'react';
+import { Video } from 'expo-av';
 import Constants from 'expo-constants';
+import {useIsFocused} from '@react-navigation/native';
 
 const videos = [
     require('../../assets/videos/cashew_1.mp4'),
     require('../../assets/videos/cashew_2.mp4'),
 ];
 
-export default function DiscoverShorts (props) {
+export default function DiscoverShorts () {
     const containerHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
+    const [scrollPosition, setScrollPosition] = React.useState(0);
+    const isFocused = useIsFocused();
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView
@@ -19,25 +23,46 @@ export default function DiscoverShorts (props) {
                 decelerationRate="fast"
                 snapToStart
                 disableIntervalMomentum
+                bounces={false}
+                showsVerticalScrollIndicator={false}
+                onScroll={e => setScrollPosition(e.nativeEvent.contentOffset.y)}
+                scrollEventThrottle={16}
+
             >
-                {videos.map(video => <Short video={video} />)}
+                {
+                    videos.map((video, index) =>
+                        <Short
+                            key={index}
+                            video={video}
+                            shouldPlay={isFocused && scrollPosition >= (index * containerHeight) && scrollPosition < ((index + 1) * containerHeight)}
+                        />
+                    )
+                }
             </ScrollView>
         </SafeAreaView>
     )
 };
 
-function Short({video}) {
+function Short({video, shouldPlay}) {
     const videoHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
+    const [isPaused, setIsPaused] = React.useState(false);
+    // const [videoPosition, setVideoPosition] = React.useState(0)
+
     return (
-        <View style={styles.short}>
+        <TouchableWithoutFeedback style={styles.short} onPress={() => setIsPaused(!isPaused)}>
             <Video
                 style={[styles.video, {height: videoHeight}]}
                 source={video}
                 resizeMode={Video.RESIZE_MODE_COVER}
-                shouldPlay
+                shouldPlay={shouldPlay && !isPaused}
                 isLooping
+                positionMillis={0}
+                // onPlaybackStatusUpdate={({positionMillis}) =>
+                //     setVideoPosition(positionMillis)
+                // }
+                progressUpdateIntervalMillis={20}
             />
-        </View>
+        </TouchableWithoutFeedback>
     )
 }
 
