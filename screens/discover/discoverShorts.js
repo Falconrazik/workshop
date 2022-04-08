@@ -1,4 +1,4 @@
-import {View, StyleSheet, SafeAreaView, ScrollView, Dimensions, TouchableWithoutFeedback} from 'react-native';
+import {FlatList, StyleSheet, SafeAreaView, ScrollView, Dimensions, TouchableWithoutFeedback} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Video } from 'expo-av';
@@ -17,7 +17,16 @@ export default function DiscoverShorts () {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView
+            <FlatList
+                data={videos}
+                maxToRenderPerBatch={3}
+                renderItem={({item, index}) => (
+                    <Short
+                        key={index}
+                        video={item}
+                        shouldPlay={isFocused && scrollPosition >= (index * containerHeight) && scrollPosition < ((index + 1) * containerHeight)}
+                    />
+                )}
                 style={[styles.scrollContainer, {height: containerHeight}]}
                 snapToInterval={containerHeight}
                 decelerationRate="fast"
@@ -27,18 +36,7 @@ export default function DiscoverShorts () {
                 showsVerticalScrollIndicator={false}
                 onScroll={e => setScrollPosition(e.nativeEvent.contentOffset.y)}
                 scrollEventThrottle={16}
-
-            >
-                {
-                    videos.map((video, index) =>
-                        <Short
-                            key={index}
-                            video={video}
-                            shouldPlay={isFocused && scrollPosition >= (index * containerHeight) && scrollPosition < ((index + 1) * containerHeight)}
-                        />
-                    )
-                }
-            </ScrollView>
+            />
         </SafeAreaView>
     )
 };
