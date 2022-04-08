@@ -1,10 +1,13 @@
-import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, Image, Dimensions} from 'react-native';
+import React from 'react';
 import CONST from '../CONST';
 import fonts from '../assets/fonts/fonts';
 import {useFonts} from 'expo-font';
 import _ from 'lodash';
 
-export default function TabsHeader({containerStyles, onTabPress, currentTab, onActionButtonPress}) {
+export default function TabsHeader({containerStyles, onTabPress, onActionButtonPress, tabRightTitle, tabLeftTitle, defaultTab}) {
+    const [currentTab, setCurrentTab] = React.useState(defaultTab);
+
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {
         return null;
@@ -21,8 +24,22 @@ export default function TabsHeader({containerStyles, onTabPress, currentTab, onA
                     }}
                 />
             </View>
-            <Tab title={CONST.DISCOVER_TABS.CREATORS} onPress={onTabPress} isActive={currentTab === CONST.DISCOVER_TABS.CREATORS} />
-            <Tab title={CONST.DISCOVER_TABS.SHORTS} onPress={onTabPress} isActive={currentTab === CONST.DISCOVER_TABS.SHORTS} />
+            <Tab
+                title={tabLeftTitle}
+                onPress={title => {
+                    onTabPress(title);
+                    setCurrentTab(title);
+                }}
+                isActive={currentTab === tabLeftTitle}
+            />
+            <Tab
+                title={tabRightTitle}
+                onPress={title => {
+                    onTabPress(title);
+                    setCurrentTab(title);
+                }}
+                isActive={currentTab === tabRightTitle}
+            />
             <TouchableOpacity
                 style={styles.actionButtonContainer}
                 onPress={onActionButtonPress}
@@ -58,6 +75,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 28.28,
         height: CONST.DISCOVER_TAB_HEADER_HEIGHT,
         backgroundColor: 'black',
+        width: Dimensions.get('window').width,
+
     },
     tab: {
         paddingVertical: 14,
@@ -83,7 +102,6 @@ const styles = StyleSheet.create({
     pseudoFlexElement: {
         marginLeft: 'auto',
         flexGrow: 0,
-        backgroundColor: 'red',
         opacity: 0,
-    }
+    },
 });
