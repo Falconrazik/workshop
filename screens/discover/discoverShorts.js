@@ -1,13 +1,46 @@
-import {FlatList, StyleSheet, SafeAreaView, ScrollView, Dimensions, TouchableWithoutFeedback} from 'react-native';
+import {FlatList, StyleSheet, SafeAreaView, Dimensions} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { Video } from 'expo-av';
 import Constants from 'expo-constants';
 import {useIsFocused} from '@react-navigation/native';
+import Short from '../../components/short';
 
 const videos = [
-    require('../../assets/videos/cashew_1.mp4'),
-    require('../../assets/videos/cashew_2.mp4'),
+    {
+        file: require('../../assets/videos/cashew_0.mp4'),
+        categories: ['cat', 'cute', 'dumbass'],
+        creatorUsername: '@cashew_the_dumbass',
+        creatorBio: 'i cat',
+        creatorAvatarFile: null,
+    },
+    {
+        file: require('../../assets/videos/cashew_1.mp4'),
+        categories: ['cat', 'cute', 'dumbass'],
+        creatorUsername: '@cashew_the_dumbass',
+        creatorBio: 'i cat',
+        creatorAvatarFile: null,
+    },
+    {
+        file: require('../../assets/videos/cashew_2.mp4'),
+        categories: ['cat', 'cute', 'dumbass'],
+        creatorUsername: '@cashew_the_dumbass',
+        creatorBio: 'i cat',
+        creatorAvatarFile: null,
+    },
+    {
+        file: require('../../assets/videos/cashew_3.mp4'),
+        categories: ['cat', 'cute', 'dumbass'],
+        creatorUsername: '@cashew_the_dumbass',
+        creatorBio: 'i cat',
+        creatorAvatarFile: null,
+    },
+    {
+        file: require('../../assets/videos/cashew_4.mp4'),
+        categories: ['cat', 'cute', 'dumbass'],
+        creatorUsername: '@cashew_the_dumbass',
+        creatorBio: 'i cat',
+        creatorAvatarFile: null,
+    },
 ];
 
 export default function DiscoverShorts () {
@@ -23,7 +56,11 @@ export default function DiscoverShorts () {
                 renderItem={({item, index}) => (
                     <Short
                         key={index}
-                        video={item}
+                        video={item.file}
+                        categories={item.categories}
+                        creatorUsername={item.creatorUsername}
+                        creatorBio={item.creatorBio}
+                        creatorAvatarFile={item.creatorAvatarFile}
                         shouldPlay={isFocused && scrollPosition >= (index * containerHeight) && scrollPosition < ((index + 1) * containerHeight)}
                     />
                 )}
@@ -38,31 +75,8 @@ export default function DiscoverShorts () {
                 scrollEventThrottle={16}
             />
         </SafeAreaView>
-    )
+    );
 };
-
-function Short({video, shouldPlay}) {
-    const videoHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
-    const [isPaused, setIsPaused] = React.useState(false);
-    // const [videoPosition, setVideoPosition] = React.useState(0)
-
-    return (
-        <TouchableWithoutFeedback style={styles.short} onPress={() => setIsPaused(!isPaused)}>
-            <Video
-                style={[styles.video, {height: videoHeight}]}
-                source={video}
-                resizeMode={Video.RESIZE_MODE_COVER}
-                shouldPlay={shouldPlay && !isPaused}
-                isLooping
-                positionMillis={0}
-                // onPlaybackStatusUpdate={({positionMillis}) =>
-                //     setVideoPosition(positionMillis)
-                // }
-                progressUpdateIntervalMillis={20}
-            />
-        </TouchableWithoutFeedback>
-    )
-}
 
 const styles = StyleSheet.create({
     container: {
@@ -73,8 +87,4 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         borderRadius: 25,
     },
-    short: {
-
-    }
-
 });

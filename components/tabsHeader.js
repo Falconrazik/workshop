@@ -58,10 +58,7 @@ export default function TabsHeader({containerStyles, onTabPress, onActionButtonP
 
 function Tab({title, onPress, isActive}) {
     return (
-        <TouchableOpacity
-            style={styles.tab}
-            onPress={() => onPress(title)}
-        >
+        <TouchableOpacity onPress={() => onPress(title)}>
             <Text style={[styles.tabText, isActive ? styles.activeTabText : {}]}>{title}</Text>
         </TouchableOpacity>
     )
@@ -72,22 +69,22 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingHorizontal: 28.28,
         height: CONST.DISCOVER_TAB_HEADER_HEIGHT,
         backgroundColor: 'black',
         width: Dimensions.get('window').width,
 
     },
-    tab: {
+    tabText: {
         paddingVertical: 14,
         paddingHorizontal: 23,
-    },
-    tabText: {
         fontSize: 18,
         fontFamily: 'textBold',
         fontWeight: '700',
         opacity: 0.4,
         color: 'white',
+        textShadowColor: 'rgba(0, 0, 0, 0.60)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 10,
     },
     activeTabText: {
         opacity: 1,
@@ -98,10 +95,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        paddingHorizontal: 28.28,
     },
     pseudoFlexElement: {
         marginLeft: 'auto',
         flexGrow: 0,
         opacity: 0,
+        paddingHorizontal: 28.28,
     },
 });
