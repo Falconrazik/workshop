@@ -23,7 +23,7 @@ export default function DiscoverCreators ({containerStyles}) {
     }
 
     return (
-        <SafeAreaView style={containerStyles}>
+        <SafeAreaView style={[containerStyles, {flex: 1}]}>
             <ScrollView style={[styles.container, {height: scrollViewHeight}]}>
                 <TouchableOpacity style={[styles.gridPad, styles.gridPadLarge]}>
                     <Text style={[styles.text, styles.textLarge]}>Trending</Text>
