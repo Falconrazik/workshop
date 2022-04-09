@@ -5,7 +5,7 @@ import {useFonts} from 'expo-font';
 import * as Google from 'expo-google-app-auth';
 import { auth, Firebase } from '../firebase'
 import CONST, { IOS_CLIENT_ID } from '../CONST';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import CustomStatusBar from '../components/customStatusBar';
 
 export default function Landing ( {navigation} ) {
@@ -41,15 +41,30 @@ export default function Landing ( {navigation} ) {
                     console.log(user);
                 })
                 .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    createUserWithEmailAndPassword(auth, email, password)
+                    console.log('User does not exist - Redirect to Sign Up');
+                    navigation.navigate('SignUp', { paramKey: user });
             });
           }
         } catch ({ message }) {
           alert('login: Error:' + message);
         }
     }
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/firebase.User
+            const uid = user.uid;
+            console.log(uid);
+            navigation.navigate('Home');
+
+            // ...
+        } else {
+            // User is signed out
+            // ...
+        }
+    });
+      
 
     return (
         <>
@@ -77,7 +92,7 @@ export default function Landing ( {navigation} ) {
                                 style={styles.tinyLogo}
                                 source={require(googleImgPath)}
                             />
-                            <Text style={[styles.text, styles.textLarge]}>Sign in with Google</Text>
+                            <Text style={[styles.text]}>Sign in with Google</Text>
                         </TouchableOpacity>
                     </View>
                 </ImageBackground>
