@@ -1,5 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignUp from '../screens/signup/signup';
+import CreateAvatar from '../screens/signup/createAvatar';
+import SignUp from '../screens/signup/signup';
 
 export default function SignupStackNavigator (props) {
     const Stack = createNativeStackNavigator();
@@ -11,14 +13,14 @@ export default function SignupStackNavigator (props) {
                 headerShown: false
             }}
         >
-            <Stack.Screen
+             <Stack.Screen
                 name="SignUp"
                 component={SignUp}
                 options={{}}
             />
             <Stack.Screen
-                name="SetAvatar"
-                component={SignUp}
+                name="CreateAvatar"
+                component={CreateAvatar}
                 options={{}}
             />
         </Stack.Navigator>
