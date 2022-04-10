@@ -1,13 +1,12 @@
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
 import CustomStatusBar from '../../components/customStatusBar';
 import CONST from '../../CONST';
-import { getAuth, signOut } from "firebase/auth";
+import { auth } from '../../firebase';
 /**
  * Depending on account type conditionally display CreatorAccount or UserAccount
  */
 
 export default function Account ( {navigation} ) {
-    const auth = getAuth();
     const user = auth.currentUser;
     let displayName;
 
@@ -16,7 +15,7 @@ export default function Account ( {navigation} ) {
     }
 
     const logOut = () => {
-        signOut(auth).then(() => {
+        auth.signOut().then(() => {
             // Sign-out successful.
             navigation.navigate('Landing')
             console.log('Sign out successful!')

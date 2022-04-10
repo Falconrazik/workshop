@@ -4,7 +4,6 @@ import { useFonts } from 'expo-font';
 import fonts from '../assets/fonts/fonts';
  
 const CustomSwitch = ({
-  navigation,
   selectionMode,
   roundCorner,
   option1,

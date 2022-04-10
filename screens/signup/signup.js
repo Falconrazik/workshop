@@ -6,12 +6,7 @@ import fonts from '../../assets/fonts/fonts';
 import { useFonts } from 'expo-font';
 import { TextInput } from 'react-native-gesture-handler';
 import CustomSwitch from "../../components/customSwitch";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { db } from "../../firebase";
-import { addDoc, collection } from "firebase/firestore"; 
-import { NavigationContainer } from "@react-navigation/native";
-import NativeI18nManager from "react-native/Libraries/ReactNative/NativeI18nManager";
-import { create } from "lodash";
+import { db, auth } from "../../firebase";
 
 export default function SignUp ( {route, navigation} ) {
     const [username, onChangeText] = React.useState(null);
@@ -32,49 +27,54 @@ export default function SignUp ( {route, navigation} ) {
 
     const blackArrow = "../../assets/black-arrow.png";
     const purpleArrow = "../../assets/purple-arrow.png";
+    const checkMark = "../../assets/checkmark.png";
 
     let icon = !username ? blackArrow : purpleArrow;
 
-    const auth = getAuth();
     // Get user form landing page
-    const addUserInFireStore = (user) => {
+    let user = route.params.paramKey;
+    const addUserInFireStore = (userID) => {
         try {
-            console.log(username);
-            console.log(type);
-            console.log(user.name);
-            console.log(user.email);
-            const docRef = addDoc(collection(db, "users"), {
+            db.collection("users").doc(userID).set({
                 name: user.name,
                 email: user.email,
-                uid: "",
+                uid: userID,
                 userName: username,
                 userType: type
+            })
+            .then(() => {
+                console.log("User successfully created!");
+                navigation.navigate('CreateAvatar', {paramKey: userID});
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
             });
-          
-            console.log("Document written with ID: ", docRef.id);
-          } catch (e) {
-            console.error("Error adding document: ", e);
-          }
+        } catch (e) {
+            console.error("Error adding document: " + e);
+        }
     }
     const createUser = () => {
-        let user = route.params.paramKey;
         if (user === null) 
         console.log('Google acc does not exist');
         
-        createUserWithEmailAndPassword(auth, user.email, user.id)
+        auth.createUserWithEmailAndPassword(user.email, user.id)
         .then((userCredential) => {
             // Signed in 
             const newUser = userCredential.user;
-            addUserInFireStore(user);
-            navigation.navigate('CreateAvatar');
-
+            let userID = newUser.uid + "";
+            addUserInFireStore(userID);
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorMessage);
         });
           
+    }
+
+    const showCheckMark = () => {
+        if (username) {
+            return <Image style={styles.checkMark} source={require(checkMark)} />
+        }
     }
 
     return (
@@ -95,6 +95,7 @@ export default function SignUp ( {route, navigation} ) {
                             onChangeText={onChangeText}
                             value={username}
                         />
+                        {showCheckMark()}
                     </View>
 
                     <View style={styles.switchContainer}>
@@ -132,6 +133,7 @@ export default function SignUp ( {route, navigation} ) {
                             source={ !username ? require(purpleArrow) : require(blackArrow) }
                         />
                     </TouchableOpacity>
+                    <Text style={styles.termAndCondition}>By signing up you are agreeing to the <Text style={styles.textTerm}>Workshop terms of service</Text></Text>
                 </View>
             </TouchableWithoutFeedback>
         </>
@@ -200,6 +202,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#1ADDA8'
     },
 
+    termAndCondition: {
+        height: "10%",
+        width: "80%",
+        marginTop: "7%",
+        fontFamily: 'text',
+        color: '#FFFFFF',
+        fontSize: 14
+    },  
+
     text: {
         fontFamily: 'textBold',
         color: '#000000',
@@ -228,10 +239,20 @@ const styles = StyleSheet.create({
         color: "#656580"
     },  
 
+    textTerm: {
+        fontFamily: 'textBold',
+        textDecorationLine: 'underline'
+    },  
+
     tinyLogo: {
         width: 25,
         height: 19,
         marginRight: "5%"
-    }
+    },
 
+    checkMark: {
+        width: 17,
+        height: 11,
+        marginRight: "5%"
+    }
 });
