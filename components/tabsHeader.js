@@ -1,10 +1,13 @@
-import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, Image, Dimensions} from 'react-native';
+import React from 'react';
 import CONST from '../CONST';
 import fonts from '../assets/fonts/fonts';
 import {useFonts} from 'expo-font';
 import _ from 'lodash';
 
-export default function TabsHeader({containerStyles, onTabPress, currentTab, onActionButtonPress}) {
+export default function TabsHeader({containerStyles, onTabPress, onActionButtonPress, tabRightTitle, tabLeftTitle, defaultTab}) {
+    const [currentTab, setCurrentTab] = React.useState(defaultTab);
+
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {
         return null;
@@ -21,11 +24,25 @@ export default function TabsHeader({containerStyles, onTabPress, currentTab, onA
                     }}
                 />
             </View>
-            <Tab title={CONST.DISCOVER_TABS.CREATORS} onPress={onTabPress} isActive={currentTab === CONST.DISCOVER_TABS.CREATORS} />
-            <Tab title={CONST.DISCOVER_TABS.SHORTS} onPress={onTabPress} isActive={currentTab === CONST.DISCOVER_TABS.SHORTS} />
+            <Tab
+                title={tabLeftTitle}
+                onPress={title => {
+                    onTabPress(title);
+                    setCurrentTab(title);
+                }}
+                isActive={currentTab === tabLeftTitle}
+            />
+            <Tab
+                title={tabRightTitle}
+                onPress={title => {
+                    onTabPress(title);
+                    setCurrentTab(title);
+                }}
+                isActive={currentTab === tabRightTitle}
+            />
             <TouchableOpacity
                 style={styles.actionButtonContainer}
-                onPress={onActionButtonPress}
+                onPress={() => onActionButtonPress(currentTab)}
             >
                 <Image
                     source={require("../assets/icons/search.png")}
@@ -41,10 +58,7 @@ export default function TabsHeader({containerStyles, onTabPress, currentTab, onA
 
 function Tab({title, onPress, isActive}) {
     return (
-        <TouchableOpacity
-            style={styles.tab}
-            onPress={() => onPress(title)}
-        >
+        <TouchableOpacity onPress={() => onPress(title)}>
             <Text style={[styles.tabText, isActive ? styles.activeTabText : {}]}>{title}</Text>
         </TouchableOpacity>
     )
@@ -55,20 +69,22 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingHorizontal: 28.28,
         height: CONST.DISCOVER_TAB_HEADER_HEIGHT,
         backgroundColor: 'black',
-    },
-    tab: {
-        paddingVertical: 14,
-        paddingHorizontal: 23,
+        width: Dimensions.get('window').width,
+
     },
     tabText: {
+        paddingVertical: 14,
+        paddingHorizontal: 23,
         fontSize: 18,
         fontFamily: 'textBold',
         fontWeight: '700',
         opacity: 0.4,
         color: 'white',
+        textShadowColor: 'rgba(0, 0, 0, 0.60)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 10,
     },
     activeTabText: {
         opacity: 1,
@@ -79,11 +95,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        paddingHorizontal: 28.28,
     },
     pseudoFlexElement: {
         marginLeft: 'auto',
         flexGrow: 0,
-        backgroundColor: 'red',
         opacity: 0,
-    }
+        paddingHorizontal: 28.28,
+    },
 });

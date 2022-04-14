@@ -8,20 +8,30 @@ import TabsHeader from '../../components/tabsHeader';
 
 export default function DiscoverTopTabNavigator({navigation}) {
     const Tab = createMaterialTopTabNavigator();
+    const [currentTab, setCurrentTab] = React.useState(CONST.DISCOVER_TABS.SHORTS);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
                 <Tab.Navigator
-                    tabBar={(props) => {
-                        const currentTab = props.navigation.getState().routeNames[props.navigation.getState().index];
-                        return (
-                            <TabsHeader
-                                currentTab={currentTab}
-                                onTabPress={props.navigation.navigate}
-                                onActionButtonPress={() => navigation.navigate("SearchModal", {type: currentTab})}
-                            />
-                        );
-                    }}
+                    tabBar={props => (
+                        <TabsHeader
+                            onTabPress={tabTitle => {
+                                props.navigation.navigate(tabTitle);
+                                setCurrentTab(tabTitle);
+                            }}
+                            containerStyles={{
+                                position: currentTab === CONST.DISCOVER_TABS.SHORTS ? 'absolute' : 'relative',
+                                top: 0,
+                                left: 0,
+                                zIndex: 1000,
+                                backgroundColor: currentTab === CONST.DISCOVER_TABS.SHORTS ? 'transparent' : 'black',
+                            }}
+                            tabLeftTitle={CONST.DISCOVER_TABS.CREATORS}
+                            tabRightTitle={CONST.DISCOVER_TABS.SHORTS}
+                            defaultTab={CONST.DISCOVER_TABS.SHORTS}
+                            onActionButtonPress={currentTab => navigation.navigate("SearchModal", {type: currentTab})}
+                        />
+                    )}
                     initialRouteName={CONST.DISCOVER_TABS.SHORTS}
                     screenOptions={{
                         headerShown: false,

@@ -15,8 +15,7 @@ import {useFonts} from 'expo-font';
 import fonts from '../../assets/fonts/fonts';
 
 export default function DiscoverCreators ({containerStyles}) {
-    const tabBarHeight = useBottomTabBarHeight();
-    const scrollViewHeight = Dimensions.get('window').height - Constants.statusBarHeight - CONST.DISCOVER_TAB_HEADER_HEIGHT - tabBarHeight;
+    const scrollViewHeight = Dimensions.get('window').height - Constants.statusBarHeight - CONST.DISCOVER_TAB_HEADER_HEIGHT - useBottomTabBarHeight();
 
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {
@@ -24,7 +23,7 @@ export default function DiscoverCreators ({containerStyles}) {
     }
 
     return (
-        <SafeAreaView style={containerStyles}>
+        <SafeAreaView style={[containerStyles, {flex: 1}]}>
             <ScrollView style={[styles.container, {height: scrollViewHeight}]}>
                 <TouchableOpacity style={[styles.gridPad, styles.gridPadLarge]}>
                     <Text style={[styles.text, styles.textLarge]}>Trending</Text>
