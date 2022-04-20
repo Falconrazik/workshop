@@ -6,7 +6,6 @@ import fonts from '../../assets/fonts/fonts';
 import { useFonts } from 'expo-font';
 import Avatar from '../../components/avatar';
 import * as ImagePicker from 'expo-image-picker';
-import uuid from 'uuid';
 import { storage } from "../../firebase";
 
 export default function CreateAvatar ( {route, navigation} ) {
@@ -15,9 +14,11 @@ export default function CreateAvatar ( {route, navigation} ) {
     if (!fontsLoaded) {
         return null;
     }
+    let uid = route.params.paramKey;
+    let type = route.params.userType;
 
-    const navigateToHome = () => {
-        navigation.navigate('Home');
+    const navigateToBio = () => {
+        navigation.navigate('CreateBio', {paramKey: uid, userType: type});
     }
 
     const pickImage = async () => {
@@ -25,7 +26,7 @@ export default function CreateAvatar ( {route, navigation} ) {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
-          aspect: [3, 3],
+          aspect: [1, 1],
           quality: 1,
         });
     
@@ -47,8 +48,6 @@ export default function CreateAvatar ( {route, navigation} ) {
         contentType: 'image/jpg',
     };
 
-    let uid = route.params.paramKey;
-    console.log(uid);
     uploadImageAsync = async () => {
         const img = await fetch(image);
         const bytes = await img.blob();
@@ -60,7 +59,7 @@ export default function CreateAvatar ( {route, navigation} ) {
         fileRef.put(bytes).then((snapshot) => {
             console.log('Uploaded a blob or file!');
         });
-        navigateToHome();          
+        navigateToBio();          
     };
       
 
@@ -90,7 +89,7 @@ export default function CreateAvatar ( {route, navigation} ) {
 
             <TouchableOpacity 
                 style={styles.skipButton}
-                onPress={navigateToHome}
+                onPress={navigateToBio}
             >
                 <Text style={styles.smallBoldText}>I'll do this later</Text>
             </TouchableOpacity>
