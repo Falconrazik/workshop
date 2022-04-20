@@ -33,7 +33,7 @@ export default function CreateSocial ( {route, navigation}) {
         })
         .then(() => {
             console.log("Socials successfully saved!");
-            navigateHome();
+            navigateRate();
         })
         .catch((error) => {
             // The document probably doesn't exist.
@@ -41,8 +41,8 @@ export default function CreateSocial ( {route, navigation}) {
         })
     }
 
-    const navigateHome = () => {
-        navigation.navigate("Home");
+    const navigateRate = () => {
+        navigation.navigate("CreateRate");
     }
 
   return (
@@ -119,7 +119,7 @@ export default function CreateSocial ( {route, navigation}) {
 
                 <TouchableOpacity 
                     style={styles.skipButton}
-                    onPress={navigateHome}
+                    onPress={navigateRate}
                 >
                     <Text style={styles.smallBoldText}>I'll do this later</Text>
                 </TouchableOpacity>
