@@ -4,6 +4,8 @@ import CustomStatusBar from '../../components/customStatusBar';
 import CONST from '../../CONST';
 import { db, auth } from '../../firebase';
 import UserProfile from './userProfile';
+import CreatorProfile from './creatorProfile';
+
 /**
  * Depending on account type conditionally display CreatorAccount or UserAccount
  */
@@ -58,12 +60,24 @@ export default function Account ( {navigation} ) {
                 console.log("Error getting document:", error);
             });
 
+    const logOut = () => {
+
+        auth.signOut().then(() => {
+            // Sign-out successful.
+                // navigation.navigate('Landing')
+                navigation.navigate("Landing");
+                console.log('Sign out successful!')
+            }).catch((error) => {
+            // An error happened.
+            });
+    }   
+
     const showAccount = () => {
-        if (type === "teach") {
+        if (type === "learn") {
             return <UserProfile uid={uid} navigation={navigation}/>
         }
-        if (type === "learn") {
-            return  <Text style={[styles.text, styles.textLarge]}>learn</Text>
+        if (type === "teach") {
+            return  <CreatorProfile uid={uid} navigation={navigation}/>
         }
     }
 

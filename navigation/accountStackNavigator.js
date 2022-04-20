@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Account from '../screens/account/account';
-import CreatorAccount from '../screens/account/creatorAccount';
+import CreatorProfile from '../screens/account/creatorProfile';
 
 export default function AccountStackNavigator (props) {
     const Stack = createNativeStackNavigator();
@@ -20,7 +20,7 @@ export default function AccountStackNavigator (props) {
 
             <Stack.Screen
                 name="CreatorAccount"
-                component={CreatorAccount}
+                component={CreatorProfile}
                 options={{}}
             />
 

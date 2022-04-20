@@ -157,8 +157,7 @@ const styles = StyleSheet.create({
         marginTop: "20%",
         fontFamily: 'textBold',
         color: '#FFFFFF',
-        fontSize: 35,
-        fontWeight: "bold"
+        fontSize: 30,
     },
 
     inputContainer: {
