@@ -1,45 +1,75 @@
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from "react";
 import CustomStatusBar from '../../components/customStatusBar';
 import CONST from '../../CONST';
-import { auth } from '../../firebase';
+import { db, auth } from '../../firebase';
+import UserProfile from './userProfile';
 /**
  * Depending on account type conditionally display CreatorAccount or UserAccount
  */
 
 export default function Account ( {navigation} ) {
+    const [type, getUserType] = useState(null);
     const user = auth.currentUser;
-    let displayName;
+    let uid;
 
     if (user !== null) {
-        displayName = user.uid
+        uid = user.uid
+    }
+    class User {
+        constructor (uid, userType, userName, bio) {
+            this.uid = uid;
+            this.userType = userType;
+            this.userName = userName;
+            this.bio = bio
+        }
+        toString() {
+            return this.uid + ', ' + this.userType;
+        }
     }
 
-    const logOut = () => {
-        auth.signOut().then(() => {
-            // Sign-out successful.
-            navigation.navigate('Landing')
-            console.log('Sign out successful!')
-          }).catch((error) => {
-            // An error happened.
-          });
+    var userConverter = {
+        toFirestore: function(user) {
+            return {
+                uid: user.uid,
+                userType: user.userType,
+                userName: user.userName,
+                bio: user.bio
+            };
+        },
+        fromFirestore: function(snapshot, options){
+            const data = snapshot.data(options);
+            return new User(data.uid, data.userType, data.userName, data.bio);
+        }
+    };
+
+    var userDetail = new User(uid, "teach", "Unknown", "Unknown");
+    db.collection("users").doc(uid)
+        .withConverter(userConverter)
+        .get().then((doc) => {
+            if (doc.exists){
+                // Convert to User object
+                userDetail = doc.data();
+                // Use a City instance method
+                getUserType(userDetail.userType);
+            } else {
+                console.log("No such document!");
+                }}).catch((error) => {
+                console.log("Error getting document:", error);
+            });
+
+    const showAccount = () => {
+        if (type === "teach") {
+            return <UserProfile uid={uid} navigation={navigation}/>
+        }
+        if (type === "learn") {
+            return  <Text style={[styles.text, styles.textLarge]}>learn</Text>
+        }
     }
 
     return (
         <>
-            <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
-
-            <View style={styles.container}>
-                <View style={styles.buttonContainer}>
-                            <TouchableOpacity
-                                style={[styles.button, styles.googleBackground]}
-                                onPress={logOut}
-
-                            >
-                                <Text style={[styles.text, styles.textLarge]}>Log Out</Text>
-                                <Text style={[styles.text, styles.textLarge]}>{displayName}</Text>
-                            </TouchableOpacity>
-                    </View>
-            </View>
+            {showAccount()}
         </>
     )
 };

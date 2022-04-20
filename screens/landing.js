@@ -16,6 +16,7 @@ export default function Landing ( {navigation} ) {
     const imagePath = "../assets/landing-background.png";
     const appleImgPath = "../assets/apple-logo.png";
     const googleImgPath = "../assets/google-logo.png";
+    const logoPath = "../assets/logo.png";
 
     let email;
     let password;
@@ -67,8 +68,11 @@ export default function Landing ( {navigation} ) {
         <>
             <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
             <View style={styles.container}>
-                <ImageBackground source={require(imagePath)} resizeMode="cover" style={styles.image}>
-                    <Text style={styles.appTitle}>Workshop.</Text>
+                <ImageBackground resizeMode="cover" style={styles.image}>
+                    <View style={styles.appTitle}>
+                        <Image style={styles.logo} source={require(logoPath)}/>
+                        <Text style={styles.logoTitle}>backstage</Text>
+                    </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
                             style={styles.button}
@@ -107,16 +111,28 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: '#000000'
+    },
+
+    logo: {
+        width: 60,
+        height: 84
     },
 
     appTitle: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        marginTop: "60%",
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        alignItems: "center",
+        marginTop: "60%"
+    },
+
+    logoTitle: {
         fontFamily: 'textBold',
+        fontSize: 45,
         color: '#FFFFFF',
-        fontSize: 35,
-        fontWeight: "bold"
+        shadowColor: '#FFFFFF',
+        shadowOpacity: 0.9,
+        shadowRadius: 30
     },
 
     button: {

@@ -36,15 +36,19 @@ export default function SignUp ( {route, navigation} ) {
     const addUserInFireStore = (userID) => {
         try {
             db.collection("users").doc(userID).set({
-                name: user.name,
-                email: user.email,
                 uid: userID,
+                email: user.email,
+                name: user.name,
                 userName: username,
-                userType: type
+                userType: type,
+                bio: "",
+                instaURL: "",
+                youtubeURL: "",
+                tiktokURL: ""
             })
             .then(() => {
                 console.log("User successfully created!");
-                navigation.navigate('CreateAvatar', {paramKey: userID});
+                navigation.navigate('CreateAvatar', {paramKey: userID, userType: type});
             })
             .catch((error) => {
                 console.error("Error writing document: ", error);

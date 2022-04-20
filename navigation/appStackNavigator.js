@@ -4,7 +4,8 @@ import SignupStackNavigator from '../screens/signup/signup';
 import HomeTabNavigator from './homeTabNavigator';
 import SearchModal from '../components/searchModal';
 import CreateAvatar from '../screens/signup/createAvatar';
-
+import CreateBio from '../screens/signup/createBio';
+import CreateSocial from '../screens/signup/createSocial';
 import { ScreenStackHeaderLeftView } from 'react-native-screens';
 
 export default function AppStackNavigator () {
@@ -12,7 +13,7 @@ export default function AppStackNavigator () {
 
     return (
         <Stack.Navigator
-            initialRouteName="Home"//"Landing"
+            initialRouteName="Landing"
             screenOptions={{
                 headerShown: false
             }}
@@ -35,6 +36,16 @@ export default function AppStackNavigator () {
             <Stack.Screen
                 name="CreateAvatar"
                 component={CreateAvatar}
+                option={{}}
+            />
+            <Stack.Screen
+                name="CreateBio"
+                component={CreateBio}
+                option={{}}
+            />
+            <Stack.Screen
+                name="CreateSocial"
+                component={CreateSocial}
                 option={{}}
             />
             <Stack.Group
