@@ -8,6 +8,7 @@ import fonts from '../../assets/fonts/fonts';
 import { useFonts } from 'expo-font';
 import CategoryCapsule from '../../components/categoryCapsule';
 import { COLORS } from '../../CONST';
+import { wrap } from 'lodash';
 
 const CATEGORY_COLORS = [
     COLORS.BLUE_LIGHT,
@@ -110,82 +111,107 @@ const CreatorProfile = ( {uid, navigation} ) => {
         <>
         <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
 
-        <View style={styles.container}>
-            <View style={styles.userInfoContainer}>
-                {showPreview()}
-                <View style={{flexDirection: "column", flex: 1,  paddingLeft: "5%", justifyContent: "space-between"}}>
-                    {showName()}
-                    <View style={{flexDirection: "row", flex: 1, alignItems: "center"}}>
-                        <Image style={styles.rating} source={require("../../assets/rating.png")}/>
-                        <TouchableOpacity 
-                            style={{width: "15%", marginLeft: "5%"}} 
-                            onPress={() => {
-                                if (userDetail) {
-                                    if (userDetail.instaURL)
-                                        Linking.openURL(userDetail.instaURL);
-                                }
-                            }}
-                        >
-                            <Image  style={{width: 40, height: 40}} source={require("../../assets/insta-logo.png")}/>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            style={{width: "15%"}}
-                            onPress={() => {
-                                if (userDetail) {
-                                    if (userDetail.youtubeURL)
-                                        Linking.openURL(userDetail.youtubeURL);
-                                }
-                            }}
-                        >
-                            <Image  style={{width: 40, height: 40}} source={require("../../assets/youtube-logo.png")}/>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            style={{width: "15%"}}
-                            onPress={() => {
-                                if (userDetail) {
-                                    if (userDetail.tiktokURL)
-                                        Linking.openURL(userDetail.tiktokURL);
-                                }
-                            }}
-                        >
-                            <Image  style={{width: 40, height: 40}} source={require("../../assets/tiktok-logo.png")}/>
-                        </TouchableOpacity>
+        <ScrollView style={styles.container}>
+            <View style={{alignItems: "center", flex: 1}}>
+                <View style={styles.userInfoContainer}>
+                    {showPreview()}
+                    <View style={{flexDirection: "column", flex: 1,  paddingLeft: "5%", justifyContent: "space-between"}}>
+                        {showName()}
+                        <View style={{flexDirection: "row", flex: 1, alignItems: "center"}}>
+                            <Image style={styles.rating} source={require("../../assets/rating.png")}/>
+                            <TouchableOpacity 
+                                style={{width: "15%", marginLeft: "5%"}} 
+                                onPress={() => {
+                                    if (userDetail) {
+                                        if (userDetail.instaURL)
+                                            Linking.openURL(userDetail.instaURL);
+                                    }
+                                }}
+                            >
+                                <Image  style={{width: 40, height: 40}} source={require("../../assets/insta-logo.png")}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                                style={{width: "15%"}}
+                                onPress={() => {
+                                    if (userDetail) {
+                                        if (userDetail.youtubeURL)
+                                            Linking.openURL(userDetail.youtubeURL);
+                                    }
+                                }}
+                            >
+                                <Image  style={{width: 40, height: 40}} source={require("../../assets/youtube-logo.png")}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                                style={{width: "15%"}}
+                                onPress={() => {
+                                    if (userDetail) {
+                                        if (userDetail.tiktokURL)
+                                            Linking.openURL(userDetail.tiktokURL);
+                                    }
+                                }}
+                            >
+                                <Image  style={{width: 40, height: 40}} source={require("../../assets/tiktok-logo.png")}/>
+                            </TouchableOpacity>
+                        </View>
                     </View>
+                </View>
+
+                {showBio()} 
+
+                <View style={styles.tagsContainer}>
+                    {categories.map((category, index) => (
+                        <CategoryCapsule
+                            key={index}
+                            category={category}
+                            color={CATEGORY_COLORS[(index % CATEGORY_COLORS.length)]}
+                        />
+                    ))}
+                </View>
+
+                <View style={{width: "80%", height: "10%", marginTop: 20, flexDirection: "row", alignItems: "center"}}>
+                        <View style={{flex: 1}}>
+                            {showRate()}
+                            <Text style={styles.textSmall}>per session</Text>
+                        </View>
+                        <View style={{flex: 1}}>
+                            {showDuration()}
+                            <Text style={styles.textSmall}>minutes</Text>
+                        </View>
                 </View>
             </View>
 
-            {showBio()}
-
-            <View style={styles.tagsContainer}>
-                {categories.map((category, index) => (
-                    <CategoryCapsule
-                        key={index}
-                        category={category}
-                        color={CATEGORY_COLORS[(index % CATEGORY_COLORS.length)]}
-                    />
-                ))}
+            <View style={{flexGrow: 8, flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", marginTop: "-12%"}}>
+                <View style={{width: "50%", padding: 10}}>
+                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
+                </View>
+                <View style={{width: "50%", padding: 10, padding: 10}}>
+                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
+                </View>
+                <View style={{width: "50%", padding: 10, padding: 10}}>
+                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
+                </View>
+                <View style={{width: "50%", padding: 10, padding: 10}}>
+                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
+                </View>
+                <View style={{width: "50%", padding: 10, padding: 10}}>
+                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
+                </View>
+                <View style={{width: "50%", padding: 10, padding: 10}}>
+                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
+                </View>
+                
             </View>
+        </ScrollView>
 
-            <View style={{width: "80%", height: "10%", marginTop: 20, flexDirection: "row", alignItems: "center"}}>
-                    <View style={{flex: 1}}>
-                        {showRate()}
-                        <Text style={styles.textSmall}>per session</Text>
-                    </View>
-                    <View style={{flex: 1}}>
-                        {showDuration()}
-                        <Text style={styles.textSmall}>minutes</Text>
-                    </View>
-            </View>
+              
+        <View style={styles.buttonContainer}>
+            <TouchableOpacity
+                style={[styles.button, styles.googleBackground]}
+                onPress={logOut}
 
-            <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                        style={[styles.button, styles.googleBackground]}
-                        onPress={logOut}
-
-                    >
-                        <Text style={[styles.text, styles.textLarge]}>Log Out</Text>
-                    </TouchableOpacity>
-            </View>
+            >
+                <Text style={[styles.text, styles.textLarge]}>Log Out</Text>
+            </TouchableOpacity>
         </View>
         </>
     )
@@ -195,8 +221,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#000000",
-        paddingTop: "12%",
-        alignItems: "center"
+        paddingTop: "12%"
     },
 
     userInfoContainer: {
@@ -204,6 +229,7 @@ const styles = StyleSheet.create({
         height: "10%",
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "center"
     },
 
     name: {
@@ -220,7 +246,7 @@ const styles = StyleSheet.create({
 
     description: {
         width: "90%",
-        marginTop: "8%",
+        marginTop: "12%",
         fontFamily: 'text',
         fontSize: 15,
         textAlign: "left",
@@ -250,10 +276,10 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: "20%",
-        width: "50%",
+        right: 50,
+        left: 50,
+        position: 'absolute',
+        bottom: 20,
     },
 
     googleBackground: {
