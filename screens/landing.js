@@ -68,23 +68,12 @@ export default function Landing ( {navigation} ) {
         <>
             <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
             <View style={styles.container}>
-                <ImageBackground resizeMode="cover" style={styles.image}>
+                <ImageBackground source={require(imagePath)} resizeMode="cover" style={styles.image}>
                     <View style={styles.appTitle}>
                         <Image style={styles.logo} source={require(logoPath)}/>
                         <Text style={styles.logoTitle}>backstage</Text>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={signInWithGoogle}
-                        >
-                            <Image
-                                style={styles.tinyLogo}
-                                source={require(appleImgPath)}
-                            />
-                            <Text style={styles.text}>Sign in with Apple</Text>
-                        </TouchableOpacity>
-
                         <TouchableOpacity
                             style={[styles.button, styles.googleBackground]}
                             onPress={signInWithGoogle}
@@ -149,7 +138,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flex: 1,
         justifyContent: 'flex-end',
-        marginBottom: "30%",
+        marginBottom: "40%",
         width: "70%",
     },
 
