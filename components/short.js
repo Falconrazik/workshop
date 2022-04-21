@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
 import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
 import Constants from 'expo-constants';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
@@ -9,6 +9,7 @@ import {COLORS} from '../CONST';
 import CategoryCapsule from './categoryCapsule';
 import fonts from '../assets/fonts/fonts';
 import {db, storage} from '../firebase';
+import Avatar from './avatar';
 
 const CATEGORY_COLORS = [
     COLORS.BLUE_LIGHT,
@@ -135,6 +136,7 @@ function ShortOverlay({creatorAvatarFile, creatorUsername, creatorBio, categorie
     const videoHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
     return (
         <View style={[styles.shortOverlay, {height: videoHeight}]}>
+            <PressableAvatar creatorAvatarFile={creatorAvatarFile} />
             <TouchableOpacity>
                 <Text style={styles.creatorUsernameText}>@{creatorUsername}</Text>
             </TouchableOpacity>
@@ -152,6 +154,21 @@ function ShortOverlay({creatorAvatarFile, creatorUsername, creatorBio, categorie
             </View>
         </View>
     );
+}
+
+function PressableAvatar({creatorAvatarFile}) {
+    return (
+        <TouchableOpacity style={styles.pressableAvatar}>
+            <Image style={styles.bookingIcon} source={require('../assets/booking_icon.png')} />
+            <Avatar
+                width={54}
+                height={54}
+                borderWidth={3.02}
+                borderRadius={18}
+                src={creatorAvatarFile}
+            />
+        </TouchableOpacity>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -183,5 +200,19 @@ const styles = StyleSheet.create({
         lineHeight: 19.5,
         color: 'white',
         marginBottom: 2,
+    },
+    pressableAvatar: {
+        marginBottom: 12,
+        width: 54,
+        height: 54,
+        overflow: 'visible',
+    },
+    bookingIcon: {
+        position: 'absolute',
+        width: 31,
+        height: 31,
+        bottom: -10,
+        right: -10,
+        zIndex: 1000,
     }
 });

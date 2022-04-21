@@ -64,7 +64,7 @@ export default function DiscoverShorts () {
         <SafeAreaView style={styles.container}>
             <FlatList
                 data={videos}
-                maxToRenderPerBatch={5}
+                maxToRenderPerBatch={3}
                 renderItem={({item, index}) => (
                     <Short
                         key={index}
