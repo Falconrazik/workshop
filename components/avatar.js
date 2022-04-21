@@ -7,7 +7,7 @@ const Avatar = ({
     borderRadius,
     borderWidth,
     src,
-
+    backgroundColor,
 }) => {
     let avatarPreview = '../assets/avatar.png';
   return (
@@ -17,18 +17,19 @@ const Avatar = ({
             shadowColor: '#1ADDA8',
             shadowOpacity: 0.5,
             shadowRadius: borderRadius
-        }}> 
+        }}>
             <Image
                 source={
                     src ? { uri: src} : require(avatarPreview)
-                } 
-                resizeMode="cover" 
+                }
+                resizeMode="cover"
                 style={{
                     width: width,
                     height: height,
                     borderRadius: borderRadius,
                     borderWidth: borderWidth,
-                    borderColor: '#FFFFFF'
+                    borderColor: '#FFFFFF',
+                    backgroundColor
                 }}
             />
         </View>

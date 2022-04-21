@@ -1,4 +1,4 @@
-import {Dimensions, TouchableWithoutFeedback, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
 import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
 import Constants from 'expo-constants';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
@@ -8,6 +8,8 @@ import {Video} from 'expo-av';
 import {COLORS} from '../CONST';
 import CategoryCapsule from './categoryCapsule';
 import fonts from '../assets/fonts/fonts';
+import {db, storage} from '../firebase';
+import Avatar from './avatar';
 
 const CATEGORY_COLORS = [
     COLORS.BLUE_LIGHT,
@@ -20,8 +22,9 @@ export default class Short extends React.PureComponent {
         super();
 
         this.state = {
-            isLoading: true,
             fontsLoaded: false,
+            profile: null,
+            videoLoaded: false,
         }
     }
 
@@ -30,42 +33,97 @@ export default class Short extends React.PureComponent {
         this.setState({ fontsLoaded: true });
     }
 
-    componentDidMount() {
-        this._loadFontsAsync();
+    async _loadProfile() {
+        class User {
+            constructor (uid, userType, userName, bio, categories) {
+                this.uid = uid;
+                this.userType = userType;
+                this.userName = userName;
+                this.bio = bio;
+                this.categories = categories;
+            }
+            toString() {
+                return this.uid + ', ' + this.userType;
+            }
+        }
+        const userConverter = {
+            toFirestore: function(user) {
+
+                return {
+                    uid: user.uid,
+                    userType: user.userType,
+                    userName: user.userName,
+                    bio: user.bio,
+                    categories: user.categories,
+                };
+            },
+            fromFirestore: function(snapshot, options){
+                const data = snapshot.data(options);
+                return new User(data.uid, data.userType, data.userName, data.bio, data.categories);
+            }
+        };
+
+        db.collection("users").doc(this.props.creatorUID)
+            .withConverter(userConverter)
+            .get().then((doc) => {
+            if (doc.exists){
+                // Convert to User object
+                const userDetails = doc.data();
+                const fileName = this.props.creatorUID + '.jpg';
+                const fileRef = storage.ref().child(`avatar/${fileName}`);
+                fileRef.getDownloadURL()
+                    .then((url) => {
+                        // `url` is the download URL for 'avatar/uid.jpg'
+                        this.setState({profile: {...userDetails, avatarURL: url}});
+                    })
+                    .catch((error) => {
+                        // Handle any errors
+                    });
+            } else {
+                console.log("No such document!", this.props.creatorUID);
+            }}).catch((error) => {
+            console.log("Error getting document:", error);
+        });
     }
 
+    componentDidMount() {
+        this._loadFontsAsync();
+        this._loadProfile();
 
+    }
 
     render() {
-        if (!this.state.fontsLoaded) {
+        if (!this.state.fontsLoaded || !this.state.profile) {
             return null;
         }
         return (
             <BottomTabBarHeightContext.Consumer>
                 {tabBarHeight => (
-                    <TouchableWithoutFeedback style={styles.short}>
+                    <View style={[styles.short, {height: Dimensions.get('window').height - Constants.statusBarHeight - tabBarHeight}]}>
                         <>
                             <ShortOverlay
-                                creatorAvatarFile={this.props.creatorAvatarFile}
-                                creatorUsername={this.props.creatorUsername}
-                                creatorBio={this.props.creatorBio}
-                                categories={this.props.categories}
+                                creatorAvatarFile={this.state.profile.avatarURL}
+                                creatorUsername={this.state.profile.userName}
+                                creatorBio={this.state.profile.bio}
+                                categories={this.state.profile.categories}
                             />
                             <Video
-                                style={[styles.video, {height: Dimensions.get('window').height - Constants.statusBarHeight - tabBarHeight}]}
+                                style={[styles.video, {
+                                    height: Dimensions.get('window').height - Constants.statusBarHeight - tabBarHeight,
+                                }]}
                                 source={this.props.video}
                                 resizeMode={Video.RESIZE_MODE_COVER}
                                 shouldPlay={this.props.shouldPlay}
                                 isLooping
+                                onLoad={() => this.setState({videoLoaded: true})}
                                 positionMillis={0}
-                                onLoad={() => this.setState({isLoading: false})}
                                 // onPlaybackStatusUpdate={({positionMillis}) =>
                                 //     setVideoPosition(positionMillis)
                                 // }
                                 progressUpdateIntervalMillis={20}
                             />
                         </>
-                    </TouchableWithoutFeedback>
+                    </View>
                 )}
             </BottomTabBarHeightContext.Consumer>
         )
@@ -74,54 +132,11 @@ export default class Short extends React.PureComponent {
 
 }
 
-// export default function Short({
-//     video,
-//     shouldPlay,
-//     creatorAvatarFile,
-//     creatorUsername,
-//     creatorBio,
-//     categories,
-// }) {
-//     const videoHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
-//     const [isLoading, setIsLoading] = React.useState(true);
-//     // const [videoPosition, setVideoPosition] = React.useState(0)
-//
-//     const [fontsLoaded] = useFonts(fonts);
-//     if (!fontsLoaded) {
-//         return null;
-//     }
-//
-//     return (
-//         <TouchableWithoutFeedback style={styles.short}>
-//             <>
-//                 <ShortOverlay
-//                     creatorAvatarFile={creatorAvatarFile}
-//                     creatorUsername={creatorUsername}
-//                     creatorBio={creatorBio}
-//                     categories={categories}
-//                 />
-//                 <Video
-//                     style={[styles.video, {height: videoHeight}]}
-//                     source={video}
-//                     resizeMode={Video.RESIZE_MODE_COVER}
-//                     shouldPlay={shouldPlay}
-//                     isLooping
-//                     positionMillis={0}
-//                     onLoad={() => setIsLoading(false)}
-//                     // onPlaybackStatusUpdate={({positionMillis}) =>
-//                     //     setVideoPosition(positionMillis)
-//                     // }
-//                     progressUpdateIntervalMillis={20}
-//                 />
-//             </>
-//         </TouchableWithoutFeedback>
-//     )
-// }
-
 function ShortOverlay({creatorAvatarFile, creatorUsername, creatorBio, categories}) {
     const videoHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
     return (
         <View style={[styles.shortOverlay, {height: videoHeight}]}>
+            <PressableAvatar creatorAvatarFile={creatorAvatarFile} />
             <TouchableOpacity>
                 <Text style={styles.creatorUsernameText}>@{creatorUsername}</Text>
             </TouchableOpacity>
@@ -139,6 +154,21 @@ function ShortOverlay({creatorAvatarFile, creatorUsername, creatorBio, categorie
             </View>
         </View>
     );
+}
+
+function PressableAvatar({creatorAvatarFile}) {
+    return (
+        <TouchableOpacity style={styles.pressableAvatar}>
+            <Image style={styles.bookingIcon} source={require('../assets/booking_icon.png')} />
+            <Avatar
+                width={54}
+                height={54}
+                borderWidth={3.02}
+                borderRadius={18}
+                src={creatorAvatarFile}
+            />
+        </TouchableOpacity>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -170,5 +200,19 @@ const styles = StyleSheet.create({
         lineHeight: 19.5,
         color: 'white',
         marginBottom: 2,
+    },
+    pressableAvatar: {
+        marginBottom: 12,
+        width: 54,
+        height: 54,
+        overflow: 'visible',
+    },
+    bookingIcon: {
+        position: 'absolute',
+        width: 31,
+        height: 31,
+        bottom: -10,
+        right: -10,
+        zIndex: 1000,
     }
 });
