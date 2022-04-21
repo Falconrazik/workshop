@@ -6,6 +6,7 @@ import React from 'react';
 import {Image} from 'react-native';
 import CONST from '../CONST';
 import CustomStatusBar from '../components/customStatusBar';
+import DiscoverShortsStackNavigator from './discover/discoverShortsStackNavigator';
 
 export default function HomeTabNavigator () {
     const Tab = createBottomTabNavigator();
@@ -23,7 +24,7 @@ export default function HomeTabNavigator () {
             >
                 <Tab.Screen
                     name="Discover"
-                    component={DiscoverTopTabNavigator}
+                    component={DiscoverShortsStackNavigator}
                     options={{
                         tabBarIcon: ({focused}) =>
                             focused

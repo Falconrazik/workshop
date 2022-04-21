@@ -70,7 +70,7 @@ export default function Account ( {navigation} ) {
             }).catch((error) => {
             // An error happened.
             });
-    }   
+    }
 
     const showAccount = () => {
         if (type === "learn") {

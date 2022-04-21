@@ -55,7 +55,7 @@ const videos = [
     },
 ];
 
-export default function DiscoverShorts () {
+export default function DiscoverShorts ({navigation}) {
     const containerHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
     const [scrollPosition, setScrollPosition] = React.useState(0);
     const isFocused = useIsFocused();
@@ -67,6 +67,7 @@ export default function DiscoverShorts () {
                 maxToRenderPerBatch={3}
                 renderItem={({item, index}) => (
                     <Short
+                        navigation={navigation}
                         key={index}
                         video={item.file}
                         creatorUID={item.creatorUID}
