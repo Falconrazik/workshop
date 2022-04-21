@@ -10,6 +10,8 @@ npm-debug.*
 *.orig.*
 web-build/
 .idea/
+assets/videos/
+assets/videos.zip
 
 # macOS
 .DS_Store
