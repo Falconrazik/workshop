@@ -8,7 +8,7 @@ import fonts from '../../assets/fonts/fonts';
 import { useFonts } from 'expo-font';
 import CategoryCapsule from '../../components/categoryCapsule';
 import { COLORS } from '../../CONST';
-import { wrap } from 'lodash';
+import { videos } from '../discover/discoverShorts';
 
 const CATEGORY_COLORS = [
     COLORS.BLUE_LIGHT,
@@ -17,11 +17,6 @@ const CATEGORY_COLORS = [
 ];
 
 const CreatorProfile = ( {uid, navigation} ) => {
-    const [methodType, setMethodType] = useState(false);
-    const chooseSelection = () => {
-            setMethodType(!methodType);
-    }
-
     const [imageURL, setImage] = useState('');
     useEffect(() => {
         const fileName = uid + '.jpg';
@@ -105,6 +100,41 @@ const CreatorProfile = ( {uid, navigation} ) => {
         }
     }
 
+    const showContent = () => {
+        return videos.map((item) => {
+            if (item.creatorUID === "LnGnI2tlmJTFbCiNxP9f") {
+                return (
+                    <TouchableOpacity style={{width: "50%", padding: 10}}>
+                        <Image source={item.thumbnail} style={{width: 200, height: 300, borderRadius: 30}}/>
+                    </TouchableOpacity>
+                );
+            }
+        });
+    }
+
+    const showButton = () => {
+        if (auth.currentUser.uid === uid) {
+            return  <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                            style={[styles.button, {backgroundColor: "#E2E9FE"}]}
+                            onPress={logOut}
+
+                        >
+                            <Text style={[styles.text, styles.textLarge]}>Log Out</Text>
+                        </TouchableOpacity>
+                    </View>
+        }
+        else {
+            return <View style={styles.buttonContainer}>
+                    <TouchableOpacity 
+                        style={[styles.button, {backgroundColor: "#1ADDA8", shadowColor: '#1ADDA8', shadowOpacity: 0.5, shadowRadius: 20}]}
+                    >
+                        <Text style={[styles.text, styles.textLarge]}>book</Text>
+                   </TouchableOpacity>
+                   </View>
+        }
+    }
+
     let categories = ['yoga', 'pilates', 'calisthenics']
 
     return (
@@ -112,7 +142,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
         <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
 
         <ScrollView style={styles.container}>
-            <View style={{alignItems: "center", flex: 1}}>
+            <View style={{alignItems: "center", flex: 1, marginTop: "12%"}}>
                 <View style={styles.userInfoContainer}>
                     {showPreview()}
                     <View style={{flexDirection: "column", flex: 1,  paddingLeft: "5%", justifyContent: "space-between"}}>
@@ -181,38 +211,12 @@ const CreatorProfile = ( {uid, navigation} ) => {
             </View>
 
             <View style={{flexGrow: 8, flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", marginTop: "-12%"}}>
-                <View style={{width: "50%", padding: 10}}>
-                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
-                </View>
-                <View style={{width: "50%", padding: 10, padding: 10}}>
-                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
-                </View>
-                <View style={{width: "50%", padding: 10, padding: 10}}>
-                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
-                </View>
-                <View style={{width: "50%", padding: 10, padding: 10}}>
-                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
-                </View>
-                <View style={{width: "50%", padding: 10, padding: 10}}>
-                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
-                </View>
-                <View style={{width: "50%", padding: 10, padding: 10}}>
-                       <Image source={require("../../assets/landing-background.png")} style={{width: 200, height: 300}}/>
-                </View>
-                
+                {showContent()}
             </View>
         </ScrollView>
 
-              
-        <View style={styles.buttonContainer}>
-            <TouchableOpacity
-                style={[styles.button, styles.googleBackground]}
-                onPress={logOut}
-
-            >
-                <Text style={[styles.text, styles.textLarge]}>Log Out</Text>
-            </TouchableOpacity>
-        </View>
+        
+            {showButton()}
         </>
     )
 }
@@ -220,8 +224,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#000000",
-        paddingTop: "12%"
+        backgroundColor: "#000000"
     },
 
     userInfoContainer: {
@@ -271,25 +274,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 40,
-        height: 45,
-        backgroundColor: "#FFFFFF",
+        height: 40,
+        width: 110,
+        backgroundColor: "#FFFFFF"
     },
 
     buttonContainer: {
-        right: 50,
-        left: 50,
+        right: 30,
         position: 'absolute',
-        bottom: 20,
+        bottom: 30,
     },
-
-    googleBackground: {
-        backgroundColor: "#E2E9FE"
-    },
-
     text: {
         fontFamily: 'textBold',
         color: '#000000',
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: 20
     },
     
     textSmall: {

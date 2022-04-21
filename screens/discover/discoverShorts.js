@@ -5,7 +5,7 @@ import Constants from 'expo-constants';
 import {useIsFocused} from '@react-navigation/native';
 import Short from '../../components/short';
 
-const videos = [
+export const videos = [
     {
         file: require('../../assets/videos/_joeandrews/_joeandrews_1.mp4'),
         creatorUID: 'LnGnI2tlmJTFbCiNxP9f',
