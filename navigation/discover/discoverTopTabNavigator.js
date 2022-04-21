@@ -3,7 +3,6 @@ import React from 'react';
 import CONST from '../../CONST';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import DiscoverCreatorsStackNavigator from './discoverCreatorsStackNavigator';
-import DiscoverShortsStackNavigator from './discoverShortsStackNavigator';
 import TabsHeader from '../../components/tabsHeader';
 import DiscoverShorts from '../../screens/discover/discoverShorts';
 

@@ -15,7 +15,8 @@ const CATEGORY_COLORS = [
     COLORS.GREEN_50,
 ];
 
-const CreatorProfile = ( {uid, navigation} ) => {
+const CreatorProfile = ( {uid, route, navigation} ) => {
+    uid = uid ?? route.params.uid;
     const [methodType, setMethodType] = useState(false);
     const chooseSelection = () => {
             setMethodType(!methodType);
@@ -48,7 +49,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
-    
+
     }, [] );
 
     const [fontsLoaded] = useFonts(fonts);
@@ -66,7 +67,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
             }).catch((error) => {
             // An error happened.
             });
-    }   
+    }
 
     const showName = () => {
         if (userDetail) {
@@ -117,8 +118,8 @@ const CreatorProfile = ( {uid, navigation} ) => {
                     {showName()}
                     <View style={{flexDirection: "row", flex: 1, alignItems: "center"}}>
                         <Image style={styles.rating} source={require("../../assets/rating.png")}/>
-                        <TouchableOpacity 
-                            style={{width: "15%", marginLeft: "5%"}} 
+                        <TouchableOpacity
+                            style={{width: "15%", marginLeft: "5%"}}
                             onPress={() => {
                                 if (userDetail) {
                                     if (userDetail.instaURL)
@@ -128,7 +129,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
                         >
                             <Image  style={{width: 40, height: 40}} source={require("../../assets/insta-logo.png")}/>
                         </TouchableOpacity>
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             style={{width: "15%"}}
                             onPress={() => {
                                 if (userDetail) {
@@ -139,7 +140,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
                         >
                             <Image  style={{width: 40, height: 40}} source={require("../../assets/youtube-logo.png")}/>
                         </TouchableOpacity>
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             style={{width: "15%"}}
                             onPress={() => {
                                 if (userDetail) {
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
         color: '#000000',
         textAlign: "center"
     },
-    
+
     textSmall: {
         fontFamily: 'text',
         fontSize: 16,
