@@ -3,8 +3,8 @@ import React from 'react';
 import CONST from '../../CONST';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import DiscoverCreatorsStackNavigator from './discoverCreatorsStackNavigator';
-import DiscoverShortsStackNavigator from './discoverShortsStackNavigator';
 import TabsHeader from '../../components/tabsHeader';
+import DiscoverShorts from '../../screens/discover/discoverShorts';
 
 export default function DiscoverTopTabNavigator({navigation}) {
     const Tab = createMaterialTopTabNavigator();
@@ -44,7 +44,7 @@ export default function DiscoverTopTabNavigator({navigation}) {
                     />
                     <Tab.Screen
                         name={CONST.DISCOVER_TABS.SHORTS}
-                        component={DiscoverShortsStackNavigator}
+                        component={DiscoverShorts}
                     />
                 </Tab.Navigator>
         </SafeAreaView>
