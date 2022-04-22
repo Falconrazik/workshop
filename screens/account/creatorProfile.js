@@ -8,7 +8,7 @@ import fonts from '../../assets/fonts/fonts';
 import { useFonts } from 'expo-font';
 import CategoryCapsule from '../../components/categoryCapsule';
 import { COLORS } from '../../CONST';
-import { videos } from '../discover/discoverShorts';
+import videos from '../../videos';
 
 const CATEGORY_COLORS = [
     COLORS.BLUE_LIGHT,
@@ -18,6 +18,9 @@ const CATEGORY_COLORS = [
 
 const CreatorProfile = ( {uid, route, navigation} ) => {
     uid = uid ?? route.params.uid;
+
+    console.log(">>>> uid", uid);
+
     const [methodType, setMethodType] = useState(false);
     const chooseSelection = () => {
             setMethodType(!methodType);
@@ -107,15 +110,18 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
     }
 
     const showContent = () => {
-        return videos.map((item) => {
-            if (item.creatorUID === "LnGnI2tlmJTFbCiNxP9f") {
-                return (
-                    <TouchableOpacity style={{width: "50%", padding: 10}}>
-                        <Image source={item.thumbnail} style={{width: 200, height: 300, borderRadius: 30}}/>
-                    </TouchableOpacity>
-                );
-            }
-        });
+        console.log(">>>> videos", videos);
+        return videos
+            .filter(short => short.creatorUID === uid)
+            .map((short) => {
+                if (short.creatorUID === uid) {
+                    return (
+                        <TouchableOpacity style={{width: "50%", padding: 10}}>
+                            <Image source={short.thumbnail} style={{width: 200, height: 300, borderRadius: 30}}/>
+                        </TouchableOpacity>
+                    );
+                }
+            });
     }
 
     const showButton = () => {
@@ -146,7 +152,6 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
     return (
         <>
         <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
-
         <ScrollView style={styles.container}>
             <View style={{alignItems: "center", flex: 1, marginTop: "12%"}}>
                 <View style={styles.userInfoContainer}>
@@ -236,7 +241,8 @@ const styles = StyleSheet.create({
         height: "10%",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        marginBottom: 12,
     },
 
     name: {
