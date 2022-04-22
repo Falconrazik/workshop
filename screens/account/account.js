@@ -39,7 +39,7 @@ export default function Account ( {navigation} ) {
                 bio: user.bio
             };
         },
-        fromFirestore: function(snapshot, options){
+        fromFirestore: function(snapshot, options) {
             const data = snapshot.data(options);
             return new User(data.uid, data.userType, data.userName, data.bio);
         }
@@ -58,19 +58,7 @@ export default function Account ( {navigation} ) {
                 console.log("No such document!");
                 }}).catch((error) => {
                 console.log("Error getting document:", error);
-            });
-
-    const logOut = () => {
-
-        auth.signOut().then(() => {
-            // Sign-out successful.
-                // navigation.navigate('Landing')
-                navigation.navigate("Landing");
-                console.log('Sign out successful!')
-            }).catch((error) => {
-            // An error happened.
-            });
-    }   
+            });  
 
     const showAccount = () => {
         if (type === "learn") {

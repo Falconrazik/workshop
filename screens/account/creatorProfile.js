@@ -113,7 +113,8 @@ const CreatorProfile = ( {uid, navigation} ) => {
     }
 
     const showButton = () => {
-        if (auth.currentUser.uid === uid) {
+        let userUID = auth.currentUser.uid;
+        if (userUID === uid) {
             return  <View style={styles.buttonContainer}>
                         <TouchableOpacity
                             style={[styles.button, {backgroundColor: "#E2E9FE"}]}
@@ -215,8 +216,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
             </View>
         </ScrollView>
 
-        
-            {showButton()}
+        {showButton()}
         </>
     )
 }

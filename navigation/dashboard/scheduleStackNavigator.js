@@ -1,22 +1,20 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Dashboard from '../screens/dashboard/dashboard';
+import Schedule from '../../screens/dashboard/schedule';
 
-export default function DashboardStackNavigator (props) {
+export default function ScheduleStackNavigator () {
     const Stack = createNativeStackNavigator();
 
     return (
         <Stack.Navigator
-            initialRouteName={"dashboard"}
+            initialRouteName={"Schedule"}
             screenOptions={{
                 headerShown: false
             }}
         >
             <Stack.Screen
-                name="dashboard"
-                component={Dashboard}
-                options={{}}
+                name="Schedule"
+                component={Schedule}
             />
-
         </Stack.Navigator>
     )
 };

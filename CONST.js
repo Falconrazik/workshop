@@ -4,6 +4,10 @@ const CONST = {
         CREATORS: 'creators',
         SHORTS: 'shorts',
     },
+    DASHBOARD_TABS: {
+        ANALYTICS: 'analytics',
+        SCHEDULE: 'schedule'
+    },
     DISCOVER_TAB_HEADER_HEIGHT: 50,
     STATUS_BAR_COLOR: {
         BLACK: 'black',
