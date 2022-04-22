@@ -1,5 +1,5 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import DashboardStackNavigator from './dashboardStackNavigator';
+import DashboardStackNavigator from './dashboard/dashboardStackNavigator';
 import AccountStackNavigator from './accountStackNavigator';
 import DiscoverTopTabNavigator from './discover/discoverTopTabNavigator';
 import React from 'react';

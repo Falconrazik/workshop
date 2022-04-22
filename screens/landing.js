@@ -1,14 +1,25 @@
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image } from 'react-native';
-import React from "react";
+import React, {useState, useEffect} from "react";
 import fonts from '../assets/fonts/fonts';
 import {useFonts} from 'expo-font';
 import * as Google from 'expo-google-app-auth';
 import CONST, { IOS_CLIENT_ID } from '../CONST';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import CustomStatusBar from '../components/customStatusBar';
 import { auth } from '../firebase';
 
 export default function Landing ( {navigation} ) {
+    useEffect(() => {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                navigation.navigate('Home');
+            } else {
+                // User is signed out
+            }
+        });
+    }, [])
+
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {
         return null;
@@ -48,21 +59,6 @@ export default function Landing ( {navigation} ) {
           alert('login: Error:' + message);
         }
     }
-
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/firebase.User
-            const uid = user.uid;
-            navigation.navigate('Home');
-
-            // ...
-        } else {
-            // User is signed out
-            // ...
-        }
-    });
-      
 
     return (
         <>
