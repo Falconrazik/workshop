@@ -8,7 +8,7 @@ import fonts from '../../assets/fonts/fonts';
 import { useFonts } from 'expo-font';
 import CategoryCapsule from '../../components/categoryCapsule';
 import { COLORS } from '../../CONST';
-import { videos } from '../discover/discoverShorts';
+import videos from '../../videos';
 
 const CATEGORY_COLORS = [
     COLORS.BLUE_LIGHT,
@@ -16,7 +16,16 @@ const CATEGORY_COLORS = [
     COLORS.GREEN_50,
 ];
 
-const CreatorProfile = ( {uid, navigation} ) => {
+const CreatorProfile = ( {uid, route, navigation} ) => {
+    uid = uid ?? route.params.uid;
+
+    console.log(">>>> uid", uid);
+
+    const [methodType, setMethodType] = useState(false);
+    const chooseSelection = () => {
+            setMethodType(!methodType);
+    }
+
     const [imageURL, setImage] = useState('');
     useEffect(() => {
         const fileName = uid + '.jpg';
@@ -44,7 +53,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
-    
+
     }, [] );
 
     const [fontsLoaded] = useFonts(fonts);
@@ -62,7 +71,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
             }).catch((error) => {
             // An error happened.
             });
-    }   
+    }
 
     const showName = () => {
         if (userDetail) {
@@ -101,15 +110,18 @@ const CreatorProfile = ( {uid, navigation} ) => {
     }
 
     const showContent = () => {
-        return videos.map((item) => {
-            if (item.creatorUID === "LnGnI2tlmJTFbCiNxP9f") {
-                return (
-                    <TouchableOpacity style={{width: "50%", padding: 10}}>
-                        <Image source={item.thumbnail} style={{width: 200, height: 300, borderRadius: 30}}/>
-                    </TouchableOpacity>
-                );
-            }
-        });
+        console.log(">>>> videos", videos);
+        return videos
+            .filter(short => short.creatorUID === uid)
+            .map((short) => {
+                if (short.creatorUID === uid) {
+                    return (
+                        <TouchableOpacity style={{width: "50%", padding: 10}}>
+                            <Image source={short.thumbnail} style={{width: 200, height: 300, borderRadius: 30}}/>
+                        </TouchableOpacity>
+                    );
+                }
+            });
     }
 
     const showButton = () => {
@@ -126,7 +138,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
         }
         else {
             return <View style={styles.buttonContainer}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={[styles.button, {backgroundColor: "#1ADDA8", shadowColor: '#1ADDA8', shadowOpacity: 0.5, shadowRadius: 20}]}
                     >
                         <Text style={[styles.text, styles.textLarge]}>book</Text>
@@ -140,7 +152,6 @@ const CreatorProfile = ( {uid, navigation} ) => {
     return (
         <>
         <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
-
         <ScrollView style={styles.container}>
             <View style={{alignItems: "center", flex: 1, marginTop: "12%"}}>
                 <View style={styles.userInfoContainer}>
@@ -149,8 +160,8 @@ const CreatorProfile = ( {uid, navigation} ) => {
                         {showName()}
                         <View style={{flexDirection: "row", flex: 1, alignItems: "center"}}>
                             <Image style={styles.rating} source={require("../../assets/rating.png")}/>
-                            <TouchableOpacity 
-                                style={{width: "15%", marginLeft: "5%"}} 
+                            <TouchableOpacity
+                                style={{width: "15%", marginLeft: "5%"}}
                                 onPress={() => {
                                     if (userDetail) {
                                         if (userDetail.instaURL)
@@ -160,7 +171,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
                             >
                                 <Image  style={{width: 40, height: 40}} source={require("../../assets/insta-logo.png")}/>
                             </TouchableOpacity>
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 style={{width: "15%"}}
                                 onPress={() => {
                                     if (userDetail) {
@@ -171,7 +182,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
                             >
                                 <Image  style={{width: 40, height: 40}} source={require("../../assets/youtube-logo.png")}/>
                             </TouchableOpacity>
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 style={{width: "15%"}}
                                 onPress={() => {
                                     if (userDetail) {
@@ -186,7 +197,7 @@ const CreatorProfile = ( {uid, navigation} ) => {
                     </View>
                 </View>
 
-                {showBio()} 
+                {showBio()}
 
                 <View style={styles.tagsContainer}>
                     {categories.map((category, index) => (
@@ -214,8 +225,6 @@ const CreatorProfile = ( {uid, navigation} ) => {
                 {showContent()}
             </View>
         </ScrollView>
-
-        
             {showButton()}
         </>
     )
@@ -232,7 +241,8 @@ const styles = StyleSheet.create({
         height: "10%",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        marginBottom: 12,
     },
 
     name: {
@@ -249,7 +259,7 @@ const styles = StyleSheet.create({
 
     description: {
         width: "90%",
-        marginTop: "12%",
+        marginTop: "8%",
         fontFamily: 'text',
         fontSize: 15,
         textAlign: "left",
@@ -290,7 +300,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 20
     },
-    
+
     textSmall: {
         fontFamily: 'text',
         fontSize: 16,

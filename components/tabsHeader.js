@@ -12,7 +12,6 @@ export default function TabsHeader({containerStyles, onTabPress, onActionButtonP
     if (!fontsLoaded) {
         return null;
     }
-
     return (
         <View style={_.merge({}, styles.tabsHeader, containerStyles)}>
             <View style={styles.pseudoFlexElement}>

@@ -106,6 +106,8 @@ export default class Short extends React.PureComponent {
                                 creatorUsername={this.state.profile.userName}
                                 creatorBio={this.state.profile.bio}
                                 categories={this.state.profile.categories}
+                                creatorUID={this.props.creatorUID}
+                                navigation={this.props.navigation}
                             />
                             <Video
                                 style={[styles.video, {
@@ -132,12 +134,12 @@ export default class Short extends React.PureComponent {
 
 }
 
-function ShortOverlay({creatorAvatarFile, creatorUsername, creatorBio, categories}) {
+function ShortOverlay({navigation, creatorUID, creatorAvatarFile, creatorUsername, creatorBio, categories}) {
     const videoHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
     return (
         <View style={[styles.shortOverlay, {height: videoHeight}]}>
             <PressableAvatar creatorAvatarFile={creatorAvatarFile} />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("CreatorProfile", {uid: creatorUID, navigation})}>
                 <Text style={styles.creatorUsernameText}>@{creatorUsername}</Text>
             </TouchableOpacity>
             <View>
