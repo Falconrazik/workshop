@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, Linking, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Linking, ScrollView, Dimensions } from 'react-native';
 import React, { useState, useEffect } from "react";
 import CustomStatusBar from '../../components/customStatusBar';
 import CONST from '../../CONST';
@@ -110,22 +110,19 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
     }
 
     const showContent = () => {
-        console.log(">>>> videos", videos);
+        const contentWidth = (Dimensions.get('window').width - 35) / 2;
+        const contentHeight = contentWidth * 1.18;
         return videos
             .filter(short => short.creatorUID === uid)
-            .map((short) => {
-                if (short.creatorUID === uid) {
-                    return (
+            .map((short) => (
                         <TouchableOpacity style={{width: "50%", padding: 10}}>
-                            <Image source={short.thumbnail} style={{width: 200, height: 300, borderRadius: 30}}/>
+                            <Image source={short.thumbnail} resizeMode="cover" style={{width: contentWidth, height: contentHeight, marginHorizontal: 6, borderRadius: 30}}/>
                         </TouchableOpacity>
-                    );
-                }
-            });
+            ));
     }
 
     const showButton = () => {
-        if (auth.currentUser.uid === uid) {
+        if (auth.currentUser?.uid === uid) {
             return  <View style={styles.buttonContainer}>
                         <TouchableOpacity
                             style={[styles.button, {backgroundColor: "#E2E9FE"}]}
