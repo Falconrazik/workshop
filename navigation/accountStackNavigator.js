@@ -1,6 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Account from '../screens/account/account';
 import CreatorProfile from '../screens/account/creatorProfile';
+import Short from '../components/short';
 
 export default function AccountStackNavigator (props) {
     const Stack = createNativeStackNavigator();

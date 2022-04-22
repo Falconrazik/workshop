@@ -4,6 +4,7 @@ import DiscoverCreators from '../../screens/discover/discoverCreators';
 import DiscoverShorts from '../../screens/discover/discoverShorts';
 import CreatorProfile from '../../screens/account/creatorProfile';
 import DiscoverTopTabNavigator from './discoverTopTabNavigator';
+import Short from '../../components/short';
 
 export default function DiscoverShortsStackNavigator (props) {
     const Stack = createNativeStackNavigator();
@@ -23,6 +24,11 @@ export default function DiscoverShortsStackNavigator (props) {
             <Stack.Screen
                 name="CreatorProfile"
                 component={CreatorProfile}
+                options={{}}
+            />
+            <Stack.Screen
+                name="Short"
+                component={Short}
                 options={{}}
             />
 

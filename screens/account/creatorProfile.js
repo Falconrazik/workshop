@@ -90,10 +90,10 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
 
     const showPreview = () => {
         if (!imageURL) {
-            return  <Avatar width={100} height={100} borderRadius={20} borderWidth={5}/>
+            return  <Avatar width={100} height={100} borderRadius={15} borderWidth={5}/>
         }
         else {
-            return <Avatar width={100} height={100} borderRadius={20} borderWidth={5} src={imageURL}/>
+            return <Avatar width={100} height={100} borderRadius={15} borderWidth={5} src={imageURL}/>
         }
     }
 
@@ -112,12 +112,25 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
     const showContent = () => {
         const contentWidth = (Dimensions.get('window').width - 35) / 2;
         const contentHeight = contentWidth * 1.18;
+
+        const onPressContent = ({file, creatorUID, thumbnail}) => {
+            navigation.navigate("Short", {
+                video: file,
+                creatorUID,
+                shouldPlay: true,
+            })
+        }
+
         return videos
             .filter(short => short.creatorUID === uid)
-            .map((short) => (
-                        <TouchableOpacity style={{width: "50%", padding: 10}}>
-                            <Image source={short.thumbnail} resizeMode="cover" style={{width: contentWidth, height: contentHeight, marginHorizontal: 6, borderRadius: 30}}/>
-                        </TouchableOpacity>
+            .map((short, index) => (
+                <TouchableOpacity
+                    key={index}
+                    onPress={() => onPressContent(short)}
+                    style={{width: "50%", padding: 10}}
+                >
+                    <Image source={short.thumbnail} resizeMode="cover" style={{width: contentWidth, height: contentHeight, marginHorizontal: 6, borderRadius: 30}}/>
+                </TouchableOpacity>
             ));
     }
 
@@ -136,7 +149,7 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
         else {
             return <View style={styles.buttonContainer}>
                     <TouchableOpacity
-                        style={[styles.button, {backgroundColor: "#1ADDA8", shadowColor: '#1ADDA8', shadowOpacity: 0.5, shadowRadius: 20}]}
+                        style={[styles.button, {padding: 10, backgroundColor: "#1ADDA8", shadowColor: '#1ADDA8', shadowOpacity: 0.5, shadowRadius: 20}]}
                     >
                         <Text style={[styles.text, styles.textLarge]}>book</Text>
                    </TouchableOpacity>
@@ -144,11 +157,44 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
         }
     }
 
+    const showNavBar = () => (
+        auth.currentUser?.uid === uid
+            ? (
+                <View style={{backgroundColor: 'transparent', height: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingHorizontal: 29}}>
+                    <TouchableOpacity>
+                        <Image
+                            style={{width: 21, height: 19.17, marginRight: 14}}
+                            source={require('../../assets/edit_icon.png')}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Image
+                            style={{width: 17, height: 21}}
+                            source={require('../../assets/hamburger_icon.png')}
+                        />
+                    </TouchableOpacity>
+
+                </View>
+            ) : (
+                <View style={{backgroundColor: 'transparent', height: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 29}}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Image
+                            style={{width: 25, height: 20}}
+                            source={require('../../assets/back_arrow.png')}
+                        />
+                    </TouchableOpacity>
+
+                </View>
+            )
+    );
+
     let categories = ['yoga', 'pilates', 'calisthenics']
 
     return (
         <>
         <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
+        {/*<View>*/}
+        {showNavBar()}
         <ScrollView style={styles.container}>
             <View style={{alignItems: "center", flex: 1, marginTop: "12%"}}>
                 <View style={styles.userInfoContainer}>
@@ -223,6 +269,7 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
             </View>
         </ScrollView>
             {showButton()}
+        {/*</View>*/}
         </>
     )
 }
@@ -240,6 +287,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginBottom: 12,
+        marginTop: 15,
     },
 
     name: {

@@ -16,7 +16,7 @@ const Avatar = ({
             height: height,
             shadowColor: '#1ADDA8',
             shadowOpacity: 0.5,
-            shadowRadius: borderRadius
+            shadowRadius: borderRadius,
         }}>
             <Image
                 source={

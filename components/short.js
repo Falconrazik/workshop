@@ -18,7 +18,7 @@ const CATEGORY_COLORS = [
 ];
 
 export default class Short extends React.PureComponent {
-    constructor() {
+    constructor(props) {
         super();
 
         this.state = {
@@ -26,6 +26,8 @@ export default class Short extends React.PureComponent {
             profile: null,
             videoLoaded: false,
         }
+
+        this.creatorUID = props.creatorUID ?? props.route.params.creatorUID;
     }
 
     async _loadFontsAsync() {
@@ -63,13 +65,13 @@ export default class Short extends React.PureComponent {
             }
         };
 
-        db.collection("users").doc(this.props.creatorUID)
+        db.collection("users").doc(this.creatorUID)
             .withConverter(userConverter)
             .get().then((doc) => {
             if (doc.exists){
                 // Convert to User object
                 const userDetails = doc.data();
-                const fileName = this.props.creatorUID + '.jpg';
+                const fileName = this.creatorUID + '.jpg';
                 const fileRef = storage.ref().child(`avatar/${fileName}`);
                 fileRef.getDownloadURL()
                     .then((url) => {
@@ -80,7 +82,7 @@ export default class Short extends React.PureComponent {
                         // Handle any errors
                     });
             } else {
-                console.log("No such document!", this.props.creatorUID);
+                console.log("No such document!");
             }}).catch((error) => {
             console.log("Error getting document:", error);
         });
@@ -106,16 +108,16 @@ export default class Short extends React.PureComponent {
                                 creatorUsername={this.state.profile.userName}
                                 creatorBio={this.state.profile.bio}
                                 categories={this.state.profile.categories}
-                                creatorUID={this.props.creatorUID}
+                                creatorUID={this.creatorUID}
                                 navigation={this.props.navigation}
                             />
                             <Video
                                 style={[styles.video, {
                                     height: Dimensions.get('window').height - Constants.statusBarHeight - tabBarHeight,
                                 }]}
-                                source={this.props.video}
+                                source={this.props.video ?? this.props.route.params.video}
                                 resizeMode={Video.RESIZE_MODE_COVER}
-                                shouldPlay={this.props.shouldPlay}
+                                shouldPlay={this.props.shouldPlay ?? this.props.route.params.shouldPlay}
                                 isLooping
                                 onLoad={() => this.setState({videoLoaded: true})}
                                 positionMillis={0}
