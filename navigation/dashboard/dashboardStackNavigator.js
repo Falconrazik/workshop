@@ -3,30 +3,39 @@ import React, { useState, useEffect } from "react";
 import CONST from '../../CONST';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import ScheduleStackNavigator from '../../navigation/dashboard/scheduleStackNavigator';
-import Analytics from './analytics';
 import TabsHeader from '../../components/tabsHeader';
 import { db, auth } from '../../firebase';
-import Schedule from './schedule';
+import Analytics from '../../screens/dashboard/analytics';
 
-export default function Dashboard({navigation}) {
+export default function DashboardStackNavigator ({navigation}) {
     const Tab = createMaterialTopTabNavigator();
     const [currentTab, setCurrentTab] = React.useState(CONST.DISCOVER_TABS.SHORTS);
     const [userDetail, setUserDetail] = useState(null);
+    const [uid, setUID] = useState(null);
 
-    let uid = auth.currentUser.uid;
-    db.collection("users").doc(uid)
-    .get().then((doc) => {
-        if (doc.exists){
-            setUserDetail(doc.data());
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+            db.collection("users").doc(user.uid)
+            .get().then((doc) => {
+                if (doc.exists){
+                    setUserDetail(doc.data());
+                } else {
+                    console.log("No such document!");
+                    }}).catch((error) => {
+                    console.log("Error getting document:", error);
+            }); 
+          // ...
         } else {
-            console.log("No such document!");
-            }}).catch((error) => {
-            console.log("Error getting document:", error);
-        }); 
+          // User is signed out
+          // ...
+        }
+      });
     
         const showDashboard = () => {
             if (userDetail) {
-                if (userDetail.userType === "learn") {
+                if (userDetail.type == "learn") {
                     return <SafeAreaView style={{ flex: 1 }}>
                                 <Tab.Navigator
                                     tabBar={props => (
@@ -47,7 +56,7 @@ export default function Dashboard({navigation}) {
                                 >
                                     <Tab.Screen
                                         name={CONST.DASHBOARD_TABS.ANALYTICS}
-                                        component={Schedule}
+                                        component={ScheduleStackNavigator}
                                     />
                                 </Tab.Navigator>
                         </SafeAreaView>
@@ -75,11 +84,11 @@ export default function Dashboard({navigation}) {
                                 >
                                     <Tab.Screen
                                         name={CONST.DASHBOARD_TABS.ANALYTICS}
-                                        component={Schedule}
+                                        component={Analytics}
                                     />
                                     <Tab.Screen
                                         name={CONST.DASHBOARD_TABS.SCHEDULE}
-                                        component={Analytics}
+                                        component={ScheduleStackNavigator}
                                     />
                                 </Tab.Navigator>
                         </SafeAreaView>

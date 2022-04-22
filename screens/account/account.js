@@ -39,7 +39,7 @@ export default function Account ( {navigation} ) {
                 bio: user.bio
             };
         },
-        fromFirestore: function(snapshot, options){
+        fromFirestore: function(snapshot, options) {
             const data = snapshot.data(options);
             return new User(data.uid, data.userType, data.userName, data.bio);
         }
