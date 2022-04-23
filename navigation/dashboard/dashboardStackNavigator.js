@@ -1,104 +1,44 @@
-import { SafeAreaView } from 'react-native';
-import React, { useState, useEffect } from "react";
-import CONST from '../../CONST';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import ScheduleStackNavigator from '../../navigation/dashboard/scheduleStackNavigator';
-import TabsHeader from '../../components/tabsHeader';
-import { db, auth } from '../../firebase';
-import Analytics from '../../screens/dashboard/analytics';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import CreatorProfile from '../../screens/account/creatorProfile';
+import DashboardTopStackNavigator from './dashboardTopStackNavigator';
+import RequesDetail from '../../screens/dashboard/requestDetail';
+import VideoCall from '../../screens/dashboard/videoCall';
+import { Video } from 'expo-av';
 
-export default function DashboardStackNavigator ({navigation}) {
-    const Tab = createMaterialTopTabNavigator();
-    const [currentTab, setCurrentTab] = React.useState(CONST.DISCOVER_TABS.SHORTS);
-    const [userDetail, setUserDetail] = useState(null);
-    const [uid, setUID] = useState(null);
+export default function DashboardStackNavigator () {
+    const Stack = createNativeStackNavigator();
 
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
-            db.collection("users").doc(user.uid)
-            .get().then((doc) => {
-                if (doc.exists){
-                    setUserDetail(doc.data());
-                } else {
-                    console.log("No such document!");
-                    }}).catch((error) => {
-                    console.log("Error getting document:", error);
-            }); 
-          // ...
-        } else {
-          // User is signed out
-          // ...
-        }
-      });
-    
-        const showDashboard = () => {
-            if (userDetail) {
-                if (userDetail.type == "learn") {
-                    return <SafeAreaView style={{ flex: 1 }}>
-                                <Tab.Navigator
-                                    tabBar={props => (
-                                        <TabsHeader
-                                            onTabPress={tabTitle => {
-                                                props.navigation.navigate(tabTitle);
-                                                setCurrentTab(tabTitle);
-                                            }}
-                                            defaultTab={CONST.DASHBOARD_TABS.SCHEDULE}
-                                            onActionButtonPress={currentTab => navigation.navigate("SearchModal", {type: currentTab})}
-                                        />
-                                    )}
-                                    initialRouteName={CONST.DASHBOARD_TABS.SCHEDULE}
-                                    screenOptions={{
-                                        headerShown: false,
-                                        swipeEnabled: false,
-                                    }}
-                                >
-                                    <Tab.Screen
-                                        name={CONST.DASHBOARD_TABS.ANALYTICS}
-                                        component={ScheduleStackNavigator}
-                                    />
-                                </Tab.Navigator>
-                        </SafeAreaView>
-                }
-                else {
-                    return <SafeAreaView style={{ flex: 1 }}>
-                                <Tab.Navigator
-                                    tabBar={props => (
-                                        <TabsHeader
-                                            onTabPress={tabTitle => {
-                                                props.navigation.navigate(tabTitle);
-                                                setCurrentTab(tabTitle);
-                                            }}
-                                            tabLeftTitle={CONST.DASHBOARD_TABS.ANALYTICS}
-                                            tabRightTitle={CONST.DASHBOARD_TABS.SCHEDULE}
-                                            defaultTab={CONST.DASHBOARD_TABS.SCHEDULE}
-                                            onActionButtonPress={currentTab => navigation.navigate("SearchModal", {type: currentTab})}
-                                        />
-                                    )}
-                                    initialRouteName={CONST.DASHBOARD_TABS.SCHEDULE}
-                                    screenOptions={{
-                                        headerShown: false,
-                                        swipeEnabled: false,
-                                    }}
-                                >
-                                    <Tab.Screen
-                                        name={CONST.DASHBOARD_TABS.ANALYTICS}
-                                        component={Analytics}
-                                    />
-                                    <Tab.Screen
-                                        name={CONST.DASHBOARD_TABS.SCHEDULE}
-                                        component={ScheduleStackNavigator}
-                                    />
-                                </Tab.Navigator>
-                        </SafeAreaView>
-                }
-            }
-        }
-    
     return (
-        <>
-            {showDashboard()}
-        </>
+        <Stack.Navigator
+            initialRouteName={"Dashboardtop"}
+            screenOptions={{
+                headerShown: false
+            }}
+        >
+            <Stack.Screen
+                name="DashboardTop"
+                component={DashboardTopStackNavigator}
+                option={{}}
+            />
+
+            <Stack.Screen
+                name="CreatorProfile"
+                component={CreatorProfile}
+                options={{}}
+            />
+
+            <Stack.Screen
+                name="RequestDetail"
+                component={RequesDetail}
+                options={{}}
+            />
+
+            <Stack.Screen
+                name="VideoCall"
+                component={VideoCall}
+                options={{}}
+            />
+
+        </Stack.Navigator>
     )
 };

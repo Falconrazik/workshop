@@ -5,7 +5,9 @@ import { useFonts } from 'expo-font'
 import { storage } from '../firebase'
 import Avatar from './avatar'
 
-const BookDetail = ( {uid, creatorName, startTime , duration, category, color} ) => {
+const BookDetail = ( {navigation, uid, name, startTime , duration, category, rate, type, userType, color} ) => {
+  const [date, setDate] = useState(null);
+
   const [imageURL, setImage] = useState('');
   useEffect(() => {
       const fileName = uid + '.jpg';
@@ -24,14 +26,11 @@ const BookDetail = ( {uid, creatorName, startTime , duration, category, color} )
   useEffect(() => {
     let timeString = startTime.toString().split(' ');
     let result = timeString[4].substring(0, 5) + "-";
-    console.log(result);
     startTime.setHours(startTime.getHours(), startTime.getMinutes() + duration,0,0);
     let endString = startTime.toString().split(' ');
     result += endString[4].substring(0, 5);
-    console.log(result);
     setTime(result);
   }, [] );
-
 
   const [fontsLoaded] = useFonts(fonts);
   if (!fontsLoaded) {
@@ -65,22 +64,19 @@ const getImagePath = () => {
 const showDate = () => {
   let dateString = startTime.toString().split(' ');
   let result = dateString[1] + ' ' + dateString[2] + ', ' + dateString[3];
-  return result;
-}
-
-const showTime = () => {
-  let timeString = startTime.toString().split(' ');
-  let result = timeString[4].substring(0, 5) + "-";
-  console.log(result);
-  startTime.setHours(startTime.getHours(), startTime.getMinutes() + duration,0,0);
-  let endString = startTime.toString().split(' ');
-  result += endString[4].substring(0, 5);
-  console.log(result);
+  if (!date)
+    setDate(result);
   return result;
 }
     
   return (
-    <TouchableOpacity style={[styles.container, {backgroundColor: color}]}>
+    <TouchableOpacity 
+      style={[styles.container, {backgroundColor: color}]}
+      onPress={() => {
+        if (userType === "teach" && type === "pending")
+          navigation.navigate("RequestDetail", {uid: uid, date: date, time: time, rate: rate, navigation})
+      }}
+    >
       <View style={styles.topView}>
         <Image source={getImagePath()} style={styles.logo}/>
         <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
@@ -89,10 +85,16 @@ const showTime = () => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.bottomView}>
+      <TouchableOpacity 
+        style={styles.bottomView} 
+        onPress={() => {
+          if (userType === "learn")
+            navigation.navigate("CreatorProfile", {uid: uid, navigation})
+        }}
+      >
         {showPreview()}
         <View style={{justifyContent: "center", marginLeft: 7}}>
-          <Text style={styles.textSmall}>@{creatorName}</Text>
+          <Text style={styles.textSmall}>@{name}</Text>
         </View>
       </TouchableOpacity>
     </TouchableOpacity>

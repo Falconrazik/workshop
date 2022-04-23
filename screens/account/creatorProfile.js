@@ -17,9 +17,8 @@ const CATEGORY_COLORS = [
 ];
 
 const CreatorProfile = ( {uid, route, navigation} ) => {
+    const [userUID, setUID] = useState('');
     uid = uid ?? route.params.uid;
-
-    console.log(">>>> uid", uid);
 
     const [methodType, setMethodType] = useState(false);
     const chooseSelection = () => {
@@ -134,8 +133,13 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
             ));
     }
 
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            setUID(user.uid);
+        }
+      });
     const showButton = () => {
-        if (auth.currentUser?.uid === uid) {
+        if (userUID === uid) {
             return  <View style={styles.buttonContainer}>
                         <TouchableOpacity
                             style={[styles.button, {backgroundColor: "#E2E9FE"}]}
@@ -160,10 +164,10 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
     const showNavBar = () => (
         auth.currentUser?.uid === uid
             ? (
-                <View style={{backgroundColor: 'transparent', height: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingHorizontal: 29}}>
+                <View style={{backgroundColor: 'transparent', height: 65, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingHorizontal: 29}}>
                     <TouchableOpacity>
                         <Image
-                            style={{width: 21, height: 19.17, marginRight: 14}}
+                            style={{width: 22, height: 26.17, marginRight: 14}}
                             source={require('../../assets/edit_icon.png')}
                         />
                     </TouchableOpacity>
