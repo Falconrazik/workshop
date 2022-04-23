@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
 
     name: {
         fontFamily: 'textBold',
-        fontSize: 25,
+        fontSize: 20,
         textAlign: "left",
         color: '#F8F7FF'
     },
