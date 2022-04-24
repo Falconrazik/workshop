@@ -8,7 +8,7 @@ import {Video} from 'expo-av';
 import {COLORS} from '../CONST';
 import CategoryCapsule from './categoryCapsule';
 import fonts from '../assets/fonts/fonts';
-import {db, storage} from '../firebase';
+import {auth, db, storage} from '../firebase';
 import Avatar from './avatar';
 
 const CATEGORY_COLORS = [
@@ -144,7 +144,7 @@ function ShortOverlay({navigation, creatorUID, creatorAvatarFile, creatorUsernam
     const videoHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
     return (
         <View style={[styles.shortOverlay, {height: videoHeight}]}>
-            <PressableAvatar categories={categories} rate={rate} video={video} creatorAvatarFile={creatorAvatarFile} navigation={navigation} username={creatorUsername} />
+            <PressableAvatar disabled={creatorUID === auth.currentUser?.uid} categories={categories} rate={rate} video={video} creatorAvatarFile={creatorAvatarFile} navigation={navigation} username={creatorUsername} />
             <TouchableOpacity onPress={() => navigation.navigate("CreatorProfile", {uid: creatorUID, navigation})}>
                 <Text style={styles.creatorUsernameText}>@{creatorUsername}</Text>
             </TouchableOpacity>
@@ -164,10 +164,10 @@ function ShortOverlay({navigation, creatorUID, creatorAvatarFile, creatorUsernam
     );
 }
 
-function PressableAvatar({creatorAvatarFile, navigation, creatorUID, username, video, rate, categories}) {
+function PressableAvatar({creatorAvatarFile, navigation, creatorUID, username, video, rate, categories, disabled}) {
     return (
-        <TouchableOpacity onPress={() => navigation.navigate("BookingForm", {creatorUID, username, video, rate, category: categories[0]})} style={styles.pressableAvatar}>
-            <Image style={styles.bookingIcon} source={require('../assets/booking_icon.png')} />
+        <TouchableOpacity disabled={disabled} onPress={() => navigation.navigate("BookingForm", {creatorUID, username, video, rate, category: categories[0]})} style={styles.pressableAvatar}>
+            {!disabled && <Image style={styles.bookingIcon} source={require('../assets/booking_icon.png')} />}
             <Avatar
                 width={54}
                 height={54}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, Text, View, StyleSheet, TouchableOpacity, Dimensions, TextInput, KeyboardAvoidingView} from 'react-native';
+import {SafeAreaView, Text, View, StyleSheet, TouchableOpacity, Dimensions, TextInput, KeyboardAvoidingView, ScrollView} from 'react-native';
 import {useFonts} from 'expo-font';
 import fonts from '../assets/fonts/fonts';
 import {Video} from 'expo-av';
@@ -103,7 +103,7 @@ export default function BookingForm({route, navigation}) {
         <>
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
                 <SafeAreaView style={{justifyContent: 'flex-end'}}>
-                    <View style={styles.container}>
+                    <ScrollView style={styles.container}>
                         <Text style={[styles.text, styles.headerText, {marginBottom: 12.2}]}>Book a call</Text>
                         <Text style={[styles.text, styles.subheaderText, {marginBottom: 12.2}]}>@{username}</Text>
                         <Text style={[styles.text, {marginBottom: 19.5}]}>Select an available time slot!</Text>
@@ -162,7 +162,7 @@ export default function BookingForm({route, navigation}) {
                         >
                             <Text style={[styles.text, styles.subheaderText, {color: disableSubmit ? '#9FA0BD' : 'black'}]}>book</Text>
                         </TouchableOpacity>
-                    </View>
+                    </ScrollView>
                 </SafeAreaView>
             </KeyboardAvoidingView>
         </>
@@ -214,7 +214,7 @@ const TimeSlot = ({value, onPress, selected, disabled = false, width}) => (
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 48,
-        paddingTop: 24,
+        height: Dimensions.get('window').height,
     },
     flexContainer: {
         display: 'flex',
