@@ -47,9 +47,6 @@ export default function SearchModal ({onSearch, route, navigation}) {
         navigation.navigate("Home");
     }
 
-    // console.log(">>>> type: ", route.params.type);
-    // TODO: depending on type render different search recs idk
-
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.searchInputContainer} >

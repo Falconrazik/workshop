@@ -1,0 +1,248 @@
+import React from 'react';
+import {SafeAreaView, Text, View, StyleSheet, TouchableOpacity, Dimensions, TextInput, KeyboardAvoidingView} from 'react-native';
+import {useFonts} from 'expo-font';
+import fonts from '../assets/fonts/fonts';
+import {Video} from 'expo-av';
+import { db, auth } from '../firebase';
+import {arrayUnion} from "firebase/firestore";
+
+
+export default function BookingForm({route, navigation}) {
+
+    const {creatorUID, username, video, rate, category} = route.params;
+
+    const [duration, setDuration] = React.useState('');
+    const [dateTime, setDateTime] = React.useState('');
+    const [notes, setNotes] = React.useState('');
+
+    const userUID = auth.currentUser?.uid;
+
+    const [fontsLoaded] = useFonts(fonts);
+    if (!fontsLoaded) {
+        return null;
+    }
+
+    const onSubmit = () => {
+        const daysAhead = parseInt(dateTime.split(' ')[0]);
+        const secondsOffset = parseInt(dateTime.split(' ')[1]);
+        const timeStamp = 0;
+
+        try {
+            db.collection("users").doc(creatorUID).update({
+                bookings: arrayUnion({
+                    duration: parseInt(duration),
+                    startTime: timeStamp,
+                    status: "pending",
+                    rate,
+                    userUID,
+                    category,
+                    creatorUserName: username,
+                })
+            })
+                .then(() => {
+                    db.collection("users").doc(userUID).update({
+                        bookings: arrayUnion({
+                            duration: parseInt(duration),
+                            startTime: timeStamp,
+                            status: "pending",
+                            rate,
+                            userUID,
+                            category,
+                            creatorUserName: username,
+                        })
+                    }).then(() => {
+                        navigation.goBack();
+                    })
+                })
+                .catch((error) => {
+
+                });
+        } catch (e) {
+            console.error("Error adding document: " + e);
+        }
+    }
+
+    const dateTimeSlotWidth = (Dimensions.get('window').width - 46 * 2) / 3 - 6;
+
+    const DURATIONS = [
+        '30 mins',
+        '45 mins',
+        '60 mins',
+    ];
+
+    const TIMES = [
+        '10:00 AM',
+        '4:30 PM',
+        '5:00 PM',
+    ];
+
+    const SECONDS_TO_ADD = [
+        36000,
+        59400,
+        61200,
+    ];
+
+    const WEEKDAYS = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+    ];
+    const tomorrow = WEEKDAYS[(new Date((new Date()).getTime() + 24 * 60 * 60 * 1000)).getDay()];
+    const dayAfterTomorrow = WEEKDAYS[(new Date((new Date()).getTime() + 48 * 60 * 60 * 1000)).getDay()];
+
+    const videoWidth = (Dimensions.get('window').width - 46 * 2 - 24) / 3;
+    const notesWidth = video ? videoWidth * 2 : Dimensions.get('window').width - 46 * 2;
+
+    const disableSubmit = !duration || !dateTime;
+
+    return (
+        <>
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+                <SafeAreaView style={{justifyContent: 'flex-end'}}>
+                    <View style={styles.container}>
+                        <Text style={[styles.text, styles.headerText, {marginBottom: 12.2}]}>Book a call</Text>
+                        <Text style={[styles.text, styles.subheaderText, {marginBottom: 12.2}]}>@{username}</Text>
+                        <Text style={[styles.text, {marginBottom: 19.5}]}>Select an available time slot!</Text>
+                        <View style={[styles.flexContainer, {marginBottom: 39}]}>
+                            {DURATIONS.map(d => (
+                                <DateSlot value={d} width={dateTimeSlotWidth} selected={duration === d} onPress={() => setDuration(d)}/>
+                            ))}
+                        </View>
+                        <Text style={[styles.text, styles.subheaderText, {marginBottom: 12}]}>Today</Text>
+                        <View style={[styles.flexContainer, {marginBottom: 29}]}>
+                            {TIMES.map((t, index) => (
+                                <TimeSlot disabled={!duration} value={t} width={dateTimeSlotWidth} selected={dateTime === `0 ${SECONDS_TO_ADD[index]}`} onPress={() => setDateTime(`0 ${SECONDS_TO_ADD[index]}`)} />
+                            ))}
+                        </View>
+                        <Text style={[styles.text, styles.subheaderText, {marginBottom: 12}]}>{tomorrow}</Text>
+                        <View style={[styles.flexContainer, {marginBottom: 29}]}>
+                            {TIMES.map((t, index) => (
+                                <TimeSlot disabled={!duration} value={t} width={dateTimeSlotWidth} selected={dateTime === `1 ${SECONDS_TO_ADD[index]}`} onPress={() => setDateTime(`1 ${SECONDS_TO_ADD[index]}`)} />
+                            ))}
+                        </View>
+                        <Text style={[styles.text, styles.subheaderText, {marginBottom: 12}]}>{dayAfterTomorrow}</Text>
+                        <View style={[styles.flexContainer, {marginBottom: 29}]}>
+                            {TIMES.map((t, index) => (
+                                <TimeSlot disabled={!duration} value={t} width={dateTimeSlotWidth} selected={dateTime === `2 ${SECONDS_TO_ADD[index]}`} onPress={() => setDateTime(`2 ${SECONDS_TO_ADD[index]}`)} />
+                            ))}
+                        </View>
+                        <View style={[styles.flexContainer, {marginBottom: 39}]}>
+                            {video && (
+                                <View>
+                                    <Text style={[styles.text, styles.subheaderText, {marginBottom: 10}]}>Link</Text>
+                                    <Video source={video} resizeMode="cover" style={{width: videoWidth, height: 123, borderRadius: 8}} />
+                                </View>
+                            )}
+
+                            <View>
+                                <Text style={[styles.text, styles.subheaderText, {marginBottom: 10}]}>Notes (optional)</Text>
+                                <TextInput
+                                    multiline
+                                    style={[{padding: 12, borderRadius: 8, width: notesWidth, height: 123, backgroundColor: 'white', fontFamily: 'text', fontSize: 17}]}
+                                    onChange={setNotes}
+                                />
+                            </View>
+                        </View>
+                        <TouchableOpacity
+                            onPress={onSubmit}
+                            disabled={disableSubmit}
+                            style={{
+                                alignSelf: 'flex-end',
+                                backgroundColor: disableSubmit ? '#D3D0E5' : '#1ADDA8',
+                                paddingVertical: 6,
+                                alignItems: 'center',
+                                borderRadius: 18,
+                                width: 92,
+                                height: 34
+                            }}
+                        >
+                            <Text style={[styles.text, styles.subheaderText, {color: disableSubmit ? '#9FA0BD' : 'black'}]}>book</Text>
+                        </TouchableOpacity>
+                    </View>
+                </SafeAreaView>
+            </KeyboardAvoidingView>
+        </>
+    );
+}
+
+const DateSlot = ({value, onPress, selected, disabled = false, width}) => (
+    <TouchableOpacity
+        style={[
+            styles.dateTimeSlotButton,
+            {backgroundColor: disabled ? '#D3D0E5' : (selected ? '#5A83FF' : '#E2E9FE')},
+            {width},
+        ]}
+        disabled={disabled}
+        onPress={onPress}
+    >
+        <Text
+            style={[
+                styles.dateTimeSlotText,
+                {color: disabled ? '#9FA0BD' : (selected ? '#E2E9FE' : '#5A83FF')}
+            ]}
+        >
+            {value}
+        </Text>
+    </TouchableOpacity>
+);
+
+const TimeSlot = ({value, onPress, selected, disabled = false, width}) => (
+    <TouchableOpacity
+        style={[
+            styles.dateTimeSlotButton,
+            {backgroundColor: disabled ? '#D3D0E5' : (selected ? '#6248FF' : '#D3D0E5')},
+            {width},
+        ]}
+        disabled={disabled}
+        onPress={onPress}
+    >
+        <Text
+            style={[
+                styles.dateTimeSlotText,
+                {color: disabled ? '#9FA0BD' : (selected ? '#E2E9FE' : '#9FA0BD')}
+            ]}
+        >
+            {value}
+        </Text>
+    </TouchableOpacity>
+);
+
+const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 48,
+        paddingTop: 24,
+    },
+    flexContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    text: {
+        color: 'white',
+        fontFamily: 'text',
+        fontSize: 17,
+    },
+    headerText: {
+        fontFamily: 'textBold',
+        fontSize: 32,
+    },
+    subheaderText: {
+        fontFamily: 'textBold',
+        fontSize: 16,
+    },
+    dateTimeSlotButton: {
+        height: 43,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 8,
+    },
+    dateTimeSlotText: {
+        fontFamily: 'textBold',
+        fontSize: 14,
+    },
+})
