@@ -154,7 +154,7 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
                                 <TextInput
                                     multiline
                                     style={[{padding: 12, borderRadius: 8, width: notesWidth, height: 123, backgroundColor: 'white', fontFamily: 'text', fontSize: 17}]}
-                                    onChange={setNotes}
+                                    onChangeText={setNotes}
                                 />
                             </View>
                         </View>
