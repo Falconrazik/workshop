@@ -23,13 +23,13 @@ export default function SearchModal ({onSearch, route, navigation}) {
 
     const CATEGORY_RECS = [
         {
-            value: 'power-lifting',
+            value: 'fitness',
             imageComponent: <Image source={require("../assets/icons/powerlifting.png")} style={{width: 22, height: 22}} />,
             backgroundColor: '#1ADDA8',
 
         },
         {
-            value: 'bitcoin',
+            value: 'invest',
             imageComponent: <Image source={require("../assets/icons/bitcoin.png")} style={{width: 20, height: 20}} />,
             backgroundColor: '#6248FF',
 

@@ -6,11 +6,12 @@ import { db, auth, storage } from '../../firebase';
 import Avatar from '../../components/avatar';
 import fonts from '../../assets/fonts/fonts';
 import { useFonts } from 'expo-font';
+import { method } from 'lodash';
 
 const UserProfile = ( {uid, navigation} ) => {
-    const [methodType, setMethodType] = useState(false);
-    const chooseSelection = () => {
-            setMethodType(!methodType);
+    const [methodType, setMethodType] = useState('applePay');
+    const chooseSelection = (type) => {
+        setMethodType(type);
     }
 
     const [imageURL, setImage] = useState('');
@@ -95,16 +96,22 @@ const UserProfile = ( {uid, navigation} ) => {
             {showBio()}
             <Text style={styles.paymentInfo}>Payment info</Text>
 
-            <TouchableOpacity style={styles.paymentContainer}>
+            <TouchableOpacity 
+                style={styles.paymentContainer}
+                onPress={() => chooseSelection('card')}
+            >
                 <Image style={styles.paymentLogo} source={require("../../assets/credit-card.png")}/>
                 <Text style={styles.paymentType}>**** **** **** XXXX</Text>
                 <Image style={[styles.tinyLogo, methodType !== "card" && styles.disableSelection]} source={require("../../assets/selection-check.png")}/>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.paymentContainer}>
+            <TouchableOpacity 
+                style={styles.paymentContainer}
+                onPress={() => chooseSelection('applePay')}
+            >
                 <Image style={styles.paymentLogo} source={require("../../assets/apple-logo.png")}/>
                 <Text style={styles.paymentType}>Apple Pay</Text>
-                <Image style={[styles.tinyLogo]} source={require("../../assets/selection-check.png")}/>
+                <Image style={[styles.tinyLogo, methodType !== 'applePay' && styles.disableSelection]} source={require("../../assets/selection-check.png")}/>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.paymentContainer}>
