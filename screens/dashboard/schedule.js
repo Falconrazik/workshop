@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, ScrollView, Image, RefreshControl } from 'react
 import React, {useState, useEffect} from 'react'
 import fonts from '../../assets/fonts/fonts'
 import { useFonts } from 'expo-font'
-import CONST from '../../CONST'
 import BookDetail from '../../components/bookDetail'
 import { db, auth } from '../../firebase'
 
@@ -10,8 +9,7 @@ const Schedule = () => {
   const [userDetail, setUserDetail] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  const fetchUserDetails = () => {
-    setRefreshing(true);
+  const fetchUserDetails = (cb) => {
     var docRef = db.collection("users").doc(auth.currentUser.uid);
     docRef.get().then((doc) => {
       if (doc.exists) {
@@ -20,17 +18,26 @@ const Schedule = () => {
         // doc.data() will be undefined in this case
         console.log("No such document!");
       }
-      setRefreshing(false);
+      if (cb) {
+        cb();
+      }
     }).catch((error) => {
       console.log("Error getting document:", error);
     });
   }
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchUserDetails(() => setRefreshing(false));
+  }
+
   useEffect(() => {
     fetchUserDetails();
+    const intervalID = setInterval(() => {
+      fetchUserDetails();
+    }, 10000);
+    return () => clearInterval(intervalID);
   }, [] );
-
-
 
   const [fontsLoaded] = useFonts(fonts);
   if (!fontsLoaded) {
@@ -67,7 +74,7 @@ const Schedule = () => {
               colors={['white']}
               tintColor="white"
               refreshing={refreshing}
-              onRefresh={fetchUserDetails}
+              onRefresh={onRefresh}
           />
         }
     >
