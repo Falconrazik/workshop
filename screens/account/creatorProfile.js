@@ -18,6 +18,7 @@ const CATEGORY_COLORS = [
 ];
 
 const CreatorProfile = ( {uid, route, navigation} ) => {
+    const [userUID, setUID] = useState('');
     uid = uid ?? route.params.uid;
 
     const [methodType, setMethodType] = useState(false);
@@ -132,8 +133,13 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
             ));
     }
 
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            setUID(user.uid);
+        }
+      });
     const showButton = () => {
-        if (auth.currentUser?.uid === uid) {
+        if (userUID === uid) {
             return  <View style={styles.buttonContainer}>
                         <TouchableOpacity
                             style={[styles.button, {backgroundColor: "#E2E9FE"}]}
@@ -155,6 +161,37 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
                    </View>
         }
     }
+
+    const showNavBar = () => (
+        auth.currentUser?.uid === uid
+            ? (
+                <View style={{backgroundColor: 'transparent', height: 65, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingHorizontal: 29}}>
+                    <TouchableOpacity>
+                        <Image
+                            style={{width: 22, height: 26.17, marginRight: 14}}
+                            source={require('../../assets/edit_icon.png')}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Image
+                            style={{width: 17, height: 21}}
+                            source={require('../../assets/hamburger_icon.png')}
+                        />
+                    </TouchableOpacity>
+
+                </View>
+            ) : (
+                <View style={{backgroundColor: 'transparent', height: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 29}}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Image
+                            style={{width: 25, height: 20}}
+                            source={require('../../assets/back_arrow.png')}
+                        />
+                    </TouchableOpacity>
+
+                </View>
+            )
+    );
 
     let categories = ['yoga', 'pilates', 'calisthenics']
 

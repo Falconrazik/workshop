@@ -1,5 +1,5 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import DashboardStackNavigator from './dashboard/dashboardStackNavigator';
+import DashboardTopStackNavigator from './dashboard/dashboardTopStackNavigator';
 import AccountStackNavigator from './accountStackNavigator';
 import React from 'react';
 import {Image} from 'react-native';
@@ -7,6 +7,7 @@ import _ from 'lodash';
 import CONST from '../CONST';
 import CustomStatusBar from '../components/customStatusBar';
 import DiscoverShortsStackNavigator from './discover/discoverShortsStackNavigator';
+import DashboardStackNavigator from './dashboard/dashboardStackNavigator';
 
 export default function HomeTabNavigator () {
     const Tab = createBottomTabNavigator();

@@ -4,9 +4,27 @@ import fonts from '../../assets/fonts/fonts'
 import { useFonts } from 'expo-font'
 import BookDetail from '../../components/bookDetail'
 import { db, auth } from '../../firebase'
+import { render } from 'react-dom'
 
-const Schedule = () => {
+const Schedule = ({navigation}) => {
   const [userDetail, setUserDetail] = useState(null);
+  
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      var docRef = db.collection("users").doc(auth.currentUser.uid);
+      docRef.get().then((doc) => {
+          if (doc.exists) {
+              setUserDetail(doc.data());
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch((error) => {
+          console.log("Error getting document:", error);
+      });
+    }
+  });
+  
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchUserDetails = (cb) => {
@@ -43,24 +61,27 @@ const Schedule = () => {
   if (!fontsLoaded) {
       return null;
   }
-
+  
   let uid = auth.currentUser.uid;
 
-  const getUpcomingBooking = () => {
+  const getBooking = (type) => {
     if (userDetail) {
+      let userType = userDetail.userType;
       let bookings = userDetail.bookings;
       if (bookings) {
         return bookings.map((item) => {
-          let uid = item.creatorUID;
-          let creatorName = item.creatorUserName;
-          let category = item.category;
-          let date = item.startTime.toDate();
-          let duration = item.duration;
-          // date.setHours(date.getHours(), date.getMinutes() + duration,0,0);
-
-          return (
-            <BookDetail key={item} uid={uid} creatorName={creatorName}  startTime={date} duration={duration} category={category} color={"#D0FFF2"}/>
-          );
+          if (item.status === type) {
+            let uid = item.userUID;
+            let name = item.name;
+            let category = item.category;
+            let date = item.startTime.toDate();
+            let duration = item.duration;
+            let rate = item.rate;
+          
+            return (
+              <BookDetail navigation={navigation} key={item} uid={uid} name={name} startTime={date} duration={duration} category={category} rate={rate} type={type} userType={userType} color={"#D0FFF2"}/>
+            );
+          }
         });
       }
     }
@@ -81,22 +102,24 @@ const Schedule = () => {
       <View style={{flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#000000"}}>
         <View style={styles.scheduleContainer}>
           <View style={{flexDirection: "row", flex: 1, justifyContent: "space-between"}}>
-            <Text style={styles.title}>Upcoming</Text>
+            <Text style={styles.title}>Pending</Text>
             <Image source={require("../../assets/calendar.png")} style={styles.logo}/>
           </View>
 
           <View style={{flex: 1, flexWrap: "wrap", flexDirection: "row", justifyContent: "space-between"}}>
-            {getUpcomingBooking()}
+            {getBooking("pending")}
           </View>
 
         </View>
 
         <View style={styles.scheduleContainer}>
           <View style={{flexDirection: "row", flex: 1, justifyContent: "space-between"}}>
-            <Text style={styles.title}>New</Text>
+            <Text style={styles.title}>Upcoming</Text>
             <Image source={require("../../assets/bell.png")} style={styles.logo}/>
           </View>
-          <Text style={{height: 100, width: "100%"}}>Upcoming</Text>
+          <View style={{flex: 1, flexWrap: "wrap", flexDirection: "row", justifyContent: "space-between"}}>
+            {getBooking("upcoming")}
+          </View>
         </View>
 
         <View style={styles.scheduleContainer}>
@@ -104,7 +127,9 @@ const Schedule = () => {
             <Text style={styles.title}>Completed</Text>
             <Image source={require("../../assets/chart.png")} style={styles.logo}/>
           </View>
-          <Text style={{height: 100, width: "100%"}}>Upcoming</Text>
+          <View style={{flex: 1, flexWrap: "wrap", flexDirection: "row", justifyContent: "space-between"}}>
+            {getBooking("completed")}
+          </View>
         </View>
 
         <View style={[styles.scheduleContainer, {marginBottom: "10%"}]}>
