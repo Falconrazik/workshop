@@ -45,11 +45,11 @@ const BookedCreator = ({route, navigation}) => {
         if (userDetail) {
             let creatorSet = new Set();
             let bookings = userDetail.bookings;
-            return bookings.map((item) => {
+            return bookings.map((item, index) => {
                 if (item.status === "upcoming" || item.status === "completed") {
                     if (!creatorSet.has(item.userUID)) {
                         creatorSet.add(item.userUID);
-                        return <CreatorCard uid={item.userUID} type={"message"} navigation={navigation}/>;
+                        return <CreatorCard key={index} uid={item.userUID} type={"message"} navigation={navigation}/>;
                     }
                 }
             });
