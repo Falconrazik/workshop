@@ -9,6 +9,7 @@ import { useFonts } from 'expo-font';
 import CategoryCapsule from '../../components/categoryCapsule';
 import { COLORS } from '../../CONST';
 import videos from '../../videos';
+import NavBar from '../../components/navbar';
 
 const CATEGORY_COLORS = [
     COLORS.BLUE_LIGHT,
@@ -37,7 +38,7 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
           .catch((error) => {
             // Handle any errors
           });
-    }, [] );
+    }, []);
 
     const [userDetail, setUser] = useState(null);
     useEffect(() => {
@@ -61,7 +62,6 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
     }
 
     const logOut = () => {
-
         auth.signOut().then(() => {
             // Sign-out successful.
                 // navigation.navigate('Landing')
@@ -153,6 +153,7 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
         else {
             return <View style={styles.buttonContainer}>
                     <TouchableOpacity
+                        onPress={() => navigation.navigate("BookingForm", {creatorUID: uid, username: userDetail.userName, rate: userDetail.rate, category: userDetail.categories[0]})}
                         style={[styles.button, {padding: 10, backgroundColor: "#1ADDA8", shadowColor: '#1ADDA8', shadowOpacity: 0.5, shadowRadius: 20}]}
                     >
                         <Text style={[styles.text, styles.textLarge]}>book</Text>
@@ -198,7 +199,7 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
         <>
         <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
         {/*<View>*/}
-        {showNavBar()}
+        <NavBar navigation={navigation} uid={uid} />
         <ScrollView style={styles.container}>
             <View style={{alignItems: "center", flex: 1, marginTop: "12%"}}>
                 <View style={styles.userInfoContainer}>

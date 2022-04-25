@@ -1,8 +1,8 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import React, {useEffect, useState} from 'react'
 import fonts from '../assets/fonts/fonts'
-import { useFonts } from 'expo-font'
-import { storage } from '../firebase'
+import {useFonts} from 'expo-font'
+import {storage} from '../firebase'
 import Avatar from './avatar'
 
 const BookDetail = ( {navigation, uid, name, startTime , duration, category, rate, type, userType, color} ) => {
@@ -107,42 +107,42 @@ const showDate = () => {
 export default BookDetail;
 
 const styles = StyleSheet.create({
-  container: {
-    width: "49%",
-    padding: 10,
-    borderRadius: 10,
-    marginTop: 10
-  },
+    container: {
+        width: "49%",
+        padding: 10,
+        borderRadius: 10,
+        marginTop: 10
+    },
 
-  topView: {
-    flex: 1,
-    flexDirection: "row",
-  },
+    topView: {
+        flex: 1,
+        flexDirection: "row",
+    },
 
-  bottomView: {
-    flex: 1,
-    flexDirection: "row",
-    marginTop: "5%"
-  },
+    bottomView: {
+        flex: 1,
+        flexDirection: "row",
+        marginTop: "5%"
+    },
 
-  date: {
-    fontFamily: "textBold",
-    fontSize: 16,
-  },
+    date: {
+        fontFamily: "textBold",
+        fontSize: 16,
+    },
 
-  timeStamp: {
-    fontFamily: "text",
-    fontSize: 14
-  },
+    timeStamp: {
+        fontFamily: "text",
+        fontSize: 14
+    },
 
-  logo: {
-    width: 45,
-    height: 45,
-  },
+    logo: {
+        width: 45,
+        height: 45,
+    },
 
-  textSmall: {
-    fontFamily: 'text',
-    fontSize: 12
-  },
+    textSmall: {
+        fontFamily: 'text',
+        fontSize: 12
+    },
 
 })

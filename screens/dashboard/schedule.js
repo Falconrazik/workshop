@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, RefreshControl } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import fonts from '../../assets/fonts/fonts'
 import { useFonts } from 'expo-font'
-import CONST from '../../CONST'
 import BookDetail from '../../components/bookDetail'
 import { db, auth } from '../../firebase'
 import { render } from 'react-dom'
 
 const Schedule = ({navigation}) => {
   const [userDetail, setUserDetail] = useState(null);
+  
   auth.onAuthStateChanged((user) => {
     if (user) {
       var docRef = db.collection("users").doc(auth.currentUser.uid);
@@ -24,11 +24,45 @@ const Schedule = ({navigation}) => {
       });
     }
   });
+  
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchUserDetails = (cb) => {
+    var docRef = db.collection("users").doc(auth.currentUser.uid);
+    docRef.get().then((doc) => {
+      if (doc.exists) {
+        setUserDetail(doc.data());
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+      if (cb) {
+        cb();
+      }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+  }
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchUserDetails(() => setRefreshing(false));
+  }
+
+  useEffect(() => {
+    fetchUserDetails();
+    const intervalID = setInterval(() => {
+      fetchUserDetails();
+    }, 10000);
+    return () => clearInterval(intervalID);
+  }, [] );
 
   const [fontsLoaded] = useFonts(fonts);
   if (!fontsLoaded) {
       return null;
   }
+  
+  let uid = auth.currentUser.uid;
 
   const getBooking = (type) => {
     if (userDetail) {
@@ -54,18 +88,28 @@ const Schedule = ({navigation}) => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+              colors={['white']}
+              tintColor="white"
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+          />
+        }
+    >
       <View style={{flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#000000"}}>
         <View style={styles.scheduleContainer}>
           <View style={{flexDirection: "row", flex: 1, justifyContent: "space-between"}}>
             <Text style={styles.title}>Pending</Text>
             <Image source={require("../../assets/calendar.png")} style={styles.logo}/>
           </View>
-          
+
           <View style={{flex: 1, flexWrap: "wrap", flexDirection: "row", justifyContent: "space-between"}}>
             {getBooking("pending")}
           </View>
-    
+
         </View>
 
         <View style={styles.scheduleContainer}>

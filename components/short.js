@@ -8,7 +8,7 @@ import {Video} from 'expo-av';
 import {COLORS} from '../CONST';
 import CategoryCapsule from './categoryCapsule';
 import fonts from '../assets/fonts/fonts';
-import {db, storage} from '../firebase';
+import {auth, db, storage} from '../firebase';
 import Avatar from './avatar';
 
 const CATEGORY_COLORS = [
@@ -37,12 +37,13 @@ export default class Short extends React.PureComponent {
 
     async _loadProfile() {
         class User {
-            constructor (uid, userType, userName, bio, categories) {
+            constructor (uid, userType, userName, bio, categories, rate) {
                 this.uid = uid;
                 this.userType = userType;
                 this.userName = userName;
                 this.bio = bio;
                 this.categories = categories;
+                this.rate = rate;
             }
             toString() {
                 return this.uid + ', ' + this.userType;
@@ -57,11 +58,12 @@ export default class Short extends React.PureComponent {
                     userName: user.userName,
                     bio: user.bio,
                     categories: user.categories,
+                    rate: user.rate,
                 };
             },
             fromFirestore: function(snapshot, options){
                 const data = snapshot.data(options);
-                return new User(data.uid, data.userType, data.userName, data.bio, data.categories);
+                return new User(data.uid, data.userType, data.userName, data.bio, data.categories, data.rate);
             }
         };
 
@@ -110,6 +112,8 @@ export default class Short extends React.PureComponent {
                                 categories={this.state.profile.categories}
                                 creatorUID={this.creatorUID}
                                 navigation={this.props.navigation}
+                                video={this.props.video ?? this.props.route.params.video}
+                                rate={this.state.profile.rate}
                             />
                             <Video
                                 style={[styles.video, {
@@ -136,11 +140,11 @@ export default class Short extends React.PureComponent {
 
 }
 
-function ShortOverlay({navigation, creatorUID, creatorAvatarFile, creatorUsername, creatorBio, categories}) {
+function ShortOverlay({navigation, creatorUID, creatorAvatarFile, creatorUsername, creatorBio, categories, video, rate}) {
     const videoHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
     return (
         <View style={[styles.shortOverlay, {height: videoHeight}]}>
-            <PressableAvatar creatorAvatarFile={creatorAvatarFile} />
+            <PressableAvatar disabled={creatorUID === auth.currentUser?.uid} categories={categories} rate={rate} video={video} creatorAvatarFile={creatorAvatarFile} navigation={navigation} username={creatorUsername} creatorUID={creatorUID} />
             <TouchableOpacity onPress={() => navigation.navigate("CreatorProfile", {uid: creatorUID, navigation})}>
                 <Text style={styles.creatorUsernameText}>@{creatorUsername}</Text>
             </TouchableOpacity>
@@ -160,10 +164,10 @@ function ShortOverlay({navigation, creatorUID, creatorAvatarFile, creatorUsernam
     );
 }
 
-function PressableAvatar({creatorAvatarFile}) {
+function PressableAvatar({creatorAvatarFile, navigation, creatorUID, username, video, rate, categories, disabled}) {
     return (
-        <TouchableOpacity style={styles.pressableAvatar}>
-            <Image style={styles.bookingIcon} source={require('../assets/booking_icon.png')} />
+        <TouchableOpacity disabled={disabled} onPress={() => navigation.navigate("BookingForm", {creatorUID, username, video, rate, category: categories[0]})} style={styles.pressableAvatar}>
+            {!disabled && <Image style={styles.bookingIcon} source={require('../assets/booking_icon.png')} />}
             <Avatar
                 width={54}
                 height={54}
@@ -172,7 +176,7 @@ function PressableAvatar({creatorAvatarFile}) {
                 src={creatorAvatarFile}
             />
         </TouchableOpacity>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
