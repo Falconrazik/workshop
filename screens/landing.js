@@ -8,17 +8,16 @@ import CustomStatusBar from '../components/customStatusBar';
 import { auth } from '../firebase';
 
 export default function Landing ( {navigation} ) {
-    useEffect(() => {
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/firebase.User
-                navigation.navigate('Home');
-            } else {
-                // User is signed out
-            }
-        });
-    }, [])
+
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/firebase.User
+            navigation.navigate('Home');
+        } else {
+            // User is signed out
+        }
+    });
 
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {

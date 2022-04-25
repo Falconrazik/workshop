@@ -46,6 +46,22 @@ const RequesDetail = ( {route, navigation} ) => {
     }
     });
 
+    const [userDetail, setUser] = useState(null);
+    useEffect(() => {
+        var docRef = db.collection("users").doc(uid);
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                setUser(doc.data());
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+    
+    }, [] );
+
     const declineRequest = () => {
         let bookings = creatorDetail.bookings;
         for (var i = 0; i < bookings.length; i++) {
@@ -88,9 +104,15 @@ const RequesDetail = ( {route, navigation} ) => {
         });
         
         // Update user bookings
+        let userBookings = userDetail.bookings;
+        userBookings.map((item) => {
+            if (item.userUID === auth.currentUser.uid) {
+                item.status = "upcoming";
+            }
+        });
         var userRef = db.collection("users").doc(uid);
         userRef.update({
-            bookings: bookings
+            bookings: userBookings
         })
         .then(() => {
             console.log("Booking successfully updated!");
@@ -100,22 +122,6 @@ const RequesDetail = ( {route, navigation} ) => {
             console.error("Error updating booking: ", error);
         });
     }
-
-    const [userDetail, setUser] = useState(null);
-    useEffect(() => {
-        var docRef = db.collection("users").doc(uid);
-        docRef.get().then((doc) => {
-            if (doc.exists) {
-                setUser(doc.data());
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
-    
-    }, [] );
 
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {

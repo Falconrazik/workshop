@@ -74,7 +74,10 @@ const showDate = () => {
       style={[styles.container, {backgroundColor: color}]}
       onPress={() => {
         if (userType === "teach" && type === "pending")
-          navigation.navigate("RequestDetail", {uid: uid, date: date, time: time, rate: rate, navigation})
+          navigation.navigate("RequestDetail", {uid: uid, date: date, time: time, rate: rate, navigation});
+
+        if (type === "upcoming")
+          navigation.navigate("VideoCall", {uid: uid, navigation});
       }}
     >
       <View style={styles.topView}>
