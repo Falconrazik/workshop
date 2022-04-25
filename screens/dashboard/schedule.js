@@ -9,22 +9,6 @@ import { render } from 'react-dom'
 const Schedule = ({navigation}) => {
   const [userDetail, setUserDetail] = useState(null);
   
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      var docRef = db.collection("users").doc(auth.currentUser.uid);
-      docRef.get().then((doc) => {
-          if (doc.exists) {
-              setUserDetail(doc.data());
-          } else {
-              // doc.data() will be undefined in this case
-              console.log("No such document!");
-          }
-      }).catch((error) => {
-          console.log("Error getting document:", error);
-      });
-    }
-  });
-  
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchUserDetails = (cb) => {
@@ -61,15 +45,13 @@ const Schedule = ({navigation}) => {
   if (!fontsLoaded) {
       return null;
   }
-  
-  let uid = auth.currentUser.uid;
 
   const getBooking = (type) => {
     if (userDetail) {
       let userType = userDetail.userType;
       let bookings = userDetail.bookings;
       if (bookings) {
-        return bookings.map((item) => {
+        return bookings.map((item, index) => {
           if (item.status === type) {
             let uid = item.userUID;
             let name = item.name;
@@ -77,9 +59,10 @@ const Schedule = ({navigation}) => {
             let date = item.startTime.toDate();
             let duration = item.duration;
             let rate = item.rate;
+            let notes = item.notes;
           
             return (
-              <BookDetail navigation={navigation} key={item} uid={uid} name={name} startTime={date} duration={duration} category={category} rate={rate} type={type} userType={userType} color={"#D0FFF2"}/>
+              <BookDetail navigation={navigation} key={index} uid={uid} name={name} startTime={date} duration={duration} category={category} rate={rate} notes={notes} type={type} userType={userType} color={"#D0FFF2"}/>
             );
           }
         });

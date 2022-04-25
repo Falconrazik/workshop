@@ -38,7 +38,7 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
                         bookings: firebase.firestore.FieldValue.arrayUnion({
                             duration: parseInt(duration),
                             status: "pending",
-                            creatorUserName: doc.data().userName,
+                            name: doc.data().userName,
                             rate,
                             userUID,
                             category,
@@ -51,9 +51,9 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
                                 bookings: firebase.firestore.FieldValue.arrayUnion({
                                     duration: parseInt(duration),
                                     status: "pending",
-                                    creatorUserName: username,
+                                    name: username,
                                     rate,
-                                    userUID,
+                                    userUID: creatorUID,
                                     category,
                                     startTime,
                                     notes

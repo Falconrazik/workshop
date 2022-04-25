@@ -1,5 +1,10 @@
 const videos = [
     {
+        file: require('./assets/videos/humphreytalks/humphreytalks_1.mp4'),
+        creatorUID: 'eqcLHaUvgEX2BtBJmXrojzg16eI3',
+        thumbnail: require('./assets/videos/humphreytalks/humphreytalks_1.png'),
+    },
+    {
         file: require('./assets/videos/krysteldallas_yoga/krysteldallas_yoga_1.mp4'),
         creatorUID: 'zL2atRlPjST2fUSpMwWt',
         thumbnail: require('./assets/videos/krysteldallas_yoga/krysteldallas_yoga_1.png'),
@@ -10,9 +15,19 @@ const videos = [
         thumbnail: require('./assets/videos/_joeandrews/_joeandrews_1.png'),
     },
     {
+        file: require('./assets/videos/humphreytalks/humphreytalks_2.mp4'),
+        creatorUID: 'eqcLHaUvgEX2BtBJmXrojzg16eI3',
+        thumbnail: require('./assets/videos/humphreytalks/humphreytalks_2.png'),
+    },
+    {
         file: require('./assets/videos/yogawithcali/yogawithcali_3.mp4'),
         creatorUID: 'vw8tG7fojQlo4f4Q3HcI',
         thumbnail: require('./assets/videos/yogawithcali/yogawithcali_3.png'),
+    },
+    {
+        file: require('./assets/videos/humphreytalks/humphreytalks_3.mp4'),
+        creatorUID: 'eqcLHaUvgEX2BtBJmXrojzg16eI3',
+        thumbnail: require('./assets/videos/humphreytalks/humphreytalks_3.png'),
     },
     {
         file: require('./assets/videos/krysteldallas_yoga/krysteldallas_yoga_2.mp4'),

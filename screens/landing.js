@@ -46,7 +46,6 @@ export default function Landing ( {navigation} ) {
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     // Signed in
-                    const user = userCredential.user;
                     navigation.navigate('Home');
                 })
                 .catch((error) => {
