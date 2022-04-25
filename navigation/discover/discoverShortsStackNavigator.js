@@ -4,7 +4,7 @@ import DiscoverTopTabNavigator from './discoverTopTabNavigator';
 import Short from '../../components/short';
 import BookingForm from '../../components/bookingForm';
 
-export default function DiscoverShortsStackNavigator() {
+export default function DiscoverShortsStackNavigator({homeTabNavigation}) {
     const Stack = createNativeStackNavigator();
 
     return (
@@ -34,7 +34,9 @@ export default function DiscoverShortsStackNavigator() {
             >
                 <Stack.Screen
                     name="BookingForm"
-                    component={BookingForm}
+                    children={(props) =>
+                        <BookingForm {...props} homeTabNavigation={homeTabNavigation} />
+                    }
                 />
             </Stack.Group>
 

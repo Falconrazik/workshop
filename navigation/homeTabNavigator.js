@@ -1,9 +1,9 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import DashboardStackNavigator from './dashboard/dashboardStackNavigator';
 import AccountStackNavigator from './accountStackNavigator';
-import DiscoverTopTabNavigator from './discover/discoverTopTabNavigator';
 import React from 'react';
 import {Image} from 'react-native';
+import _ from 'lodash';
 import CONST from '../CONST';
 import CustomStatusBar from '../components/customStatusBar';
 import DiscoverShortsStackNavigator from './discover/discoverShortsStackNavigator';
@@ -24,7 +24,9 @@ export default function HomeTabNavigator () {
             >
                 <Tab.Screen
                     name="Discover"
-                    component={DiscoverShortsStackNavigator}
+                    children={(props) => (
+                        <DiscoverShortsStackNavigator {...(_.omit(props, ['navigation']))} homeTabNavigation={props.navigation} />
+                    )}
                     options={{
                         tabBarIcon: ({focused}) =>
                             focused

@@ -144,7 +144,7 @@ function ShortOverlay({navigation, creatorUID, creatorAvatarFile, creatorUsernam
     const videoHeight = Dimensions.get('window').height - Constants.statusBarHeight - useBottomTabBarHeight();
     return (
         <View style={[styles.shortOverlay, {height: videoHeight}]}>
-            <PressableAvatar disabled={creatorUID === auth.currentUser?.uid} categories={categories} rate={rate} video={video} creatorAvatarFile={creatorAvatarFile} navigation={navigation} username={creatorUsername} />
+            <PressableAvatar disabled={creatorUID === auth.currentUser?.uid} categories={categories} rate={rate} video={video} creatorAvatarFile={creatorAvatarFile} navigation={navigation} username={creatorUsername} creatorUID={creatorUID} />
             <TouchableOpacity onPress={() => navigation.navigate("CreatorProfile", {uid: creatorUID, navigation})}>
                 <Text style={styles.creatorUsernameText}>@{creatorUsername}</Text>
             </TouchableOpacity>

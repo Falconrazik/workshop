@@ -4,16 +4,16 @@ import {useFonts} from 'expo-font';
 import fonts from '../assets/fonts/fonts';
 import {Video} from 'expo-av';
 import { db, auth } from '../firebase';
-import {arrayUnion} from "firebase/firestore";
+import * as firebase from "firebase";
 
-
-export default function BookingForm({route, navigation}) {
-
+export default function BookingForm({route, navigation, homeTabNavigation}) {
     const {creatorUID, username, video, rate, category} = route.params;
 
     const [duration, setDuration] = React.useState('');
     const [dateTime, setDateTime] = React.useState('');
     const [notes, setNotes] = React.useState('');
+    const [userDetail, setUserDetail] = React.useState(null);
+
 
     const userUID = auth.currentUser?.uid;
 
@@ -25,38 +25,47 @@ export default function BookingForm({route, navigation}) {
     const onSubmit = () => {
         const daysAhead = parseInt(dateTime.split(' ')[0]);
         const secondsOffset = parseInt(dateTime.split(' ')[1]);
-        const timeStamp = 0;
+        const startTime = new Date();
+        startTime.setHours(0, 0, 0, 0);
+        startTime.setDate(startTime.getDate() + daysAhead);
+        startTime.setTime(startTime.getTime() + secondsOffset * 1000);
 
         try {
-            db.collection("users").doc(creatorUID).update({
-                bookings: arrayUnion({
-                    duration: parseInt(duration),
-                    startTime: timeStamp,
-                    status: "pending",
-                    rate,
-                    userUID,
-                    category,
-                    creatorUserName: username,
-                })
-            })
-                .then(() => {
-                    db.collection("users").doc(userUID).update({
-                        bookings: arrayUnion({
+            db.collection("users").doc(userUID)
+                .get().then((doc) => {
+                    db.collection("users").doc(creatorUID).update({
+                        bookings: firebase.firestore.FieldValue.arrayUnion({
                             duration: parseInt(duration),
-                            startTime: timeStamp,
                             status: "pending",
+                            creatorUserName: doc.data().userName,
                             rate,
                             userUID,
                             category,
-                            creatorUserName: username,
+                            startTime,
+                            notes
                         })
-                    }).then(() => {
-                        navigation.goBack();
                     })
+                        .then(() => {
+                            db.collection('users').doc(userUID).update({
+                                bookings: firebase.firestore.FieldValue.arrayUnion({
+                                    duration: parseInt(duration),
+                                    status: "pending",
+                                    creatorUserName: username,
+                                    rate,
+                                    userUID,
+                                    category,
+                                    startTime,
+                                    notes
+                                })
+                            }).then(() => {
+                                navigation.goBack();
+                                homeTabNavigation.navigate("Dashboard");
+                            })
+                        })
+                        .catch((error) => {
+                            console.error(error)
+                        });
                 })
-                .catch((error) => {
-
-                });
         } catch (e) {
             console.error("Error adding document: " + e);
         }
@@ -108,26 +117,26 @@ export default function BookingForm({route, navigation}) {
                         <Text style={[styles.text, styles.subheaderText, {marginBottom: 12.2}]}>@{username}</Text>
                         <Text style={[styles.text, {marginBottom: 19.5}]}>Select an available time slot!</Text>
                         <View style={[styles.flexContainer, {marginBottom: 39}]}>
-                            {DURATIONS.map(d => (
-                                <DateSlot value={d} width={dateTimeSlotWidth} selected={duration === d} onPress={() => setDuration(d)}/>
+                            {DURATIONS.map((d, index) => (
+                                <DateSlot key={index} value={d} width={dateTimeSlotWidth} selected={duration === d} onPress={() => setDuration(d)}/>
                             ))}
                         </View>
                         <Text style={[styles.text, styles.subheaderText, {marginBottom: 12}]}>Today</Text>
                         <View style={[styles.flexContainer, {marginBottom: 29}]}>
                             {TIMES.map((t, index) => (
-                                <TimeSlot disabled={!duration} value={t} width={dateTimeSlotWidth} selected={dateTime === `0 ${SECONDS_TO_ADD[index]}`} onPress={() => setDateTime(`0 ${SECONDS_TO_ADD[index]}`)} />
+                                <TimeSlot key={index} disabled={!duration} value={t} width={dateTimeSlotWidth} selected={dateTime === `0 ${SECONDS_TO_ADD[index]}`} onPress={() => setDateTime(`0 ${SECONDS_TO_ADD[index]}`)} />
                             ))}
                         </View>
                         <Text style={[styles.text, styles.subheaderText, {marginBottom: 12}]}>{tomorrow}</Text>
                         <View style={[styles.flexContainer, {marginBottom: 29}]}>
                             {TIMES.map((t, index) => (
-                                <TimeSlot disabled={!duration} value={t} width={dateTimeSlotWidth} selected={dateTime === `1 ${SECONDS_TO_ADD[index]}`} onPress={() => setDateTime(`1 ${SECONDS_TO_ADD[index]}`)} />
+                                <TimeSlot key={index} disabled={!duration} value={t} width={dateTimeSlotWidth} selected={dateTime === `1 ${SECONDS_TO_ADD[index]}`} onPress={() => setDateTime(`1 ${SECONDS_TO_ADD[index]}`)} />
                             ))}
                         </View>
                         <Text style={[styles.text, styles.subheaderText, {marginBottom: 12}]}>{dayAfterTomorrow}</Text>
                         <View style={[styles.flexContainer, {marginBottom: 29}]}>
                             {TIMES.map((t, index) => (
-                                <TimeSlot disabled={!duration} value={t} width={dateTimeSlotWidth} selected={dateTime === `2 ${SECONDS_TO_ADD[index]}`} onPress={() => setDateTime(`2 ${SECONDS_TO_ADD[index]}`)} />
+                                <TimeSlot key={index} disabled={!duration} value={t} width={dateTimeSlotWidth} selected={dateTime === `2 ${SECONDS_TO_ADD[index]}`} onPress={() => setDateTime(`2 ${SECONDS_TO_ADD[index]}`)} />
                             ))}
                         </View>
                         <View style={[styles.flexContainer, {marginBottom: 39}]}>
