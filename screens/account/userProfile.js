@@ -112,6 +112,14 @@ const UserProfile = ( {uid, navigation} ) => {
                 <Text style={[styles.paymentType, styles.purpleText]}>add payment method</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity 
+                style={styles.bookedContainer}
+                onPress={() => navigation.navigate("BookedCreator", {userUID: uid})}
+            >
+                <Text style={styles.bookedText}>Booked creators</Text>
+                <Image source={require("../../assets/arrow-white.png")} style={{width: 20, height: 17}}/>
+            </TouchableOpacity>
+
             <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         style={[styles.button, styles.googleBackground]}
@@ -192,6 +200,27 @@ const styles = StyleSheet.create({
         height: 40
     },
 
+    bookedContainer: {
+        height: 70,
+        width: "90%",
+        marginTop: 20,
+        paddingTop: 20,
+        paddingHorizontal: 30,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderTopWidth: 0.5,
+        borderBottomWidth: 0.5,
+        borderTopColor: '#FFFFFFCC',
+        borderBottomColor: '#FFFFFFCC',
+    },
+
+    bookedText: {
+        fontFamily: 'textBold',
+        fontSize: 18,
+        color: '#FFFFFF'
+    },
+
     button: {
         alignItems: "center",
         justifyContent: "center",
@@ -203,7 +232,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flex: 1,
         justifyContent: 'flex-end',
-        marginBottom: "20%",
+        marginBottom: "5%",
         width: "50%",
     },
 

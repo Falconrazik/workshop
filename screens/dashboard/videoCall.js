@@ -9,6 +9,8 @@ import { db, auth } from '../../firebase';
 
 const VideoCall = ({route, navigation}) => {
     let uid = route.params.uid;
+    let name = route.params.name;
+
     const [imageURL, setImage] = useState('');
     useEffect(() => {
         const fileName = uid + '.jpg';
@@ -90,7 +92,7 @@ const VideoCall = ({route, navigation}) => {
     return (
       <View style={styles.container}>
         <Camera style={styles.camera} type={type}>
-            <CallTool imageURL={imageURL} name={"test_name"} userDetail={userDetail} creatorDetail={creatorDetail} uid={uid} navigation={navigation}/>
+            <CallTool imageURL={imageURL} name={name} userDetail={userDetail} creatorDetail={creatorDetail} uid={uid} navigation={navigation}/>
             <TouchableOpacity 
                 style={{flexDirection: "row", width: "90%", marginTop: 20}} 
                 onPress={() => {

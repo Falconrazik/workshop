@@ -133,6 +133,18 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
             ));
     }
 
+    const showAddContent = () => {
+        const contentWidth = (Dimensions.get('window').width - 35) / 2;
+        const contentHeight = contentWidth * 1.18;
+        if (userUID === uid) {
+            return <TouchableOpacity
+                        style={{width: "50%", padding: 10}}
+                    >
+                        <Image source={require("../../assets/add-content-btn.png")} resizeMode="cover" style={{width: contentWidth, height: contentHeight, marginHorizontal: 6, borderRadius: 30}}/>
+                    </TouchableOpacity>
+        }
+    }
+
     auth.onAuthStateChanged((user) => {
         if (user) {
             setUID(user.uid);
@@ -194,11 +206,35 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
     );
 
     let categories = ['yoga', 'pilates', 'calisthenics']
+    const showCategory = () => {
+        if (userDetail) {
+            if (userDetail.categories)
+                return  <View style={styles.tagsContainer}>
+                        {userDetail.categories.map((category, index) => (
+                            <CategoryCapsule
+                                key={index}
+                                category={category}
+                                color={CATEGORY_COLORS[(index % CATEGORY_COLORS.length)]}
+                            />
+                        ))}
+                    </View>
+        }
+        else {
+            return  <View style={styles.tagsContainer}>
+                    {categories.map((category, index) => (
+                        <CategoryCapsule
+                            key={index}
+                            category={category}
+                            color={CATEGORY_COLORS[(index % CATEGORY_COLORS.length)]}
+                        />
+                    ))}
+                </View>
+        }
+    }
 
     return (
         <>
         <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
-        {/*<View>*/}
         <NavBar navigation={navigation} uid={uid} />
         <ScrollView style={styles.container}>
             <View style={{alignItems: "center", flex: 1, marginTop: "12%"}}>
@@ -247,15 +283,7 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
 
                 {showBio()}
 
-                <View style={styles.tagsContainer}>
-                    {categories.map((category, index) => (
-                        <CategoryCapsule
-                            key={index}
-                            category={category}
-                            color={CATEGORY_COLORS[(index % CATEGORY_COLORS.length)]}
-                        />
-                    ))}
-                </View>
+                {showCategory()}
 
                 <View style={{width: "80%", height: "10%", marginTop: 20, flexDirection: "row", alignItems: "center"}}>
                         <View style={{flex: 1}}>
@@ -270,11 +298,11 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
             </View>
 
             <View style={{flexGrow: 8, flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", marginTop: "-12%"}}>
+                {showAddContent()}
                 {showContent()}
             </View>
         </ScrollView>
-            {showButton()}
-        {/*</View>*/}
+        {showButton()}
         </>
     )
 }

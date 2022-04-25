@@ -14,6 +14,7 @@ const RequesDetail = ( {route, navigation} ) => {
     let rate = route.params.rate;
     let fee = rate * 0.15;
     let payout = rate - fee;
+    let notes = route.params.notes;
 
     const [imageURL, setImage] = useState('');
     useEffect(() => {
@@ -143,6 +144,12 @@ const RequesDetail = ( {route, navigation} ) => {
         }
     }
 
+    const showNote = () => {
+        if (notes != null) {
+            return <Text style={[styles.description, {width: "90%", textAlign: "left"}]}>{notes}</Text>
+        }
+    }
+
     const showPreview = () => {
         if (!imageURL) {
             return  <Avatar width={100} height={100} borderRadius={10} borderWidth={5}/>
@@ -175,7 +182,7 @@ const RequesDetail = ( {route, navigation} ) => {
             <Image style={styles.rating} source={require("../../assets/rating.png")}/>
             {showBio()}
             <Text style={styles.requestDetail}>Note</Text>
-            <Text style={[styles.description, {width: "90%", textAlign: "left"}]}>I want to learn more about trading bitcoin. I would love to know more about your technique of futures trading.</Text>
+            {showNote()}
 
             <Text style={styles.requestDetail}>Request Detail</Text>
             <View style={styles.detailContainer}>

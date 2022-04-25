@@ -5,7 +5,7 @@ import {useFonts} from 'expo-font'
 import {storage} from '../firebase'
 import Avatar from './avatar'
 
-const BookDetail = ( {navigation, uid, name, startTime , duration, category, rate, type, userType, color} ) => {
+const BookDetail = ( {navigation, uid, name, startTime , duration, category, rate, notes, type, userType, color} ) => {
   const [date, setDate] = useState(null);
 
   const [imageURL, setImage] = useState('');
@@ -74,10 +74,10 @@ const showDate = () => {
       style={[styles.container, {backgroundColor: color}]}
       onPress={() => {
         if (userType === "teach" && type === "pending")
-          navigation.navigate("RequestDetail", {uid: uid, date: date, time: time, rate: rate, navigation});
+          navigation.navigate("RequestDetail", {uid: uid, date: date, time: time, rate: rate, notes: notes, navigation});
 
         if (type === "upcoming")
-          navigation.navigate("VideoCall", {uid: uid, navigation});
+          navigation.navigate("VideoCall", {uid: uid, name: name, navigation});
       }}
     >
       <View style={styles.topView}>
