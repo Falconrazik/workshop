@@ -5,6 +5,7 @@ import fonts from '../assets/fonts/fonts';
 import {Video} from 'expo-av';
 import { db, auth } from '../firebase';
 import * as firebase from "firebase";
+import NavBar from './navbar';
 
 export default function BookingForm({route, navigation, homeTabNavigation}) {
     const {creatorUID, username, video, rate, category} = route.params;
@@ -111,7 +112,8 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
     return (
         <>
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
-                <SafeAreaView style={{justifyContent: 'flex-end'}}>
+                <NavBar navigation={navigation} backButtonOnly />
+                <SafeAreaView style={{flex: 1, justifyContent: 'flex-end'}}>
                     <ScrollView style={styles.container}>
                         <Text style={[styles.text, styles.headerText, {marginBottom: 12.2}]}>Book a call</Text>
                         <Text style={[styles.text, styles.subheaderText, {marginBottom: 12.2}]}>@{username}</Text>
