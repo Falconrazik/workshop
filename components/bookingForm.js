@@ -60,7 +60,7 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
                             }).then(() => {
                                 navigation.goBack();
                                 setTimeout(() => homeTabNavigation.navigate("Dashboard"), 200)
-                            }).catch(e => console.error(e))
+                            })
                         })
                         .catch((error) => {
                             console.error(error)

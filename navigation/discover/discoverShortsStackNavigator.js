@@ -1,12 +1,10 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Account from '../../screens/account/account';
-import DiscoverCreators from '../../screens/discover/discoverCreators';
-import DiscoverShorts from '../../screens/discover/discoverShorts';
 import CreatorProfile from '../../screens/account/creatorProfile';
 import DiscoverTopTabNavigator from './discoverTopTabNavigator';
 import Short from '../../components/short';
+import BookingForm from '../../components/bookingForm';
 
-export default function DiscoverShortsStackNavigator (props) {
+export default function DiscoverShortsStackNavigator({homeTabNavigation}) {
     const Stack = createNativeStackNavigator();
 
     return (
@@ -31,6 +29,16 @@ export default function DiscoverShortsStackNavigator (props) {
                 component={Short}
                 options={{}}
             />
+            <Stack.Group
+                screenOptions={{ presentation: 'modal' }}
+            >
+                <Stack.Screen
+                    name="BookingForm"
+                    children={(props) =>
+                        <BookingForm {...props} homeTabNavigation={homeTabNavigation} />
+                    }
+                />
+            </Stack.Group>
 
         </Stack.Navigator>
     )
