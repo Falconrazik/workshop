@@ -26,7 +26,7 @@ const Schedule = () => {
   if (!fontsLoaded) {
       return null;
   }
-  
+
   let uid = auth.currentUser.uid;
 
   const getUpcomingBooking = () => {
@@ -57,11 +57,11 @@ const Schedule = () => {
             <Text style={styles.title}>Upcoming</Text>
             <Image source={require("../../assets/calendar.png")} style={styles.logo}/>
           </View>
-          
+
           <View style={{flex: 1, flexWrap: "wrap", flexDirection: "row", justifyContent: "space-between"}}>
             {getUpcomingBooking()}
           </View>
-    
+
         </View>
 
         <View style={styles.scheduleContainer}>

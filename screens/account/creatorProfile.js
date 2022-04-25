@@ -9,6 +9,7 @@ import { useFonts } from 'expo-font';
 import CategoryCapsule from '../../components/categoryCapsule';
 import { COLORS } from '../../CONST';
 import videos from '../../videos';
+import NavBar from '../../components/navbar';
 
 const CATEGORY_COLORS = [
     COLORS.BLUE_LIGHT,
@@ -18,8 +19,6 @@ const CATEGORY_COLORS = [
 
 const CreatorProfile = ( {uid, route, navigation} ) => {
     uid = uid ?? route.params.uid;
-
-    console.log(">>>> uid", uid);
 
     const [methodType, setMethodType] = useState(false);
     const chooseSelection = () => {
@@ -38,7 +37,7 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
           .catch((error) => {
             // Handle any errors
           });
-    }, [] );
+    }, []);
 
     const [userDetail, setUser] = useState(null);
     useEffect(() => {
@@ -62,7 +61,6 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
     }
 
     const logOut = () => {
-
         auth.signOut().then(() => {
             // Sign-out successful.
                 // navigation.navigate('Landing')
@@ -149,6 +147,7 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
         else {
             return <View style={styles.buttonContainer}>
                     <TouchableOpacity
+                        onPress={() => navigation.navigate("BookingForm", {creatorUID: uid, username: userDetail.userName, rate: userDetail.rate, category: userDetail.categories[0]})}
                         style={[styles.button, {padding: 10, backgroundColor: "#1ADDA8", shadowColor: '#1ADDA8', shadowOpacity: 0.5, shadowRadius: 20}]}
                     >
                         <Text style={[styles.text, styles.textLarge]}>book</Text>
@@ -157,44 +156,13 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
         }
     }
 
-    const showNavBar = () => (
-        auth.currentUser?.uid === uid
-            ? (
-                <View style={{backgroundColor: 'transparent', height: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingHorizontal: 29}}>
-                    <TouchableOpacity>
-                        <Image
-                            style={{width: 21, height: 19.17, marginRight: 14}}
-                            source={require('../../assets/edit_icon.png')}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image
-                            style={{width: 17, height: 21}}
-                            source={require('../../assets/hamburger_icon.png')}
-                        />
-                    </TouchableOpacity>
-
-                </View>
-            ) : (
-                <View style={{backgroundColor: 'transparent', height: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 29}}>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Image
-                            style={{width: 25, height: 20}}
-                            source={require('../../assets/back_arrow.png')}
-                        />
-                    </TouchableOpacity>
-
-                </View>
-            )
-    );
-
     let categories = ['yoga', 'pilates', 'calisthenics']
 
     return (
         <>
         <CustomStatusBar color={CONST.STATUS_BAR_COLOR.TRANSPARENT}/>
         {/*<View>*/}
-        {showNavBar()}
+        <NavBar navigation={navigation} uid={uid} />
         <ScrollView style={styles.container}>
             <View style={{alignItems: "center", flex: 1, marginTop: "12%"}}>
                 <View style={styles.userInfoContainer}>
