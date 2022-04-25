@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, RefreshControl } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import fonts from '../../assets/fonts/fonts'
 import { useFonts } from 'expo-font'
@@ -8,19 +8,29 @@ import { db, auth } from '../../firebase'
 
 const Schedule = () => {
   const [userDetail, setUserDetail] = useState(null);
-  useEffect(() => {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchUserDetails = () => {
+    setRefreshing(true);
     var docRef = db.collection("users").doc(auth.currentUser.uid);
     docRef.get().then((doc) => {
-        if (doc.exists) {
-            setUserDetail(doc.data());
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
+      if (doc.exists) {
+        setUserDetail(doc.data());
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+      setRefreshing(false);
     }).catch((error) => {
-        console.log("Error getting document:", error);
+      console.log("Error getting document:", error);
     });
+  }
+
+  useEffect(() => {
+    fetchUserDetails();
   }, [] );
+
+
 
   const [fontsLoaded] = useFonts(fonts);
   if (!fontsLoaded) {
@@ -50,7 +60,17 @@ const Schedule = () => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+              colors={['white']}
+              tintColor="white"
+              refreshing={refreshing}
+              onRefresh={fetchUserDetails}
+          />
+        }
+    >
       <View style={{flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#000000"}}>
         <View style={styles.scheduleContainer}>
           <View style={{flexDirection: "row", flex: 1, justifyContent: "space-between"}}>
