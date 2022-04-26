@@ -8,7 +8,7 @@ import { render } from 'react-dom'
 
 const Schedule = ({navigation}) => {
   const [userDetail, setUserDetail] = useState(null);
-  
+
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchUserDetails = (cb) => {
@@ -34,11 +34,14 @@ const Schedule = ({navigation}) => {
   }
 
   useEffect(() => {
-    fetchUserDetails();
     const intervalID = setInterval(() => {
       fetchUserDetails();
     }, 10000);
-    return () => clearInterval(intervalID);
+    const unsubscribeFocusListener = navigation.addListener('focus', () => fetchUserDetails());
+    return () => {
+      clearInterval(intervalID);
+      unsubscribeFocusListener();
+    }
   }, [] );
 
   const [fontsLoaded] = useFonts(fonts);
@@ -60,7 +63,7 @@ const Schedule = ({navigation}) => {
             let duration = item.duration;
             let rate = item.rate;
             let notes = item.notes;
-          
+
             return (
               <BookDetail navigation={navigation} key={index} uid={uid} name={name} startTime={date} duration={duration} category={category} rate={rate} notes={notes} type={type} userType={userType} color={"#D0FFF2"}/>
             );
