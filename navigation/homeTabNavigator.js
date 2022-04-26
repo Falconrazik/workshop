@@ -8,6 +8,7 @@ import CONST from '../CONST';
 import CustomStatusBar from '../components/customStatusBar';
 import DiscoverShortsStackNavigator from './discover/discoverShortsStackNavigator';
 import DashboardStackNavigator from './dashboard/dashboardStackNavigator';
+import CommunityStackNavigator from './communityStackNavigator';
 
 export default function HomeTabNavigator () {
     const Tab = createBottomTabNavigator();
@@ -62,6 +63,28 @@ export default function HomeTabNavigator () {
                                 />
                                 : <Image
                                     source={require("../assets/icons/dashboard_unfocused.png")}
+                                    style={{
+                                        width: 24,
+                                        height: 24,
+                                    }}
+                                />
+                    }}
+                />
+                <Tab.Screen
+                    name="Community"
+                    component={CommunityStackNavigator}
+                    options={{
+                        tabBarIcon: ({focused}) =>
+                            focused
+                                ? <Image
+                                    source={require("../assets/icons/community_focused.png")}
+                                    style={{
+                                        width: 24,
+                                        height: 24,
+                                    }}
+                                />
+                                : <Image
+                                    source={require("../assets/icons/community_unfocused.png")}
                                     style={{
                                         width: 24,
                                         height: 24,
