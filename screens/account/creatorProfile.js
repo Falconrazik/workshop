@@ -108,6 +108,12 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
         }
     }
 
+    const showSessions = () => {
+        if (userDetail) {
+            return <Text style={styles.rateText}>{userDetail.sessions}</Text>
+        }
+    }
+
     const showContent = () => {
         const contentWidth = (Dimensions.get('window').width - 35) / 2;
         const contentHeight = contentWidth * 1.18;
@@ -294,6 +300,10 @@ const CreatorProfile = ( {uid, route, navigation} ) => {
                             {showDuration()}
                             <Text style={styles.textSmall}>minutes</Text>
                         </View>
+                        <View style={{flex: 1}}>
+                            {showSessions()}
+                            <Text style={styles.textSmall}>total sessions</Text>
+                        </View>
                 </View>
             </View>
 
@@ -337,7 +347,7 @@ const styles = StyleSheet.create({
 
     description: {
         width: "90%",
-        marginTop: "8%",
+        marginTop: "10%",
         fontFamily: 'text',
         fontSize: 15,
         textAlign: "left",
