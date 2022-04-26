@@ -2,13 +2,12 @@ import { SafeAreaView } from 'react-native';
 import React, { useState, useEffect } from "react";
 import CONST from '../../CONST';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import ScheduleStackNavigator from './scheduleStackNavigator';
 import TabsHeader from '../../components/tabsHeader';
 import { db, auth } from '../../firebase';
 import Analytics from '../../screens/dashboard/analytics';
 import Schedule from '../../screens/dashboard/schedule';
 
-export default function DashboardTopStackNavigator ({navigation}) {
+export default function DashboardTopStackNavigator ({navigation, dashboardRootStackNavigation}) {
     const Tab = createMaterialTopTabNavigator();
     const [currentTab, setCurrentTab] = React.useState(CONST.DISCOVER_TABS.SHORTS);
     const [userDetail, setUserDetail] = useState(null);
@@ -26,14 +25,14 @@ export default function DashboardTopStackNavigator ({navigation}) {
                     console.log("No such document!");
                     }}).catch((error) => {
                     console.log("Error getting document:", error);
-            }); 
+            });
           // ...
         } else {
           // User is signed out
           // ...
         }
       });
-    
+
         const showDashboard = () => {
             if (userDetail) {
                 if (userDetail.userType === "learn") {
@@ -57,7 +56,9 @@ export default function DashboardTopStackNavigator ({navigation}) {
                                 >
                                     <Tab.Screen
                                         name={CONST.DASHBOARD_TABS.ANALYTICS}
-                                        component={Schedule}
+                                        children={props => (
+                                            <Schedule {...props} dashboardRootStackNavigation={dashboardRootStackNavigation} />
+                                        )}
                                     />
                                 </Tab.Navigator>
                         </SafeAreaView>
@@ -96,7 +97,7 @@ export default function DashboardTopStackNavigator ({navigation}) {
                 }
             }
         }
-    
+
     return (
         <>
             {showDashboard()}

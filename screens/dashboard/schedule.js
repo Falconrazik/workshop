@@ -6,7 +6,7 @@ import BookDetail from '../../components/bookDetail'
 import { db, auth } from '../../firebase'
 import { render } from 'react-dom'
 
-const Schedule = ({navigation}) => {
+const Schedule = ({navigation, dashboardRootStackNavigation}) => {
   const [userDetail, setUserDetail] = useState(null);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -37,7 +37,10 @@ const Schedule = ({navigation}) => {
     const intervalID = setInterval(() => {
       fetchUserDetails();
     }, 10000);
-    const unsubscribeFocusListener = navigation.addListener('focus', () => fetchUserDetails());
+    const unsubscribeFocusListener = dashboardRootStackNavigation.addListener('focus', () => {
+      console.log(">>>> focused");
+      fetchUserDetails()
+    });
     return () => {
       clearInterval(intervalID);
       unsubscribeFocusListener();

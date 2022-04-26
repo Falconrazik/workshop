@@ -3,21 +3,24 @@ import CreatorProfile from '../../screens/account/creatorProfile';
 import DashboardTopStackNavigator from './dashboardTopStackNavigator';
 import RequesDetail from '../../screens/dashboard/requestDetail';
 import VideoCall from '../../screens/dashboard/videoCall';
-import { Video } from 'expo-av';
+import React from 'react';
+import _ from 'lodash';
 
 export default function DashboardStackNavigator () {
     const Stack = createNativeStackNavigator();
 
     return (
         <Stack.Navigator
-            initialRouteName={"Dashboardtop"}
+            initialRouteName={"DashboardTop"}
             screenOptions={{
                 headerShown: false
             }}
         >
             <Stack.Screen
                 name="DashboardTop"
-                component={DashboardTopStackNavigator}
+                children={props => (
+                    <DashboardTopStackNavigator {...props} dashboardRootStackNavigation={props.navigation} />
+                )}
                 option={{}}
             />
 
