@@ -90,7 +90,9 @@ export default function DashboardTopStackNavigator ({navigation, dashboardRootSt
                                     />
                                     <Tab.Screen
                                         name={CONST.DASHBOARD_TABS.SCHEDULE}
-                                        component={Schedule}
+                                        children={props => (
+                                            <Schedule {...props} dashboardRootStackNavigation={dashboardRootStackNavigation} />
+                                        )}
                                     />
                                 </Tab.Navigator>
                         </SafeAreaView>
