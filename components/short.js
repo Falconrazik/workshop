@@ -2,9 +2,9 @@ import {Dimensions, StyleSheet, View, Text, TouchableOpacity, Image} from 'react
 import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
 import Constants from 'expo-constants';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, {useEffect} from 'react';
 import * as Font from 'expo-font';
-import {Video} from 'expo-av';
+import {Video, Audio} from 'expo-av';
 import {COLORS} from '../CONST';
 import CategoryCapsule from './categoryCapsule';
 import fonts from '../assets/fonts/fonts';
@@ -28,6 +28,7 @@ export default class Short extends React.PureComponent {
         }
 
         this.creatorUID = props.creatorUID ?? props.route.params.creatorUID;
+        Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
     }
 
     async _loadFontsAsync() {
@@ -95,6 +96,7 @@ export default class Short extends React.PureComponent {
         this._loadProfile();
 
     }
+
 
     render() {
         if (!this.state.fontsLoaded || !this.state.profile) {
