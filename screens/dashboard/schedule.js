@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font'
 import BookDetail from '../../components/bookDetail'
 import { db, auth } from '../../firebase'
 import { render } from 'react-dom'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const Schedule = ({navigation, dashboardRootStackNavigation}) => {
   const [userDetail, setUserDetail] = useState(null);
@@ -67,9 +68,22 @@ const Schedule = ({navigation, dashboardRootStackNavigation}) => {
             let duration = item.duration;
             let rate = item.rate;
             let notes = item.notes;
+            let color;
+            if (category === 'fitness') {
+              color = '#D0FFF2';
+            }
+            if (category === 'invest') {
+              color = '#E2E9FE';
+            }
+            if (category === 'music') {
+              color = '#AEC0F5';
+            }
+            if (category === 'beauty') {
+              color = '#FFBEA9';
+            }
 
             return (
-              <BookDetail navigation={navigation} key={index} uid={uid} name={name} startTime={date} duration={duration} category={category} rate={rate} notes={notes} type={type} userType={userType} color={"#D0FFF2"}/>
+              <BookDetail navigation={navigation} key={index} uid={uid} name={name} startTime={date} duration={duration} category={category} rate={rate} notes={notes} type={type} userType={userType} color={color}/>
             );
           }
         });
@@ -126,7 +140,20 @@ const Schedule = ({navigation, dashboardRootStackNavigation}) => {
           <View style={{flexDirection: "row", flex: 1, justifyContent: "space-between"}}>
             <Text style={styles.title}>My Category</Text>
           </View>
-          <Text style={{height: 100, width: "100%"}}>Upcoming</Text>
+          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around'}}>
+            <TouchableOpacity>
+              <Image source={require('../../assets/icons/fitness.png')} style={styles.categoryLogo}/>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image source={require('../../assets/icons/invest.png')} style={styles.categoryLogo}/>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image source={require('../../assets/icons/music.png')} style={styles.categoryLogo}/>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image source={require('../../assets/icons/invest.png')} style={styles.categoryLogo}/>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -160,6 +187,12 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     marginTop: "-10%"
+  },
+
+  categoryLogo: {
+    width: 78, 
+    height: 78, 
+    marginTop: 20
   },
 
 })
