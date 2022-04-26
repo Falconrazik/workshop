@@ -22,7 +22,7 @@ const artAndMusicBanner = require('../../assets/banners/art_banner.png');
 const filmAndPhotographyBanner = require('../../assets/banners/film_and_photography_banner.png');
 const fitnessBanner = require('../../assets/banners/fitness_banner.png');
 
-export default function DiscoverCreators ({containerStyles}) {
+export default function DiscoverCreators ({containerStyles, navigation}) {
     const scrollViewHeight = Dimensions.get('window').height - Constants.statusBarHeight - CONST.DISCOVER_TAB_HEADER_HEIGHT - useBottomTabBarHeight();
 
     const [fontsLoaded] = useFonts(fonts);
@@ -33,32 +33,50 @@ export default function DiscoverCreators ({containerStyles}) {
     return (
         <SafeAreaView style={[containerStyles, {flex: 1}]}>
             <ScrollView style={[styles.container, {height: scrollViewHeight}]}>
-                <TouchableOpacity style={[styles.gridPad, styles.gridPadLarge]}>
+                <TouchableOpacity 
+                    style={[styles.gridPad, styles.gridPadLarge]}
+                    onPress={() => navigation.navigate("DiscoverResult", {category: "top-rated", navigation: navigation})}
+                >
                     <Image source={trendingBanner} style={styles.trendingBanner} />
+                    <Text style={[styles.text, styles.textLarge]}>Top Rated</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    style={[styles.gridPad, styles.gridPadLarge, {marginBottom: 40}]}
+                    onPress={() => navigation.navigate("DiscoverResult", {category: "trending", navigation: navigation})}
+                >
+                    <Image source={upcomingBanner} style={styles.upcomingBanner} />
                     <Text style={[styles.text, styles.textLarge]}>Trending</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.gridPad, styles.gridPadLarge, {marginBottom: 40}]}>
-                    <Image source={upcomingBanner} style={styles.upcomingBanner} />
-                    <Text style={[styles.text, styles.textLarge]}>Upcoming</Text>
-                </TouchableOpacity>
                 <View style={styles.gridContainer}>
-                    <TouchableOpacity style={[styles.gridPad, styles.gridPadSmall]}>
+                    <TouchableOpacity 
+                        style={[styles.gridPad, styles.gridPadSmall]}
+                        onPress={() => navigation.navigate("DiscoverResult", {category: "fitness", navigation: navigation})}
+                    >
                         <Image source={fitnessBanner} style={styles.fitnessBanner} />
                         <Text style={[styles.text, styles.textSmall]}>fitness</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.gridPad, styles.gridPadSmall]}>
+                    <TouchableOpacity 
+                        style={[styles.gridPad, styles.gridPadSmall]}
+                        onPress={() => navigation.navigate("DiscoverResult", {category: "beauty", navigation: navigation})}
+                    >
                         <Image source={filmAndPhotographyBanner} style={styles.filmAndPhotographyBanner} />
                         <Text style={[styles.text, styles.textSmall]}>film & photography</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.gridContainer}>
-                    <TouchableOpacity style={[styles.gridPad, styles.gridPadSmall]}>
+                    <TouchableOpacity 
+                        style={[styles.gridPad, styles.gridPadSmall]}
+                        onPress={() => navigation.navigate("DiscoverResult", {category: "invest", navigation: navigation})}
+                    >
                         <Image source={investingBanner} style={styles.investingBanner} />
                         <Text style={[styles.text, styles.textSmall]}>investing</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.gridPad, styles.gridPadSmall]}>
+                    <TouchableOpacity 
+                        style={[styles.gridPad, styles.gridPadSmall]}
+                        onPress={() => navigation.navigate("DiscoverResult", {category: "music", navigation: navigation})}
+                    >
                         <Image source={artAndMusicBanner} style={styles.artAndMusicBanner} />
-                        <Text style={[styles.text, styles.textSmall]}>art & music</Text>
+                        <Text style={[styles.text, styles.textSmall]}>music</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -110,11 +128,13 @@ const styles = StyleSheet.create({
         width: 351,
         height: 149,
         position: 'absolute',
+        right: 0
     },
     upcomingBanner: {
-        width: 351,
+        width: 400,
         height: 149,
         position: 'absolute',
+        right: 0
     },
     filmAndPhotographyBanner: {
         width: 128.18,
@@ -140,6 +160,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     textLarge: {
-        fontSize: 26,
+        fontSize: 22,
     },
 });

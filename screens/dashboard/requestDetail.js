@@ -70,7 +70,6 @@ const RequesDetail = ( {route, navigation} ) => {
                 bookings.splice(i, 1);
             }
         }
-        console.log(bookings);
 
         var docRef = db.collection("users").doc(auth.currentUser.uid);
         docRef.update({
@@ -78,6 +77,7 @@ const RequesDetail = ( {route, navigation} ) => {
         })
         .then(() => {
             console.log("Booking successfully removed!");
+            navigation.goBack();
         })
         .catch((error) => {
             console.error("Error removing booking: ", error);

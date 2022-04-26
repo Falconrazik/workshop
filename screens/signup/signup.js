@@ -44,7 +44,9 @@ export default function SignUp ( {route, navigation} ) {
                 bio: "",
                 instaURL: "",
                 youtubeURL: "",
-                tiktokURL: ""
+                tiktokURL: "",
+                sessions: 0,
+                categories: ['']
             })
             .then(() => {
                 console.log("User successfully created!");
