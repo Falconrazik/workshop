@@ -90,11 +90,6 @@ const videos = [
         thumbnail: require('./assets/videos/johnsfinancetips/johnsfinancetips_3.png'),
     },
     {
-        file: require('./assets/videos/zachwein_/zachwein__3.mp4'),
-        creatorUID: '4hBaQ6aUzxpHxhAU8jed',
-        thumbnail: require('./assets/videos/zachwein_/zachwein__3.png'),
-    },
-    {
         file: require('./assets/videos/nylenayga/nylanayga_2.mp4'),
         creatorUID: 'kRd4ZqIqlQNxhImyqiM6',
         thumbnail: require('./assets/videos/nylenayga/nylanayga_2.png'),
@@ -106,20 +101,9 @@ const videos = [
 
     },
     {
-        file: require('./assets/videos/zachwein_/zachwein__4.mp4'),
-        creatorUID: '4hBaQ6aUzxpHxhAU8jed',
-        thumbnail: require('./assets/videos/zachwein_/zachwein__4.png'),
-    },
-    {
         file: require('./assets/videos/nylenayga/nylanayga_1.mp4'),
         creatorUID: 'kRd4ZqIqlQNxhImyqiM6',
         thumbnail: require('./assets/videos/nylenayga/nylanayga_1.png'),
-    },
-    {
-        file: require('./assets/videos/zachwein_/zachwein__2.mp4'),
-        creatorUID: '4hBaQ6aUzxpHxhAU8jed',
-        thumbnail: require('./assets/videos/zachwein_/zachwein__2.png'),
-
     },
     {
         file: require('./assets/videos/richinvesting/richinvesting_3.mp4'),
@@ -135,11 +119,6 @@ const videos = [
         file: require('./assets/videos/richinvesting/richinvesting_2.mp4'),
         creatorUID: '8Dpv8bR8lzMKVev9W2dRo3doBun1',
         thumbnail: require('./assets/videos/richinvesting/richinvesting_2.png'),
-    },
-    {
-        file: require('./assets/videos/zachwein_/zachwein__1.mp4'),
-        creatorUID: '4hBaQ6aUzxpHxhAU8jed',
-        thumbnail: require('./assets/videos/zachwein_/zachwein__1.png'),
     },
     {
         file: require('./assets/videos/richinvesting/richinvesting_1.mp4'),

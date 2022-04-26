@@ -2,7 +2,6 @@ import { SafeAreaView } from 'react-native';
 import React, { useState, useEffect } from "react";
 import CONST from '../../CONST';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import ScheduleStackNavigator from '../../navigation/dashboard/scheduleStackNavigator';
 import Analytics from './analytics';
 import TabsHeader from '../../components/tabsHeader';
 import { db, auth } from '../../firebase';
@@ -22,8 +21,8 @@ export default function Dashboard({navigation}) {
             console.log("No such document!");
             }}).catch((error) => {
             console.log("Error getting document:", error);
-        }); 
-    
+        });
+
         const showDashboard = () => {
             if (userDetail) {
                 if (userDetail.userType === "learn") {
@@ -86,7 +85,7 @@ export default function Dashboard({navigation}) {
                 }
             }
         }
-    
+
     return (
         <>
             {showDashboard()}
