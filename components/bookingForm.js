@@ -56,7 +56,8 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
                     category,
                     startTime,
                     notes,
-                    guidingQuestions: selectedQuestionIndices.map(index => creatorDetail.guidingQuestions[index])
+                    guidingQuestions: selectedQuestionIndices.map(index => creatorDetail.guidingQuestions[index]),
+                    requester: auth.currentUser.uid
                 })
             })
                 .then(() => {
@@ -69,7 +70,8 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
                             userUID: creatorUID,
                             category,
                             startTime,
-                            notes
+                            notes,
+                            requester: auth.currentUser.uid
                         })
                     }).then(() => {
                         navigation.goBack();

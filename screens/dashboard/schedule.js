@@ -68,6 +68,7 @@ const Schedule = ({navigation, dashboardRootStackNavigation}) => {
             let duration = item.duration;
             let rate = item.rate;
             let notes = item.notes;
+            let requester = item.requester;
             let color;
             if (category === 'fitness') {
               color = '#D0FFF2';
@@ -83,7 +84,7 @@ const Schedule = ({navigation, dashboardRootStackNavigation}) => {
             }
 
             return (
-              <BookDetail navigation={navigation} key={index} uid={uid} name={name} startTime={date} duration={duration} category={category} rate={rate} notes={notes} type={type} userType={userType} color={color}/>
+              <BookDetail navigation={navigation} key={index} uid={uid} name={name} startTime={date} duration={duration} category={category} rate={rate} notes={notes} type={type} userType={userType} requester={requester} color={color}/>
             );
           }
         });

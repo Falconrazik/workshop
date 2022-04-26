@@ -2,10 +2,10 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import fonts from '../assets/fonts/fonts'
 import {useFonts} from 'expo-font'
-import {storage} from '../firebase'
+import {auth, storage} from '../firebase'
 import Avatar from './avatar'
 
-const BookDetail = ( {navigation, uid, name, startTime , duration, category, rate, notes, type, userType, color} ) => {
+const BookDetail = ( {navigation, uid, name, startTime , duration, category, rate, notes, type, userType, requester, color} ) => {
   const [date, setDate] = useState(null);
 
   const [imageURL, setImage] = useState('');
@@ -73,7 +73,7 @@ const showDate = () => {
     <TouchableOpacity 
       style={[styles.container, {backgroundColor: color}]}
       onPress={() => {
-        if (userType === "teach" && type === "pending")
+        if (userType === "teach" && type === "pending" && auth.currentUser.uid != requester)
           navigation.navigate("RequestDetail", {uid: uid, date: date, time: time, rate: rate, notes: notes, navigation});
 
         if (type === "upcoming")
