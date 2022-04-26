@@ -34,6 +34,7 @@ const Schedule = ({navigation, dashboardRootStackNavigation}) => {
   }
 
   useEffect(() => {
+    fetchUserDetails();
     const intervalID = setInterval(() => {
       fetchUserDetails();
     }, 10000);
