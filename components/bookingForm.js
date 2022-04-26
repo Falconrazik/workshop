@@ -1,11 +1,14 @@
 import React from 'react';
 import {SafeAreaView, Text, View, StyleSheet, TouchableOpacity, Dimensions, TextInput, KeyboardAvoidingView, ScrollView} from 'react-native';
 import {useFonts} from 'expo-font';
+import * as firebase from "firebase";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import _ from 'lodash';
 import fonts from '../assets/fonts/fonts';
 import {Video} from 'expo-av';
 import { db, auth } from '../firebase';
-import * as firebase from "firebase";
 import NavBar from './navbar';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export default function BookingForm({route, navigation, homeTabNavigation}) {
     const {creatorUID, username, video, rate, category} = route.params;
@@ -14,9 +17,20 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
     const [dateTime, setDateTime] = React.useState('');
     const [notes, setNotes] = React.useState('');
     const [userDetail, setUserDetail] = React.useState(null);
-
-
+    const [creatorDetail, setCreatorDetail] = React.useState(null);
+    const [selectedQuestionIndices, setSelectedQuestionIndices] = React.useState([]);
     const userUID = auth.currentUser?.uid;
+
+    React.useEffect(() => {
+        db.collection("users").doc(userUID)
+            .get().then((doc) => {
+                setUserDetail(doc.data());
+            });
+        db.collection("users").doc(creatorUID)
+            .get().then((doc) => {
+                setCreatorDetail(doc.data());
+            });
+    }, [])
 
     const [fontsLoaded] = useFonts(fonts);
     if (!fontsLoaded) {
@@ -32,41 +46,41 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
         startTime.setTime(startTime.getTime() + secondsOffset * 1000);
 
         try {
-            db.collection("users").doc(userUID)
-                .get().then((doc) => {
-                    db.collection("users").doc(creatorUID).update({
+            db.collection("users").doc(creatorUID).update({
+                bookings: firebase.firestore.FieldValue.arrayUnion({
+                    duration: parseInt(duration),
+                    status: "pending",
+                    name: userDetail.userName,
+                    rate,
+                    userUID,
+                    category,
+                    startTime,
+                    notes,
+                    guidingQuestions: selectedQuestionIndices.map(index => creatorDetail.guidingQuestions[index])
+                })
+            })
+                .then(() => {
+                    db.collection('users').doc(userUID).update({
                         bookings: firebase.firestore.FieldValue.arrayUnion({
                             duration: parseInt(duration),
                             status: "pending",
-                            name: doc.data().userName,
+                            name: username,
                             rate,
-                            userUID,
+                            userUID: creatorUID,
                             category,
                             startTime,
                             notes
                         })
+                    }).then(() => {
+                        navigation.goBack();
+                        setTimeout(() => {
+                            homeTabNavigation.navigate("Dashboard");
+                        }, 100)
                     })
-                        .then(() => {
-                            db.collection('users').doc(userUID).update({
-                                bookings: firebase.firestore.FieldValue.arrayUnion({
-                                    duration: parseInt(duration),
-                                    status: "pending",
-                                    name: username,
-                                    rate,
-                                    userUID: creatorUID,
-                                    category,
-                                    startTime,
-                                    notes
-                                })
-                            }).then(() => {
-                                navigation.goBack();
-                                setTimeout(() => homeTabNavigation.navigate("Dashboard"), 200)
-                            })
-                        })
-                        .catch((error) => {
-                            console.error(error)
-                        });
                 })
+                .catch((error) => {
+                    console.error(error)
+                });
         } catch (e) {
             console.error("Error adding document: " + e);
         }
@@ -111,10 +125,10 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
 
     return (
         <>
-            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+            {/*<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }} enabled keyboardVerticalOffset={100}>*/}
                 <NavBar navigation={navigation} backButtonOnly />
                 <SafeAreaView style={{flex: 1, justifyContent: 'flex-end'}}>
-                    <ScrollView style={styles.container}>
+                    <KeyboardAwareScrollView style={styles.container} extraHeight={123}>
                         <Text style={[styles.text, styles.headerText, {marginBottom: 12.2}]}>Book a call</Text>
                         <Text style={[styles.text, styles.subheaderText, {marginBottom: 12.2}]}>@{username}</Text>
                         <Text style={[styles.text, {marginBottom: 19.5}]}>Select an available time slot!</Text>
@@ -136,11 +150,39 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
                             ))}
                         </View>
                         <Text style={[styles.text, styles.subheaderText, {marginBottom: 12}]}>{dayAfterTomorrow}</Text>
-                        <View style={[styles.flexContainer, {marginBottom: 29}]}>
+                        <View style={[styles.flexContainer, {marginBottom: 39}]}>
                             {TIMES.map((t, index) => (
                                 <TimeSlot key={index} disabled={!duration} value={t} width={dateTimeSlotWidth} selected={dateTime === `2 ${SECONDS_TO_ADD[index]}`} onPress={() => setDateTime(`2 ${SECONDS_TO_ADD[index]}`)} />
                             ))}
                         </View>
+                        {creatorDetail?.guidingQuestions && (
+                            <View style={{marginBottom: 29}}>
+                                <Text style={[styles.text, styles.subheaderText, {marginBottom: 12}]}>Guiding Questions (optional)</Text>
+                                {creatorDetail.guidingQuestions.map((question, index) => (
+                                    <BouncyCheckbox
+                                        key={index}
+                                        size={16}
+                                        text={question}
+                                        onPress={isChecked => isChecked
+                                            ? setSelectedQuestionIndices(_.concat([index], selectedQuestionIndices))
+                                            : setSelectedQuestionIndices(_.filter(selectedQuestionIndices, i => i !== index))}
+                                        textStyle={[styles.text, styles.subheaderText, {color: selectedQuestionIndices.includes(index) ? '#E2E9FE' : '#9FA0BD', textDecorationLine: "none"}]}
+                                        unfillColor="#D3D0E5"
+                                        fillColor="#6248FF"
+                                        style={{
+                                            backgroundColor: selectedQuestionIndices.includes(index) ? '#6248FF' : '#D3D0E5',
+                                            marginBottom: 8,
+                                            borderRadius: 8,
+                                            paddingRight: 16,
+                                            paddingVertical: 10
+                                        }}
+                                        iconStyle={{borderWidth: 0, paddingLeft: 16}}
+                                        textContainerStyle={{flexShrink: 1, }}
+                                    />
+                                ))}
+
+                            </View>
+                        )}
                         <View style={[styles.flexContainer, {marginBottom: 39}]}>
                             {video && (
                                 <View>
@@ -173,9 +215,9 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
                         >
                             <Text style={[styles.text, styles.subheaderText, {color: disableSubmit ? '#9FA0BD' : 'black'}]}>book</Text>
                         </TouchableOpacity>
-                    </ScrollView>
+                    </KeyboardAwareScrollView>
                 </SafeAreaView>
-            </KeyboardAvoidingView>
+            {/*</KeyboardAvoidingView>*/}
         </>
     );
 }
@@ -256,4 +298,4 @@ const styles = StyleSheet.create({
         fontFamily: 'textBold',
         fontSize: 14,
     },
-})
+});
