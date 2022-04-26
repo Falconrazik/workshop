@@ -10,14 +10,34 @@ const videos = [
         thumbnail: require('./assets/videos/jodielangle/jodielangle_1.png'),
     },
     {
+        file: require('./assets/videos/j-crawf0rd/j-crawf0rd_1.mp4'),
+        creatorUID: 'QvmVLZ0Bxmc5GW5QNuTKfQSOEwt2',
+        thumbnail: require('./assets/videos/j-crawf0rd/j-crawf0rd_1.png'),
+    },
+    {
+        file: require('./assets/videos/notyourbasicvocalcoach/notyourbasicvocalcoach_1.mp4'),
+        creatorUID: 'd9tguGBF7KfsV9FyVMFUbNrmDAC3',
+        thumbnail: require('./assets/videos/notyourbasicvocalcoach/notyourbasicvocalcoach_1.png'),
+    },
+    {
         file: require('./assets/videos/krysteldallas_yoga/krysteldallas_yoga_1.mp4'),
         creatorUID: 'zL2atRlPjST2fUSpMwWt',
         thumbnail: require('./assets/videos/krysteldallas_yoga/krysteldallas_yoga_1.png'),
     },
     {
+        file: require('./assets/videos/agent.envy/agent.envy_1.mp4'),
+        creatorUID: 'IvFCxx49yLfgli8bzrw44PQ8qgq2',
+        thumbnail: require('./assets/videos/agent.envy/agent.envy_1.png'),
+    },
+    {
         file: require('./assets/videos/johnsfinancetips/johnsfinancetips_1.mp4'),
         creatorUID: 'LhpizUPucfNZnliKL937VjzurSj1',
         thumbnail: require('./assets/videos/johnsfinancetips/johnsfinancetips_1.png'),
+    },
+    {
+        file: require('./assets/videos/j-crawf0rd/j-crawf0rd_2.mp4'),
+        creatorUID: 'QvmVLZ0Bxmc5GW5QNuTKfQSOEwt2',
+        thumbnail: require('./assets/videos/j-crawf0rd/j-crawf0rd_2.png'),
     },
     {
         file: require('./assets/videos/jodielangle/jodielangle_2.mp4'),
@@ -35,6 +55,11 @@ const videos = [
         thumbnail: require('./assets/videos/johnsfinancetips/johnsfinancetips_2.png'),
     },
     {
+        file: require('./assets/videos/notyourbasicvocalcoach/notyourbasicvocalcoach_2.mp4'),
+        creatorUID: 'd9tguGBF7KfsV9FyVMFUbNrmDAC3',
+        thumbnail: require('./assets/videos/notyourbasicvocalcoach/notyourbasicvocalcoach_2.png'),
+    },
+    {
         file: require('./assets/videos/humphreytalks/humphreytalks_2.mp4'),
         creatorUID: 'eqcLHaUvgEX2BtBJmXrojzg16eI3',
         thumbnail: require('./assets/videos/humphreytalks/humphreytalks_2.png'),
@@ -50,6 +75,16 @@ const videos = [
         thumbnail: require('./assets/videos/yogawithcali/yogawithcali_3.png'),
     },
     {
+        file: require('./assets/videos/notyourbasicvocalcoach/notyourbasicvocalcoach_3.mp4'),
+        creatorUID: 'd9tguGBF7KfsV9FyVMFUbNrmDAC3',
+        thumbnail: require('./assets/videos/notyourbasicvocalcoach/notyourbasicvocalcoach_3.png'),
+    },
+    {
+        file: require('./assets/videos/j-crawf0rd/j-crawf0rd_3.mp4'),
+        creatorUID: 'QvmVLZ0Bxmc5GW5QNuTKfQSOEwt2',
+        thumbnail: require('./assets/videos/j-crawf0rd/j-crawf0rd_3.png'),
+    },
+    {
         file: require('./assets/videos/johnefinance/johnefinance_1.mp4'),
         creatorUID: 'LzuHXQROAEWpuFHUFTY1CbXzWuV2',
         thumbnail: require('./assets/videos/johnefinance/johnefinance_1.png'),
@@ -63,6 +98,11 @@ const videos = [
         file: require('./assets/videos/krysteldallas_yoga/krysteldallas_yoga_2.mp4'),
         creatorUID: 'zL2atRlPjST2fUSpMwWt',
         thumbnail: require('./assets/videos/krysteldallas_yoga/krysteldallas_yoga_2.png'),
+    },
+    {
+        file: require('./assets/videos/agent.envy/agent.envy_2.mp4'),
+        creatorUID: 'IvFCxx49yLfgli8bzrw44PQ8qgq2',
+        thumbnail: require('./assets/videos/agent.envy/agent.envy_2.png'),
     },
     {
         file: require('./assets/videos/johnefinance/johnefinance_2.mp4'),
@@ -83,6 +123,11 @@ const videos = [
         file: require('./assets/videos/krysteldallas_yoga/krysteldallas_yoga_3.mp4'),
         creatorUID: 'zL2atRlPjST2fUSpMwWt',
         thumbnail: require('./assets/videos/krysteldallas_yoga/krysteldallas_yoga_3.png'),
+    },
+    {
+        file: require('./assets/videos/agent.envy/agent.envy_3.mp4'),
+        creatorUID: 'IvFCxx49yLfgli8bzrw44PQ8qgq2',
+        thumbnail: require('./assets/videos/agent.envy/agent.envy_3.png'),
     },
     {
         file: require('./assets/videos/johnsfinancetips/johnsfinancetips_3.mp4'),
