@@ -1,7 +1,14 @@
 import {auth} from '../firebase';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, TouchableOpacity, View, Text} from 'react-native';
+import {useFonts} from 'expo-font';
+import fonts from '../assets/fonts/fonts';
 
-export default function NavBar({navigation, uid, backButtonOnly = false}) {
+export default function NavBar({navigation, uid, title = '', backButtonOnly = false}) {
+    const [fontsLoaded] = useFonts(fonts);
+    if (!fontsLoaded) {
+        return null;
+    }
+
     return (
         auth.currentUser?.uid === uid && !backButtonOnly
             ? (
@@ -21,14 +28,20 @@ export default function NavBar({navigation, uid, backButtonOnly = false}) {
 
                 </View>
             ) : (
-                <View style={{backgroundColor: 'transparent', height: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 29}}>
+                <View style={{backgroundColor: 'transparent', height: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 29}}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
                         <Image
                             style={{width: 25, height: 20}}
                             source={require('../assets/back_arrow.png')}
                         />
                     </TouchableOpacity>
-
+                    <Text style={{color: 'white', fontFamily: 'textBold', fontSize: 16}}>{title}</Text>
+                    <View style={{opacity: 0}}>
+                        <Image
+                            style={{width: 25, height: 20}}
+                            source={require('../assets/back_arrow.png')}
+                        />
+                    </View>
                 </View>
             )
     );
