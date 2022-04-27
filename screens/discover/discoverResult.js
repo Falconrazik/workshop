@@ -72,9 +72,9 @@ const DiscoverResult = ({route, navigation}) => {
         if (category === 'invest')
             return require('../../assets/banners/investing_banner.png');
         if (category === 'music')
-            return require('../../assets/banners/art_banner.png');
+            return require('../../assets/banners/music.png');
         if (category === 'beauty')
-            return require('../../assets/banners/film_and_photography_banner.png');
+            return require('../../assets/banners/beauty.png');
         if (category === 'top-rated')
             return require('../../assets/icons/crown.png');
         if (category === 'trending')

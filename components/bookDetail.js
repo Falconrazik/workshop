@@ -54,10 +54,10 @@ const getImagePath = () => {
     return require("../assets/icons/invest.png");
   }
   if (category === "music") {
-    imagePath = "";
+    return require("../assets/icons/music.png");
   }
   if (category === "beauty") {
-    imagePath = "";
+    return require("../assets/icons/beauty.png");
   }
 }
 

@@ -18,8 +18,8 @@ import fonts from '../../assets/fonts/fonts';
 const trendingBanner = require('../../assets/banners/trending_banner.png');
 const upcomingBanner = require('../../assets/banners/upcoming.png');
 const investingBanner = require('../../assets/banners/investing_banner.png');
-const artAndMusicBanner = require('../../assets/banners/art_banner.png');
-const filmAndPhotographyBanner = require('../../assets/banners/film_and_photography_banner.png');
+const artAndMusicBanner = require('../../assets/banners/music.png');
+const filmAndPhotographyBanner = require('../../assets/banners/beauty.png');
 const fitnessBanner = require('../../assets/banners/fitness_banner.png');
 
 export default function DiscoverCreators ({containerStyles, navigation}) {
@@ -60,7 +60,7 @@ export default function DiscoverCreators ({containerStyles, navigation}) {
                         onPress={() => navigation.navigate("DiscoverResult", {category: "beauty", navigation: navigation})}
                     >
                         <Image source={filmAndPhotographyBanner} style={styles.filmAndPhotographyBanner} />
-                        <Text style={[styles.text, styles.textSmall]}>film & photography</Text>
+                        <Text style={[styles.text, styles.textSmall]}>beauty & fashion</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.gridContainer}>
@@ -137,8 +137,10 @@ const styles = StyleSheet.create({
         right: 0
     },
     filmAndPhotographyBanner: {
-        width: 128.18,
-        height: 128.79,
+        width: 210,
+        height: 210,
+        marginBottom: -20,
+        marginLeft: -20
     },
     investingBanner: {
         width: 110,
@@ -149,8 +151,10 @@ const styles = StyleSheet.create({
         height: 140.33,
     },
     artAndMusicBanner: {
-        width: 105.44,
-        height: 132.25,
+        width: 210,
+        height: 210,
+        marginBottom: -30,
+        marginLeft: -20
     },
     text: {
         fontFamily: 'textBold',

@@ -78,7 +78,7 @@ function ChatRow({navigation, lastMessage, creatorUID}) {
     }, []);
 
     const [fontsLoaded] = useFonts(fonts);
-    if (!fontsLoaded || !userDetail || !imageURL) {
+    if (!fontsLoaded || !userDetail) {
         return null;
     }
 

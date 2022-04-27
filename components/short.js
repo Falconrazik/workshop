@@ -75,6 +75,7 @@ export default class Short extends React.PureComponent {
                 // Convert to User object
                 const userDetails = doc.data();
                 const fileName = this.creatorUID + '.jpg';
+                this.setState({profile: {...userDetails}});
                 const fileRef = storage.ref().child(`avatar/${fileName}`);
                 fileRef.getDownloadURL()
                     .then((url) => {

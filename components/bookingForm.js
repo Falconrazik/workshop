@@ -50,7 +50,7 @@ export default function BookingForm({route, navigation, homeTabNavigation}) {
                 bookings: firebase.firestore.FieldValue.arrayUnion({
                     duration: parseInt(duration),
                     status: "pending",
-                    name: userDetail.userName,
+                    name: userDetail.name,
                     rate,
                     userUID,
                     category,

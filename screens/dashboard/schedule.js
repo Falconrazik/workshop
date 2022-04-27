@@ -152,7 +152,7 @@ const Schedule = ({navigation, dashboardRootStackNavigation}) => {
               <Image source={require('../../assets/icons/music.png')} style={styles.categoryLogo}/>
             </TouchableOpacity>
             <TouchableOpacity>
-              <Image source={require('../../assets/icons/invest.png')} style={styles.categoryLogo}/>
+              <Image source={require('../../assets/icons/beauty.png')} style={styles.categoryLogo}/>
             </TouchableOpacity>
           </View>
         </View>
