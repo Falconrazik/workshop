@@ -83,7 +83,7 @@ function ChatRow({navigation, lastMessage, creatorUID}) {
     }
 
     return (
-        <TouchableOpacity style={styles.chatRow} onPress={() => navigation.navigate('Chat', {creatorUID})}>
+        <TouchableOpacity style={styles.chatRow} onPress={() => navigation.navigate('Chat', {creatorUID, creatorName: userDetail.userName})}>
             <View style={{marginRight: 13}}>
                 <Avatar
                     width={46}
@@ -96,7 +96,7 @@ function ChatRow({navigation, lastMessage, creatorUID}) {
             </View>
             <View style={{flex: 1}}>
                 <View style={{flex: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <Text style={[styles.text, styles.chatTitle]}>@{userDetail.userName} and friends</Text>
+                    <Text style={[styles.text, styles.chatTitle]}>@{userDetail.userName} & friends</Text>
                     <Text style={[styles.text, styles.timeLastMessageReceived]}>{convertToDateString(lastMessage.createdAt)}</Text>
                 </View>
                 <Text style={[styles.text, styles.chatLastMessage]}>{lastMessage.text}</Text>
